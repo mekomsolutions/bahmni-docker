@@ -1,7 +1,0 @@
-# To see the list of valid variables in Bahmni please refer to:
-# https://bahmni.atlassian.net/wiki/display/BAH/List+Of+Configurable+Installation+Variables
-
-timezone: Etc/UCT
-implementation_name: default
-selinux_state: disabled
-docker: yes
