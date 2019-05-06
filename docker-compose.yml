@@ -36,7 +36,7 @@ services:
     restart: always
     volumes:
       - "openmrs-referenceapplication-data:/usr/local/tomcat/.OpenMRS/"
-      - /usr/local/tomcat/.OpenMRS/modules/
+      - "${OPENMRS_MODULES_PATH}:/usr/local/tomcat/.OpenMRS/modules/"
       - /usr/local/tomcat/.OpenMRS/owa/
   openmrs-referenceapplication-mysql:
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
