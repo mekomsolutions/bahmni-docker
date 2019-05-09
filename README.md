@@ -2,6 +2,10 @@
 
 Docker Compose project to start a Bahmni server locally.
 
+**export the variable beforehand:**
+```
+${OPENMRS_MODULES_PATH}="/home/romain/repos/bahmni-distro-hsc/target/bahmni-distro-hsc-1.0.0-SNAPSHOT/openmrs_modules/"
+```
 
 ### Quick Start
 
@@ -33,9 +37,3 @@ OpenMRS server is accessible at http://localhost/openmrs
 ### Known limitations
 
 - Only OpenMRS Component is now supported.
-
-**export the variable beforehand:**
-
-${OPENMRS_MODULES_PATH}="/home/romain/repos/bahmni-distro-hsc/target/bahmni-distro-hsc-1.0.0-SNAPSHOT/openmrs_modules/"
-
-docker-compose up
