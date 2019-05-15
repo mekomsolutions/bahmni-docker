@@ -1,0 +1,1 @@
+<input type="text" id="{{::observation.uniqueId}}" ng-model="observation.value" ng-disabled="observation.disabled" ng-blur="handleUpdate()" ng-class="{'illegalValue': !observation.isValid(atLeastOneValueIsSet), 'computed-field': observation.isComputedAndEditable()}" focus-me="::observation.isFocused" tabindex="1">

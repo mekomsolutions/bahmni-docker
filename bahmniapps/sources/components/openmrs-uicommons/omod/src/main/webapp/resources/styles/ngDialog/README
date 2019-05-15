@@ -1,0 +1,7 @@
+I had to make one modification after downloading these files from https://github.com/likeastore/ngDialog/tree/master/css
+because with the files as-downloaded the overlay was appearing on top of the content.
+
+I added (in both ngDialog.css and ngDialog.min.css)
+    position: relative;
+to
+    .ngdialog-content { ... }
