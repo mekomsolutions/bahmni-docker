@@ -1,6 +1,6 @@
 services:
   bahmni-proxy:
-    image: "bahmni-proxy"
+    build: bahmni-proxy/
     networks:
       bahmni:
         aliases:
@@ -35,11 +35,11 @@ services:
           - openmrs-1
     volumes:
       - "OpenMRS-tomcat-data:/usr/local/tomcat/.OpenMRS/"
-      - "/home/fabienc/repos/bahmni-distro-hsc/target/bahmni-distro-hsc-1.0.0-SNAPSHOT/openmrs_modules:/usr/local/tomcat/.OpenMRS/modules/"
+      - "${OPENMRS_MODULES_PATH}:/usr/local/tomcat/.OpenMRS/modules/"
       - /usr/local/tomcat/.OpenMRS/owa/
 
   bahmniapps:
-    image: "bahmniapps:latest"
+    build: bahmniapps/
     networks:
       bahmni:
         aliases:
