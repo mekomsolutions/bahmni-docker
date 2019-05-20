@@ -1,23 +1,32 @@
 services:
-  apache:
-    image: "bahmni-proxy"
+  bahmni-proxy:
+    build: bahmni-proxy/
     networks:
       bahmni:
         aliases:
           - bahmni-proxy
     ports:
       - "80:80"
-    restart: always
     volumes:
       - "./bahmni-proxy/confs:/usr/local/apache2/conf/extra"
-  openmrs-referenceapplication:
+
+  bahmniapps:
+    build: bahmniapps/
+    networks:
+      bahmni:
+        aliases:
+          - bahmniapps-1
+    ports:
+      - "8900:8900"
+
+  openmrs-tomcat:
     depends_on:
-      - openmrs-referenceapplication-mysql
+      - openmrs-mysql
     environment:
       DB_AUTO_UPDATE: "true"
       DB_CREATE_TABLES: "true"
       DB_DATABASE: "${MYSQL_DB:-openmrs}"
-      DB_HOST: openmrs-referenceapplication-mysql
+      DB_HOST: openmrs-mysql
       DB_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
       DB_USERNAME: "${MYSQL_USER:-openmrs}"
       MODULE_WEB_ADMIN: "true"
@@ -33,12 +42,12 @@ services:
       bahmni:
         aliases:
           - openmrs-1
-    restart: always
     volumes:
-      - "openmrs-referenceapplication-data:/usr/local/tomcat/.OpenMRS/"
+      - "openmrs-tomcat-data:/usr/local/tomcat/.OpenMRS/"
       - "${OPENMRS_MODULES_PATH}:/usr/local/tomcat/.OpenMRS/modules/"
       - /usr/local/tomcat/.OpenMRS/owa/
-  openmrs-referenceapplication-mysql:
+
+  openmrs-mysql:
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
     environment:
       MYSQL_DATABASE: "${MYSQL_DB:-openmrs}"
@@ -51,13 +60,12 @@ services:
     networks:
       bahmni:
         aliases:
-          - openmrs-db
-    restart: always
+          - openmrs-mysql
     volumes:
-      - "openmrs-referenceapplication-mysql-data:/var/lib/mysql"
+      - "openmrs-mysql-data:/var/lib/mysql"
 version: "2.1"
 volumes:
-  openmrs-referenceapplication-data: ~
-  openmrs-referenceapplication-mysql-data: ~
+  openmrs-tomcat-data: ~
+  openmrs-mysql-data: ~
 networks:
   bahmni:
