@@ -12,7 +12,7 @@ cd bahmni-docker
 
 **Export the variable beforehand:**
 ```
-${OPENMRS_MODULES_PATH}="/path/to/the/openmrs/modules"
+export OPENMRS_MODULES_PATH="/path/to/the/openmrs/modules"
 ```
 
 **Build the components:**
