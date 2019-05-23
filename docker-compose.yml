@@ -19,6 +19,17 @@ services:
     ports:
       - "8900:8900"
 
+  bahmni-config:
+    build: bahmni_config/
+    networks:
+      bahmni:
+        aliases:
+          - bahmni-config-1
+    ports:
+      - "8901:8901"
+    volumes:
+      - "${OPENMRS_CONFIG_PATH}:/var/www/bahmni_config"
+
   openmrs-tomcat:
     depends_on:
       - openmrs-mysql
