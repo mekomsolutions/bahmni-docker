@@ -1,4 +1,5 @@
 FROM httpd:2.4
+EXPOSE 8900/tcp
 RUN apt update \
 && apt install -y curl iproute2 iputils-ping less nano tree unzip
 ARG BAHMNIAPPS_URL=https://nexus.mekomsolutions.net/repository/maven-commits/net/mekomsolutions/bahmniapps/9c3667d/bahmniapps-9c3667d.zip
