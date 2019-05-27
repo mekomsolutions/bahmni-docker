@@ -49,8 +49,6 @@ services:
       bahmni:
         aliases:
           - openmrs-1
-    ports:
-      - "8080:8080"
     volumes:
       - "openmrs-tomcat-data:/usr/local/tomcat/.OpenMRS/"
       - "${OPENMRS_MODULES_PATH}:/usr/local/tomcat/.OpenMRS/modules/"
