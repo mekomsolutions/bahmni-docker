@@ -16,8 +16,15 @@ services:
       bahmni:
         aliases:
           - bahmniapps-1
-    ports:
-      - "8900:8900"
+
+  bahmni-config:
+    build: bahmni_config/
+    networks:
+      bahmni:
+        aliases:
+          - bahmni-config-1
+    volumes:
+      - "${BAHMNI_CONFIG_PATH}:/var/www/bahmni_config"
 
   openmrs-tomcat:
     depends_on:
