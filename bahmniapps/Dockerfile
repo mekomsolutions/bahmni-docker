@@ -8,3 +8,4 @@ RUN mkdir -p /var/www/bahmniapps/ \
  && unzip /var/www/bahmniapps/bahmniapps-9c3667d.zip -d /var/www/bahmniapps/ \
  && rm /var/www/bahmniapps/bahmniapps-9c3667d.zip
 COPY resources/httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY resources/cgi-bin/systemdate.sh /usr/local/apache2/cgi-bin/systemdate

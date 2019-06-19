@@ -12,6 +12,13 @@ services:
 
   bahmniapps:
     build: bahmniapps/
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost:8900/bahmniapps/home/index.html"
+      timeout: 20s
     networks:
       bahmni:
         aliases:
@@ -19,6 +26,13 @@ services:
 
   bahmni-config:
     build: bahmni_config/
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost:8901/bahmni_config/openmrs/apps/home/app.json"
+      timeout: 20s
     networks:
       bahmni:
         aliases:
@@ -51,8 +65,9 @@ services:
           - openmrs-1
     volumes:
       - "openmrs-tomcat-data:/usr/local/tomcat/.OpenMRS/"
-      - "${OPENMRS_MODULES_PATH}:/usr/local/tomcat/.OpenMRS/modules/"
       - /usr/local/tomcat/.OpenMRS/owa/
+      - "${OPENMRS_MODULES_PATH}:/usr/local/tomcat/.OpenMRS/modules/"
+      - "${OPENMRS_CONFIG_PATH}:/usr/local/tomcat/.OpenMRS/configuration/"
 
   openmrs-mysql:
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
