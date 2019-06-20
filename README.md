@@ -14,26 +14,24 @@ cd bahmni-docker
 ```
 export OPENMRS_MODULES_PATH="/path/to/the/openmrs/modules"
 export BAHMNI_CONFIG_PATH="/path/to/the/bahmni/config"
-```
-
-**Build the components:**
-
-- Bahmni Proxy
-```
-docker build -t bahmni-proxy ./bahmni-proxy
+export OPENMRS_CONFIG_PATH="/path/to/the/openmrs/config"
 ```
 
 **Start Bahmni:**
 ```
-docker-compose up
+docker-compose up --build
 ```
 
 **Access the servers:**
 
 OpenMRS server is accessible at http://localhost/openmrs
+Bahmni Apps Login page is accessible at http://localhost/bahmniapps/home/index.html
 
 ----
 
 ### Known limitations
 
-- Only OpenMRS Component is supported for now.
+- Supported components:
+  - OpenMRS
+  - Bahmni Apps
+  - Bahmni Config
