@@ -5,3 +5,4 @@ timezone: Etc/UCT
 implementation_name: default
 selinux_state: disabled
 docker: yes
+bahmni_repo_url: http://repo.mybahmni.org/rpm/bahmni

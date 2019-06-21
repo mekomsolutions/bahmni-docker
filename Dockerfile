@@ -1,18 +1,15 @@
-FROM centos:6.9
+FROM centos/systemd
 ARG INVENTORY_FILE
-RUN yum update -y && yum upgrade -y
+ENV LANG en_US.UTF-8
+ENV PGSETUP_INITDB_OPTIONS --encoding=UTF-8
 RUN yum install -y nano
 RUN yum install -y nmap
-RUN yum install -y ftp://195.220.108.108/linux/Mandriva/devel/cooker/x86_64/media/contrib/release/mx-1.4.5-1-mdv2012.0.x86_64.rpm
-RUN yum install -y python-setuptools sudo policycoreutils policycoreutils-python selinux-policy selinux-policy-targeted libselinux-utils setools openssh-server openssh-clients
-RUN yum install -y https://dl.bintray.com/bahmni/rpm/rpms/bahmni-installer-0.90-308.noarch.rpm
+RUN yum install -y openssh-server sudo iproute policycoreutils policycoreutils-python selinux-policy selinux-policy-targeted libselinux-utils setools setools-console
+RUN yum install -y http://repo.mybahmni.org.s3.amazonaws.com/rpm/bahmni/bahmni-installer-0.92-110.noarch.rpm
 ADD setup.yml /etc/bahmni-installer/setup.yml
 ADD inventories/${INVENTORY_FILE} /etc/bahmni-installer/local
-RUN mkdir -p /etc/bahmni-installer
-COPY resources/update-apache-config.sh /etc/bahmni-installer/
-COPY resources/move-mysql-datadir.sh /etc/bahmni-installer/
-ADD resources/stop_bahmni.sh /tmp
+ADD resources/install_bahmni.sh /tmp
 ADD resources/start_bahmni.sh /tmp
-RUN chmod +x /tmp/stop_bahmni.sh /tmp/start_bahmni.sh
-RUN bahmni -ilocal install && /tmp/stop_bahmni.sh && rm /tmp/stop_bahmni.sh 
-ENTRYPOINT /tmp/start_bahmni.sh ; /bin/bash
+RUN chmod +x /tmp/install_bahmni.sh
+RUN chmod +x /tmp/start_bahmni.sh
+CMD ["/usr/sbin/init"]
