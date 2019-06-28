@@ -5,7 +5,7 @@ ENV PGSETUP_INITDB_OPTIONS --encoding=UTF-8
 RUN yum install -y nano
 RUN yum install -y nmap
 RUN yum install -y openssh-server sudo iproute policycoreutils policycoreutils-python selinux-policy selinux-policy-targeted libselinux-utils setools setools-console
-RUN yum install -y http://repo.mybahmni.org.s3.amazonaws.com/rpm/bahmni/bahmni-installer-0.92-102.noarch.rpm
+RUN yum install -y http://repo.mybahmni.org.s3.amazonaws.com/rpm/bahmni/bahmni-installer-0.92-110.noarch.rpm
 ADD setup.yml /etc/bahmni-installer/setup.yml
 ADD inventories/${INVENTORY_FILE} /etc/bahmni-installer/local
 ADD resources/install_bahmni.sh /tmp
