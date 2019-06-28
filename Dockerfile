@@ -1,5 +1,7 @@
 FROM centos/systemd
 ARG INVENTORY_FILE
+ENV LANG en_US.UTF-8
+ENV PGSETUP_INITDB_OPTIONS --encoding=UTF-8
 RUN yum install -y nano
 RUN yum install -y nmap
 RUN yum install -y openssh-server sudo iproute policycoreutils policycoreutils-python selinux-policy selinux-policy-targeted libselinux-utils setools setools-console
