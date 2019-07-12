@@ -7,8 +7,7 @@ If the existing inventory files don't suit to your need, you can manually create
 
 #### Run the Docker build to build the new image
 To build the Bahmni Docker image, just run the following instructions :
-```docker commit -c='ENTRYPOINT ["/usr/sbin/init"]' bahmni_${file_name}_${commit_id}_installer mekomsolutions/bahmni_${file_name}_${commit_id}
-
+```
 export file_name=[file_name]
 export commit_id=[commit_id]
 ```
@@ -16,7 +15,7 @@ export commit_id=[commit_id]
 where:
 - [file_name] is the name of the inventory file from inventories/ folder
 - [commit_id] is the 7 first digits of your current commit.
-
+-
 ```
 git clone https://github.com/mekomsolutions/bahmni-docker.git
 cd bahmni-docker/
