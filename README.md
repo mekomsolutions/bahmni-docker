@@ -43,3 +43,9 @@ docker push mekomsolutions/bahmni:${file_name}_${commit_id}
 ```
 
 Note that you would need to have logged in using `docker login` first
+
+
+### Note:
+
+- Odoo addons in : `/opt/bahmni-erp/extra-addons` are to be auto installed when the server start
+- Odoo csv data files for *odoo-initializer* should be located here : `/opt/bahmni-erp/odoo_csv`
