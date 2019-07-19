@@ -13,6 +13,8 @@ COPY resources/setup.yml /etc/bahmni-installer/setup.yml
 COPY inventories/${INVENTORY_FILE} /etc/bahmni-installer/local
 COPY resources/install_bahmni.sh /tmp
 COPY resources/start_bahmni.sh /tmp
+COPY resources/odoo.conf /tmp
+COPY resources/odoo /tmp
 
 RUN chmod +x /tmp/install_bahmni.sh
 RUN chmod +x /tmp/start_bahmni.sh
