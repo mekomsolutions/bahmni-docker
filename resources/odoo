@@ -19,7 +19,7 @@
 ### END INIT INFO
 PATH=/bin:/sbin:/usr/bin
 DAEMON=/opt/bahmni-erp/odoo-bin
-ODOO_ADDONS_PATH=/mnt/extra-addons/.
+ODOO_ADDONS_PATH=/opt/bahmni-erp/extra-addons/.
 
 # Source function library.
 . /etc/rc.d/init.d/functions
