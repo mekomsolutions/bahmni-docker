@@ -5,10 +5,13 @@
 bahmni -ilocal install 
 bahmni -ilocal stop
 
-# replace odoo.conf file
-cp -rf /tmp/odoo.conf /etc/
 
-# replace odoo init.d script
-cp -rf /tmp/odoo /opt/bahmni-erp/bin/
-chmod +x /opt/bahmni-erp/bin/odoo
-chown odoo:odoo /opt/bahmni-erp/bin/odoo
+if systemctl | grep "odoo"; then
+    # replace odoo.conf file
+    cp -rf /tmp/odoo.conf /etc/
+
+    # replace odoo init.d script
+    cp -rf /tmp/odoo /opt/bahmni-erp/bin/
+    chmod +x /opt/bahmni-erp/bin/odoo
+    chown odoo:odoo /opt/bahmni-erp/bin/odoo
+fi
