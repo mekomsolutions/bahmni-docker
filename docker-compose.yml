@@ -23,7 +23,7 @@ services:
       mode: global
 
   bahmni-config:
-    build: bahmni-config/
+    build: bahmni_config/
     healthcheck:
       test:
         - CMD
@@ -80,7 +80,7 @@ services:
     networks:
       bahmni:
     volumes:
-      - "openmrs-mysql-data:/var/lib/mysql/"
+      - "openmrs-mysql-data:/var/lib/mysql"
     deploy:
       mode: global
 
