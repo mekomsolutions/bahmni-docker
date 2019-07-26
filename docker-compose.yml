@@ -3,12 +3,10 @@ services:
     build: bahmni-proxy/
     networks:
       bahmni:
-        aliases:
-          - bahmni-proxy
     ports:
       - "80:80"
-    volumes:
-      - "./bahmni-proxy/confs:/usr/local/apache2/conf/extra"
+    deploy:
+      mode: global
 
   bahmniapps:
     build: bahmniapps/
@@ -21,11 +19,11 @@ services:
       timeout: 20s
     networks:
       bahmni:
-        aliases:
-          - bahmniapps-1
+    deploy:
+      mode: global
 
   bahmni-config:
-    build: bahmni_config/
+    build: bahmni-config/
     healthcheck:
       test:
         - CMD
@@ -35,10 +33,10 @@ services:
       timeout: 20s
     networks:
       bahmni:
-        aliases:
-          - bahmni-config-1
     volumes:
       - "${BAHMNI_CONFIG_PATH}:/var/www/bahmni_config"
+    deploy:
+      mode: global
 
   openmrs-tomcat:
     depends_on:
@@ -61,13 +59,13 @@ services:
     image: "openmrs/openmrs-distro-platform:2.1.3"
     networks:
       bahmni:
-        aliases:
-          - openmrs-1
     volumes:
       - "openmrs-tomcat-data:/usr/local/tomcat/.OpenMRS/"
       - /usr/local/tomcat/.OpenMRS/owa/
       - "${OPENMRS_MODULES_PATH}:/usr/local/tomcat/.OpenMRS/modules/"
       - "${OPENMRS_CONFIG_PATH}:/usr/local/tomcat/.OpenMRS/configuration/"
+    deploy:
+      mode: global
 
   openmrs-mysql:
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
@@ -81,13 +79,15 @@ services:
     image: "mysql:5.6"
     networks:
       bahmni:
-        aliases:
-          - openmrs-mysql
     volumes:
-      - "openmrs-mysql-data:/var/lib/mysql"
+      - "openmrs-mysql-data:/var/lib/mysql/"
+    deploy:
+      mode: global
+
 version: "3.7"
 volumes:
-  openmrs-tomcat-data: ~
-  openmrs-mysql-data: ~
+  openmrs-mysql-data:
+    external: true
+  openmrs-tomcat-data:
 networks:
   bahmni:

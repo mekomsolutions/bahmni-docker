@@ -1,0 +1,25 @@
+services:
+  openmrs-mysql-init:
+    command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
+    environment:
+      MYSQL_DATABASE: "${MYSQL_DB:-openmrs}"
+      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-Admin123}"
+      MYSQL_USER: "${MYSQL_USER:-openmrs}"
+    healthcheck:
+      test: "exit 0"
+    image: "mysql:5.6"
+    container_name: bahmni-docker_openmrs-mysql_1
+    networks:
+      bahmni:
+    volumes:
+      - ./dump-sql/bahmni_0.92_openmrs.sql:/docker-entrypoint-initdb.d/dump.sql
+      - "openmrs-mysql-data:/var/lib/mysql/"
+    deploy:
+      mode: global
+version: "3.7"
+volumes:
+  openmrs-mysql-data:
+    external: true
+networks:
+  bahmni:
