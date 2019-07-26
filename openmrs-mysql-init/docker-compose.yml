@@ -9,7 +9,7 @@ services:
     healthcheck:
       test: "exit 0"
     image: "mysql:5.6"
-    container_name: bahmni-docker_openmrs-mysql_1
+    container_name: bahmni-docker_openmrs-mysql_init_1
     networks:
       bahmni:
     volumes:
