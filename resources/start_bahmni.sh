@@ -1,11 +1,11 @@
 #!/bin/bash
 
-if service --status-all | grep -Fq 'mysqld'; then    
-  service mysqld start
+if systemctl | grep -q 'mysqld.service'; then    
+  systemctl start mysqld
 fi
 
-if service --status-all | grep -Fq 'postgresql-9.6'; then    
-  service postgresql-9.6 start
+if systemctl | grep -q 'postgresql-9.6'; then    
+  systemctl start postgresql-9.6
 fi
 
 bahmni -ilocal start
