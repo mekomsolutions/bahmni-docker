@@ -5,8 +5,16 @@
 bahmni -ilocal install 
 bahmni -ilocal stop
 
+if systemctl | grep -q 'mysqld.service'; then    
+  systemctl stop mysqld
+fi
 
-if systemctl | grep "odoo"; then
+
+if systemctl | grep -q 'postgresql-9.6'; then    
+  systemctl stop postgresql-9.6
+fi
+
+if systemctl | grep -q "odoo.service"; then
     # replace odoo.conf file
     cp -rf /tmp/odoo.conf /etc/
 
