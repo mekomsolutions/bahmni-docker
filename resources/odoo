@@ -54,17 +54,16 @@ RETVAL=0
 
 odoo_addons_param() {
   addons=$(find $ODOO_ADDONS_PATH -maxdepth 1 -type d -printf '%f\n')
-  odoo_addons=" -i "
+  odoo_addons=" -u base"
   for addon in $addons
   do
     if [[ $addon != .* ]]
     then
-      odoo_addons+="$addon,"
+      odoo_addons+=",$addon"
     fi
   done
 
-  odoo_addons=${odoo_addons%?}
-  odoo_addons+=" -u "
+  odoo_addons+=" -i "
 
   for addon in $addons
   do
