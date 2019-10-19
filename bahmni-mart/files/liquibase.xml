@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet id="290620181627" author="Prasanna, Raju" runAlways="true">
+        <preConditions onFail="CONTINUE">
+            <not>
+                <tableExists tableName="markers" schemaName="public"/>
+            </not>
+        </preConditions>
+        <comment>Creating the markers table if not exists in public schema</comment>
+        <sql>
+            CREATE TABLE public.markers (
+                job_name          TEXT PRIMARY KEY,
+                event_record_id   INTEGER NOT NULL,
+                category          TEXT NOT NULL,
+                table_name        TEXT NOT NULL
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

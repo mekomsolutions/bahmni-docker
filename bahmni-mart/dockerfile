@@ -1,0 +1,10 @@
+FROM anapsix/alpine-java:8
+RUN apk add postgresql-client gettext tzdata
+ARG TIMEZONE
+ADD scripts/ /etc/scripts/
+ADD files/ /etc/files/
+RUN chmod +x /etc/scripts/* && \
+    cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
+    echo "$TIMEZONE" > /etc/timezone && \
+apk del tzdata
+CMD ["bash", "-c" , "/etc/scripts/postinstall.sh"]
