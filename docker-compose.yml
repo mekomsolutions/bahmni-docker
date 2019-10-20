@@ -86,36 +86,38 @@ services:
           - openmrs-mysql
     volumes:
       - "openmrs-mysql-data:/var/lib/mysql"
-  # postgres-mart:
-  #   image: postgres:9.6
-  #   environment:
-  #     POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
-  #   networks:
-  #     bahmni:
-  #       aliases:
-  #         - postgres-mart
-  #   volumes:
-  #     - "mart-psql-data:/var/lib/postgresql/data"
+      - "./mysql-dump:/docker-entrypoint-initdb.d"
+  postgres-mart:
+    image: postgres:9.6
+    environment:
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
+    networks:
+      bahmni:
+        aliases:
+          - postgres-mart
+    volumes:
+      - "mart-psql-data:/var/lib/postgresql/data"
       
-  # bahmni-mart:
-  #   build:
-  #     context: bahmni-mart/
-  #     args:
-  #       TIMEZONE: "${TIMEZONE:-Asia/Kolkata}"
-  #   environment:
-  #     ANALYTICS_PASSWORD: "${ANALYTICS_DB_PASSWORD:-password}"
-  #     OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
-  #     POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
-  #     CRON_TIME: "${CRON_TIME:-14 22 * * *}"
-  #   depends_on:
-  #      - postgres-mart
-  #      - openmrs-mysql
-  #   networks:
-  #     bahmni:
-  #       aliases:
-  #         - bahmni-mart
-  #   volumes:
-  #     - "${BAHMNI_CONFIG_PATH}:/var/www/bahmni_config"
+  bahmni-mart:
+    build:
+      context: bahmni-mart/
+      args:
+        TIMEZONE: "${TIMEZONE:-Asia/Kolkata}"
+    environment:
+      ANALYTICS_PASSWORD: "${ANALYTICS_PASSWORD:-password}"
+      OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
+      CRON_TIME: "${CRON_TIME:-11 11 * * *}"
+    depends_on:
+       - postgres-mart
+       - openmrs-mysql
+    networks:
+      bahmni:
+        aliases:
+          - bahmni-mart
+    volumes:
+      - "${BAHMNI_CONFIG_PATH}:/var/www/bahmni_config"
+      - "${BAHMNI_HOME}:/home/bahmni"
       
 
 version: "3.7"

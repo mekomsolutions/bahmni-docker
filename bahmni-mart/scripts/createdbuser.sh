@@ -9,7 +9,7 @@ if  PGPASSWORD=$POSTGRES_PASSWORD psql -hpostgres-mart -Upostgres -lqt | cut -d 
    echo "Analytics Database already exists!!"
 else
     PGPASSWORD=$POSTGRES_PASSWORD psql -hpostgres-mart -Upostgres <<-EOSQL
-        CREATE USER analytics WITH PASSWORD '$ANALYTICS_DB_PASSWORD';
+        CREATE USER analytics WITH PASSWORD '$ANALYTICS_PASSWORD';
         CREATE DATABASE analytics OWNER analytics;
 EOSQL
 fi
