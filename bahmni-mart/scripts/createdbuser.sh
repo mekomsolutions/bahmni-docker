@@ -13,3 +13,11 @@ else
         CREATE DATABASE analytics OWNER analytics;
 EOSQL
 fi
+if  PGPASSWORD=$POSTGRES_PASSWORD psql -hpostgres-mart -Upostgres -lqt | cut -d \| -f 1 | grep -qw metabase; then
+   echo "Metabase Database already exists!!"
+else
+    PGPASSWORD=$POSTGRES_PASSWORD psql -hpostgres-mart -Upostgres <<-EOSQL
+        CREATE USER metabase WITH PASSWORD '$MB_DB_PASS';
+        CREATE DATABASE metabase OWNER metabase;
+EOSQL
+fi
