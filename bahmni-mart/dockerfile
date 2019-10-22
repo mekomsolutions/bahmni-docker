@@ -1,4 +1,4 @@
-FROM anapsix/alpine-java:8
+FROM openjdk:8-jre-alpine
 RUN apk add postgresql-client gettext tzdata
 ARG TIMEZONE
 ADD scripts/ /etc/scripts/
@@ -7,4 +7,4 @@ RUN chmod +x /etc/scripts/* && \
     cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
     echo "$TIMEZONE" > /etc/timezone && \
 apk del tzdata
-CMD ["bash", "-c" , "/etc/scripts/postinstall.sh"]
+CMD ["/bin/sh", "/etc/scripts/postinstall.sh"]
