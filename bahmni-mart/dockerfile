@@ -1,5 +1,12 @@
 FROM openjdk:8-jre-alpine
-RUN apk add postgresql-client gettext tzdata
+RUN apk add postgresql-client gettext tzdata && \
+    addgroup -S bahmni && \
+    adduser -S bahmni -G bahmni && \
+    mkdir -p /opt/bahmni-mart/log/ /opt/bahmni-mart/properties/ /var/www/bahmni_config/ /opt/bahmni-mart/conf/ /data/analytics /opt/bahmni-mart/lib/ && \
+    ln -s /opt/bahmni-mart/bin/bahmni-mart.sh /usr/bin/bahmni-mart && \
+    ln -s /opt/bahmni-mart/log /var/log/bahmni-mart && \
+    chown -R bahmni:bahmni /usr/bin/bahmni-mart /opt/bahmni-mart /var/log/bahmni-mart
+
 ARG TIMEZONE
 ADD scripts/ /etc/scripts/
 ADD files/ /etc/files/
@@ -7,4 +14,4 @@ RUN chmod +x /etc/scripts/* && \
     cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
     echo "$TIMEZONE" > /etc/timezone && \
 apk del tzdata
-CMD ["/bin/sh", "/etc/scripts/postinstall.sh"]
+CMD ["/bin/sh", "/etc/scripts/setup.sh"]
