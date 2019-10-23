@@ -6,14 +6,10 @@ check_config() {
     fi
 }
 
-move_files(){
-    mv /etc/files/logback-spring.xml /opt/bahmni-mart/properties/logback-spring.xml
-    mv /etc/files/liquibase.xml /opt/bahmni-mart/conf/liquibase.xml
-    envsubst < /etc/files/application.properties > /opt/bahmni-mart/properties/application.properties
-    mv /etc/files/bahmni-mart-1.0.0.jar /opt/bahmni-mart/lib/bahmni-mart.jar
-    chown bahmni:bahmni /opt/bahmni-mart/properties/logback-spring.xml  /opt/bahmni-mart/conf/liquibase.xml /opt/bahmni-mart/properties/application.properties
-    chmod 644 /opt/bahmni-mart/properties/logback-spring.xml /opt/bahmni-mart/properties/application.properties
-    chmod 766 /opt/bahmni-mart/conf/liquibase.xml
+setup_properties(){
+    envsubst < /tmp/application.properties > /opt/bahmni-mart/properties/application.properties
+    chown bahmni:bahmni /opt/bahmni-mart/properties/application.properties
+    chmod 644 /opt/bahmni-mart/properties/application.properties
 }
 
 setup_cronjob() {
@@ -22,7 +18,7 @@ setup_cronjob() {
 }
 
 check_config
-move_files
+setup_properties
 echo "*********** PSQL DB Creation Starts   ******************"
 sh /etc/scripts/createdbuser.sh
 echo "*********** PSQL DB Creation Ends   ******************"

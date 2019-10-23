@@ -9,7 +9,14 @@ RUN apk add postgresql-client gettext tzdata && \
 
 ARG TIMEZONE
 ADD scripts/ /etc/scripts/
-ADD files/ /etc/files/
+# ADD files/ /etc/files/
+COPY files/logback-spring.xml /opt/bahmni-mart/properties/logback-spring.xml
+COPY files/application.properties /tmp/application.properties
+COPY files/liquibase.xml files/bahmni-mart.json /opt/bahmni-mart/conf/
+RUN chown bahmni:bahmni /opt/bahmni-mart/properties/logback-spring.xml  /opt/bahmni-mart/conf/liquibase.xml && \
+    chmod 644 /opt/bahmni-mart/properties/logback-spring.xml && \
+    chmod 744 /opt/bahmni-mart/conf/liquibase.xml
+COPY files/bahmni-mart-1.0.0.jar /opt/bahmni-mart/lib/bahmni-mart.jar
 RUN chmod +x /etc/scripts/* && \
     cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
     echo "$TIMEZONE" > /etc/timezone && \
