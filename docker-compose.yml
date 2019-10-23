@@ -117,8 +117,8 @@ services:
         aliases:
           - bahmni-mart
     volumes:
-      - "${BAHMNI_CONFIG_PATH}:/var/www/bahmni_config"
-      - "${BAHMNI_HOME}:/home/bahmni"
+      - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
+      - "${BAHMNI_HOME:-bahmni_home}:/home/bahmni"
   metabase:
     image: metabase/metabase:v0.31.2
     ports:
@@ -143,6 +143,7 @@ volumes:
   openmrs_modules: ~
   bahmni_config: ~
   mart-psql-data: ~
+  bahmni_home: ~
 networks:
   bahmni:
   
