@@ -1,2 +1,2 @@
-mysql-dump/*.sql
-mysql-dump/.DS_Store
+*/.DS_Store
+sqls/mysql/*.sql
