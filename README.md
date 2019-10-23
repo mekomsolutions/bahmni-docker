@@ -15,6 +15,7 @@ cd bahmni-docker
 export OPENMRS_MODULES_PATH="/path/to/the/openmrs/modules"
 export BAHMNI_CONFIG_PATH="/path/to/the/bahmni/config"
 export OPENMRS_CONFIG_PATH="/path/to/the/openmrs/config"
+export BAHMNI_HOME="/path/to/the/bahmni/home"
 ```
 
 **Start Bahmni:**
