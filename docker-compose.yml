@@ -102,7 +102,7 @@ services:
     build:
       context: bahmni-mart/
       args:
-        TIMEZONE: "${TIMEZONE:-Asia/Kolkata}"
+        TIMEZONE: "${TIMEZONE:-UTC}"
     environment:
       ANALYTICS_PASSWORD: "${ANALYTICS_PASSWORD:-password}"
       OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
