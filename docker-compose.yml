@@ -86,7 +86,7 @@ services:
           - openmrs-mysql
     volumes:
       - "openmrs-mysql-data:/var/lib/mysql"
-      - "./mysql-dump:/docker-entrypoint-initdb.d"
+      - "./sqls/mysql:/docker-entrypoint-initdb.d"
   postgres-mart:
     image: postgres:9.6-alpine
     environment:
