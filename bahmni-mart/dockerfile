@@ -1,24 +1,21 @@
 FROM openjdk:8-jre-alpine
-RUN apk add postgresql-client gettext tzdata && \
+ARG TIMEZONE
+RUN apk add postgresql-client gettext tzdata  && \
     addgroup -S bahmni && \
-    adduser -S bahmni -G bahmni && \
+    adduser -S bahmni -G bahmni -D -u 480 && \
     mkdir -p /opt/bahmni-mart/log/ /opt/bahmni-mart/properties/ /var/www/bahmni_config/ /opt/bahmni-mart/conf/ /data/analytics /opt/bahmni-mart/lib/ && \
     ln -s /opt/bahmni-mart/bin/bahmni-mart.sh /usr/bin/bahmni-mart && \
     ln -s /opt/bahmni-mart/log /var/log/bahmni-mart && \
     chown -R bahmni:bahmni /usr/bin/bahmni-mart /opt/bahmni-mart /var/log/bahmni-mart
-
-ARG TIMEZONE
 ADD scripts/ /etc/scripts/
-# ADD files/ /etc/files/
-COPY files/logback-spring.xml /opt/bahmni-mart/properties/logback-spring.xml
-COPY files/application.properties /tmp/application.properties
-COPY files/liquibase.xml files/bahmni-mart.json /opt/bahmni-mart/conf/
-RUN chown bahmni:bahmni /opt/bahmni-mart/properties/logback-spring.xml  /opt/bahmni-mart/conf/liquibase.xml && \
-    chmod 644 /opt/bahmni-mart/properties/logback-spring.xml && \
+COPY --chown=bahmni:bahmni files/logback-spring.xml /opt/bahmni-mart/properties/logback-spring.xml
+COPY --chown=bahmni:bahmni files/application.properties /tmp/application.properties
+COPY --chown=bahmni:bahmni files/liquibase.xml files/bahmni-mart.json /opt/bahmni-mart/conf/
+RUN chmod 644 /opt/bahmni-mart/properties/logback-spring.xml && \
     chmod 644 /opt/bahmni-mart/conf/liquibase.xml
-COPY files/bahmni-mart-1.0.0.jar /opt/bahmni-mart/lib/bahmni-mart.jar
+COPY --chown=bahmni:bahmni  files/bahmni-mart-1.0.0.jar /opt/bahmni-mart/lib/bahmni-mart.jar
 RUN chmod +x /etc/scripts/* && \
     cp /usr/share/zoneinfo/$TIMEZONE /etc/localtime && \
     echo "$TIMEZONE" > /etc/timezone && \
-apk del tzdata
+    apk del tzdata
 CMD ["/bin/sh", "/etc/scripts/setup.sh"]
