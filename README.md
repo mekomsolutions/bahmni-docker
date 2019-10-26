@@ -19,6 +19,8 @@ export BAHMNI_HOME="/path/to/the/bahmni/home"
 export TIMEZONE="some/timezone" #Example for IST set TIMEZONE="Asia/Kolkata"
 ```
 
+Note: After changing the Timezone - Run  ```docker-compose up --build```  to change the container's timezone (only applicable to bahmni-mart as of now)
+
 **Start Bahmni:**
 ```
 docker-compose up --build
