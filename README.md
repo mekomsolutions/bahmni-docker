@@ -17,21 +17,24 @@ export BAHMNI_CONFIG_PATH="/path/to/the/bahmni/config"
 export OPENMRS_CONFIG_PATH="/path/to/the/openmrs/config"
 export BAHMNI_HOME="/path/to/the/bahmni/home"
 export TIMEZONE="some/timezone" #Example for IST set TIMEZONE="Asia/Kolkata"
-export CRON_TIME=<CRON Formatted String> # This is to schedule mart cron. Default is "30 21 * * *" - i.e. 10:30 PM every day
+export CRON_TIME="CRON Formatted String" # This is to schedule database flattening. Default is "30 21 * * *" - i.e. 10:30 PM every day
 ```
 
-Note: After changing the Timezone - Run  ```docker-compose up --build```  to change the container's timezone (only applicable to bahmni-mart as of now)
+Note: After changing the Timezone, make sure to rebuild the containers with  ```docker-compose up --build``` (only applicable to bahmni-mart as of now)
 
 **Start Bahmni:**
 ```
-docker-compose up --build
+docker-compose up
 ```
 
 **Access the servers:**
 
-OpenMRS server is accessible at http://localhost/openmrs
-Bahmni Apps Login page is accessible at http://localhost/bahmniapps/home/index.html
-Metabase is accessible by port - localhost:9003 or by subdomain metabase.localhost
+| Service | URL  | Remarks |
+| --- | ---  | --- |
+| Bahmni | http://localhost/  | Redirects to http://localhost/bahmni/home/index.html |
+| OpenMRS | http://localhost/openmrs  |
+| Metabase | http://localhost:9003/ or http://metabase.localhost  | Using the subdomain on other domains than `localhost` will require to set the `ServerName` variable accordingly in [000-proxy.conf](./bahmni_proxy/confs/000-proxy.conf)|
+
 
 ----
 
@@ -41,3 +44,5 @@ Metabase is accessible by port - localhost:9003 or by subdomain metabase.localho
   - OpenMRS
   - Bahmni Apps
   - Bahmni Config
+  - Bahmni Mart
+  - Metabase
