@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/base.xml" />
+    <logger name="org.bahmni.mart" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="org.springframework" level="INFO" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+    <logger name="liquibase" level="WARN" additivity="false">
+        <appender-ref ref="CONSOLE" />
+    </logger>
+</configuration>
