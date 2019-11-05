@@ -7,11 +7,9 @@ setup_properties(){
 }
 
 setup_cronjob() {
-    # adding cron job for scheduling the job at 11:30PM everyday
    echo "$CRON_TIME  java -jar /opt/bahmni-mart/lib/bahmni-mart.jar --spring.config.location=\"/opt/bahmni-mart/properties/application.properties\" > /proc/1/fd/1 2>/proc/1/fd/2" | crontab - 
 }
 
-check_config
 setup_properties
 echo "*********** PSQL DB Creation Starts   ******************"
 sh /etc/scripts/createdbuser.sh

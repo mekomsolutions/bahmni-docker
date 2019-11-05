@@ -108,7 +108,7 @@ services:
       OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
       MB_DB_PASS: "${METABASE_PASSWORD:-password}"
-      CRON_TIME: "${CRON_TIME:-11 11 * * *}"
+      CRON_TIME: "${CRON_TIME:-30 21 * * *}"
     depends_on:
        - postgres-mart
        - openmrs-mysql
