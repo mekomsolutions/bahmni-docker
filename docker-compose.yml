@@ -119,6 +119,7 @@ services:
     volumes:
       - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
       - "${BAHMNI_HOME:-bahmni_home}:/home/bahmni"
+      - "./bahmni-mart/conf:/opt/bahmni-mart/conf"
   metabase:
     image: metabase/metabase:v0.31.2
     ports:

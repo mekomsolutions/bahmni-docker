@@ -1,15 +1,9 @@
 #!/bin/bash
 
-check_config() {
-    if [ ! -d /var/www/bahmni_config/bahmni-mart/ ]; then
-        ln -s /opt/bahmni-mart/conf /var/www/bahmni_config/bahmni-mart
-    fi
-}
 
 setup_properties(){
     envsubst < /tmp/application.properties > /opt/bahmni-mart/properties/application.properties
-    chown bahmni:bahmni /opt/bahmni-mart/properties/application.properties
-    chmod 644 /opt/bahmni-mart/properties/application.properties
+    chmod 644 /opt/bahmni-mart/properties/application.properties /opt/bahmni-mart/conf/liquibase.xml
 }
 
 setup_cronjob() {
