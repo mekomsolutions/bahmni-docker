@@ -23,6 +23,7 @@ services:
       bahmni:
         aliases:
           - bahmniapps-1
+          
   implementer-interface:
     build: implementer-interface/
     healthcheck:
