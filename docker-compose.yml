@@ -23,6 +23,20 @@ services:
       bahmni:
         aliases:
           - bahmniapps-1
+          
+  implementer-interface:
+    build: implementer-interface/
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost:8902/implementer_interface/index.html"
+      timeout: 20s
+    networks:
+      bahmni:
+        aliases:
+          - implementer-interface
 
   bahmni-config:
     build: bahmni_config/
