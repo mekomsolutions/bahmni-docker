@@ -20,7 +20,8 @@ export TIMEZONE="some/timezone" #Example for IST set TIMEZONE="Asia/Kolkata"
 export CRON_TIME="CRON Formatted String" # This is to schedule database flattening. Default is "30 21 * * *" - i.e. 10:30 PM every day
 ```
 
-Note: After changing the Timezone, make sure to rebuild the containers with  ```docker-compose up --build``` (only applicable to bahmni-mart as of now)
+Note: Complete list of available Timezone: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+After changing the Timezone, make sure to rebuild the containers with  ```docker-compose up --build```
 
 **Start Bahmni:**
 ```
