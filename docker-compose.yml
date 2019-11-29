@@ -6,7 +6,7 @@ services:
         aliases:
           - bahmni-proxy
     ports:
-      - "80:80"
+      - "${PROXY_PORT:-80}:80"
     volumes:
       - "./bahmni-proxy/confs:/usr/local/apache2/conf/extra"
 
@@ -23,7 +23,7 @@ services:
       bahmni:
         aliases:
           - bahmniapps-1
-          
+
   implementer-interface:
     build: implementer-interface/
     healthcheck:
@@ -101,6 +101,7 @@ services:
     volumes:
       - "openmrs-mysql-data:/var/lib/mysql"
       - "./sqls/mysql:/docker-entrypoint-initdb.d"
+
   postgres-mart:
     image: postgres:9.6-alpine
     environment:
@@ -111,7 +112,7 @@ services:
           - postgres-mart
     volumes:
       - "mart-psql-data:/var/lib/postgresql/data"
-      
+
   bahmni-mart:
     build:
       context: bahmni-mart/
@@ -134,10 +135,11 @@ services:
       - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
       - "${BAHMNI_HOME:-bahmni_home}:/home/bahmni"
       - "./bahmni-mart/conf:/opt/bahmni-mart/conf"
+
   metabase:
     image: metabase/metabase:v0.31.2
     ports:
-      - "9003:3000"
+      - "${METABASE_PORT:-9003}:3000"
     environment:
       MB_DB_TYPE: postgres
       MB_DB_DBNAME: metabase
@@ -161,4 +163,3 @@ volumes:
   bahmni_home: ~
 networks:
   bahmni:
-  
