@@ -102,14 +102,14 @@ services:
       - "openmrs-mysql-data:/var/lib/mysql"
       - "./sqls/mysql:/docker-entrypoint-initdb.d"
 
-  postgres-mart:
+  db-mart:
     image: postgres:9.6-alpine
     environment:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
     networks:
       bahmni:
         aliases:
-          - postgres-mart
+          - db-mart
     volumes:
       - "mart-psql-data:/var/lib/postgresql/data"
 
@@ -119,13 +119,15 @@ services:
       args:
         TIMEZONE: "${TIMEZONE:-UTC}"
     environment:
+      DB_MART: "${DB_MART_HOST:-db-mart}"
+      DB_OPENMRS: "${DB_OPENMRS_HOST:-openmrs-mysql}"
       ANALYTICS_PASSWORD: "${ANALYTICS_PASSWORD:-password}"
       OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
       MB_DB_PASS: "${METABASE_PASSWORD:-password}"
       CRON_TIME: "${CRON_TIME:-30 21 * * *}"
     depends_on:
-       - postgres-mart
+       - db-mart
        - openmrs-mysql
     networks:
       bahmni:
@@ -146,7 +148,7 @@ services:
       MB_DB_PORT: 5432
       MB_DB_USER: metabase
       MB_DB_PASS: "${METABASE_PASSWORD:-password}"
-      MB_DB_HOST: postgres-mart
+      MB_DB_HOST: db-mart
     networks:
       bahmni:
         aliases:
