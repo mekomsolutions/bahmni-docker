@@ -55,6 +55,7 @@ services:
       - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
 
   openmrs-tomcat:
+    build: openmrs/
     depends_on:
       - openmrs-mysql
     environment:
@@ -72,7 +73,6 @@ services:
         - "-f"
         - "http://localhost:8080/openmrs/"
       timeout: 20s
-    image: "openmrs/openmrs-distro-platform:2.1.3"
     networks:
       bahmni:
         aliases:
