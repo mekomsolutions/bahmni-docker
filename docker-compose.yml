@@ -169,6 +169,39 @@ services:
       bahmni:
         aliases:
           - metabase
+  
+  openelis-db:
+    environment:
+      POSTGRES_DB: postgres
+    healthcheck:
+      test: "exit 0"
+    image: "postgres:9.6-alpine"
+    networks:
+      bahmni:
+        aliases:
+          - openelis-db
+    volumes:
+      - "./openelis/resources/sql:/docker-entrypoint-initdb.d"
+      - "elis-psql-data:/var/lib/postgresql/data"
+  
+  openelis-tomcat:
+    build: openelis/
+    depends_on:
+      - openelis-db
+    environment:
+      OPENELIS_DB_HOST: "${PGSQL_HOST:-postgresql}"
+      OPENMRS_URI: "${OPENMRS:-http://openmrs-1:8080/openmrs}"
+      ATOMFEED_PROPERTIES_FILE_PATH: ${ATOMFEED_PROPERTIES_FILE_PATH:-/usr/local/tomcat/.OpenELIS/atomfeed.properties}
+      HIBERNATE_PROPERTIES_FILE_PATH: ${HIBERNATE_PROPERTIES_FILE_PATH:-/usr/local/tomcat/.OpenELIS/hibernate.properties}
+    healthcheck:
+      test: "exit 0"
+    networks:
+      bahmni:
+        aliases:
+          - openelis-1
+    volumes:
+      - "./openelis/resources/atomfeed.properties:/usr/local/tomcat/.OpenELIS/atomfeed.properties"
+      - "./openelis/resources/hibernate.properties:/usr/local/tomcat/.OpenELIS/hibernate.properties"
 
 version: "3.7"
 volumes:
@@ -179,6 +212,7 @@ volumes:
   bahmni_config: ~
   bahmni_apps: ~
   mart-psql-data: ~
+  elis-psql-data: ~
   bahmni_home: ~
 networks:
   bahmni:

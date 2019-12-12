@@ -160,6 +160,12 @@ watch rsync -av ~/repos/openmrs-module-bahmniapps/ui/ /tmp/bahmni-distro-haiti/b
 `TIMEZONE`**\***: Server timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a complete list of possible Timezones.
 
 `BAHMNI_MART_CRON_TIME`**\***: Provide a custom cron time (in Crontab format) for the Bahmni Mart flattening. Default is `30 21 * * *` - i.e. 10:30 PM every day.
+| Service | URL  | Remarks |
+| --- | ---  | --- |
+| Bahmni | http://localhost/  | Redirects to http://localhost/bahmni/home/index.html |
+| OpenMRS | http://localhost/openmrs  |
+| Metabase | http://localhost:9003/ or http://metabase.localhost  | Using the subdomain on other domains than `localhost` will require to set the `ServerName` variable accordingly in [000-proxy.conf](./bahmni_proxy/confs/000-proxy.conf)|
+| OpenELIS | http://localhost/openelis |
 
 **\*** Note: Variables with a **\*** require the containers to be rebuilt. Use `docker-compose build`
 
@@ -172,3 +178,4 @@ watch rsync -av ~/repos/openmrs-module-bahmniapps/ui/ /tmp/bahmni-distro-haiti/b
   - Bahmni Config
   - Bahmni Mart
   - Metabase
+  - OpenELIS
