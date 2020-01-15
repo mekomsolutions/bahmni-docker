@@ -17,15 +17,10 @@ create_tables=${DB_CREATE_TABLES}
 auto_update_database=${DB_AUTO_UPDATE}
 EOF
 
-cat > /usr/local/tomcat/.OpenMRS/openmrs-runtime.properties << EOF
-encryption.vector=KOWPyyXpnQfFWo2p2Cl8Zg\=\=
-connection.url=jdbc\:mysql\://${DB_HOST}\:3306/${DB_DATABASE}?autoReconnect\=true&sessionVariables\=default_storage_engine\=InnoDB&useUnicode\=true&characterEncoding\=UTF-8
-module.allow_web_admin=true
-connection.username=${DB_USERNAME}
-auto_update_database=true
-encryption.key=gj6a6U9+QjiuKn6oDA1l8g\=\=
-connection.driver_class=com.mysql.jdbc.Driver
-connection.password=${DB_PASSWORD}
+cat > /tmp/db_credentials.txt << EOF
+[client]
+user=${DB_USERNAME}
+password=${DB_PASSWORD}
 EOF
 
 echo "------  Starting distribution -----"
@@ -34,6 +29,22 @@ echo "-----------------------------------"
 
 # wait for mysql to initialise
 /usr/local/tomcat/wait-for-it.sh --timeout=3600 ${DB_HOST}:3306
+
+
+mysql_result=`mysql --defaults-extra-file=/tmp/db_credentials.txt -h${DB_HOST} --skip-column-names -e "SELECT count(*) FROM information_schema.tables WHERE table_schema = '${DB_DATABASE}'"`
+
+if [ ${mysql_result} > 1 ]; then
+    cat > /usr/local/tomcat/.OpenMRS/openmrs-runtime.properties << EOF
+encryption.vector=KOWPyyXpnQfFWo2p2Cl8Zg\=\=
+connection.url=jdbc\:mysql\://${DB_HOST}\:3306/${DB_DATABASE}?autoReconnect\=true&sessionVariables\=default_storage_engine\=InnoDB&useUnicode\=true&characterEncoding\=UTF-8
+module.allow_web_admin=true
+connection.username=${DB_USERNAME}
+auto_update_database==${DB_AUTO_UPDATE}
+encryption.key=gj6a6U9+QjiuKn6oDA1l8g\=\=
+connection.driver_class=com.mysql.jdbc.Driver
+connection.password=${DB_PASSWORD}
+EOF
+fi
 
 if [ $DEBUG ]; then
     export JPDA_ADDRESS="1044"
