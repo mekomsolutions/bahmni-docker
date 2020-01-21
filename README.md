@@ -4,37 +4,56 @@ Docker Compose project to start a Bahmni server locally.
 
 ### Quick Start
 
-**Clone the project:**
+#### Clone the project:
 ```
 git clone https://github.com/mekomsolutions/bahmni-docker
 cd bahmni-docker
 ```
 
-**Export the variable beforehand:**
-```
-export OPENMRS_MODULES_PATH="/path/to/the/openmrs/modules"
-export BAHMNI_CONFIG_PATH="/path/to/the/bahmni/config"
-export OPENMRS_CONFIG_PATH="/path/to/the/openmrs/config"
-export BAHMNI_HOME="/path/to/the/bahmni/home"
-export TIMEZONE="some/timezone" #Example for IST set TIMEZONE="Asia/Kolkata"
-export CRON_TIME="CRON Formatted String" # This is to schedule database flattening. Default is "30 21 * * *" - i.e. 10:30 PM every day
-```
+#### Export the variable beforehand:
 
-Note: Complete list of available Timezone: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-After changing the Timezone, make sure to rebuild the containers with  ```docker-compose up --build```
+Here is the list of configurable variables:
 
-**Start Bahmni:**
+`OPENMRS_CONFIG_PATH`: Path to a custom OpenMRS Configuration. See [OpenMRS Initializer](https://github.com/mekomsolutions/openmrs-module-initializer/) for more information.
+
+`BAHMNI_CONFIG_PATH`: Path to a custom Bahmni Config folder.
+
+`OPENMRS_MODULES_PATH`: Path to custom set of OpenMRS modules.
+
+`BAHMNI_HOME`: Path to Bahmni Home.
+
+`TIMEZONE`**\***: Server timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a complete list of possible Timezones. Default
+
+`BAHMNI_MART_CRON_TIME`**\***: Provide a custom cron time (in Crontab format) for the Bahmni Mart flattening. Default is `30 21 * * *` - i.e. 10:30 PM every day.
+
+**\*** Note: Variables with a **\*** require the containers to be rebuilt. Use `docker-compose build`
+
+#### Start Bahmni:
 ```
 docker-compose up
 ```
 
-**Access the servers:**
+#### Access the servers:
 
-| Service | URL  | Remarks |
-| --- | ---  | --- |
-| Bahmni | http://localhost/  | Redirects to http://localhost/bahmni/home/index.html |
-| OpenMRS | http://localhost/openmrs  |
-| Metabase | http://localhost:9003/ or http://metabase.localhost  | Using the subdomain on other domains than `localhost` will require to set the `ServerName` variable accordingly in [000-proxy.conf](./bahmni_proxy/confs/000-proxy.conf)|
+- Bahmni: http://localhost/
+- OpenMRS: http://localhost/openmrs
+- Metabase: http://localhost:9003/
+
+#### TLS support
+
+By default, TLS is enabled with self-signed certificates.
+You can provide your own valid certificates as a volume mounted at `/etc/tls/`.
+
+Eg:
+```
+volumes:
+  - "/etc/letsencrypt/live/domain.com/:/etc/tls/"
+
+```
+
+
+To deactivate TLS support, just remove the entire line:
+```command: "httpd-foreground -DenableTLS"``` from the `proxy` service in the Dockerfile
 
 
 ----
