@@ -10,6 +10,11 @@ FROM httpd:2.4
 EXPOSE 8902/tcp
 RUN apt update \
 && apt install -y curl  iproute2 iputils-ping less nano tree unzip
+
+ARG TIMEZONE
+RUN unlink /etc/localtime && \
+   ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+
 COPY --from=extracter /tmp/implementer_interface.zip .
 RUN mkdir -p  /var/www/ \
  && unzip -d /var/www/ implementer_interface.zip \

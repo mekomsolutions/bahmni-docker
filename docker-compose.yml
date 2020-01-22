@@ -1,6 +1,9 @@
 services:
   proxy:
-    build: proxy/
+    build:
+      context: proxy/
+      args:
+        TIMEZONE: "${TIMEZONE:-UTC}"
     networks:
       bahmni:
         aliases:
@@ -14,7 +17,10 @@ services:
       - "./proxy/confs:/usr/local/apache2/conf/extra"
 
   bahmniapps:
-    build: bahmniapps/
+    build:
+      context: bahmniapps/
+      args:
+        TIMEZONE: "${TIMEZONE:-UTC}"
     healthcheck:
       test:
         - CMD
@@ -28,7 +34,10 @@ services:
           - bahmniapps-1
 
   implementer-interface:
-    build: implementer-interface/
+    build:
+      context: implementer-interface/
+      args:
+        TIMEZONE: "${TIMEZONE:-UTC}"
     healthcheck:
       test:
         - CMD
@@ -42,7 +51,10 @@ services:
           - implementer-interface
 
   bahmni-config:
-    build: bahmni_config/
+    build:
+      context: bahmni_config/
+      args:
+        TIMEZONE: "${TIMEZONE:-UTC}"
     healthcheck:
       test:
         - CMD
