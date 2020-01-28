@@ -33,13 +33,13 @@ echo "-----------------------------------"
 /usr/local/tomcat/wait-for-it.sh --timeout=3600 ${DB_HOST}:3306
 
 # checking if the database is already available
-mysql_result=`mysql --defaults-extra-file=/etc/mysql/db-credentials.cnf -h${DB_HOST} --skip-column-names -e "SELECT count(*) FROM information_schema.tables WHERE table_schema = '${DB_DATABASE}'"`
+get_db_tables=`mysql --defaults-extra-file=/etc/mysql/db-credentials.cnf -h${DB_HOST} --skip-column-names -e "SELECT count(*) FROM information_schema.tables WHERE table_schema = '${DB_DATABASE}'"`
 
 # generate encryption keys
 encryption_key=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
 encryption_vector=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
 
-if [ ${mysql_result} > 1 ]; then
+if [ ${get_db_tables} > 1 ]; then
     cat > /usr/local/tomcat/.OpenMRS/openmrs-runtime.properties << EOF
 encryption.vector=${encryption_vector}
 connection.url=jdbc\:mysql\://${DB_HOST}\:3306/${DB_DATABASE}?autoReconnect\=true&sessionVariables\=default_storage_engine\=InnoDB&useUnicode\=true&characterEncoding\=UTF-8
