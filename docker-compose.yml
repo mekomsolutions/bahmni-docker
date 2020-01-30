@@ -12,7 +12,7 @@ services:
     command: "httpd-foreground -DenableTLS"
     ports:
       - "${PROXY_PORT:-80}:80"
-      - "${PROXY_PORT:-443}:443"
+      - "${PROXY_PORT_TLS:-443}:443"
     volumes:
       - "./proxy/confs:/usr/local/apache2/conf/extra"
 
