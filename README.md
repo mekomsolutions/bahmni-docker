@@ -174,4 +174,4 @@ watch rsync -av ~/repos/openmrs-module-bahmniapps/ui/ /tmp/bahmni-distro-haiti/b
   - Bahmni Apps
   - Bahmni Config
   - Bahmni Mart
-  - Metabase
+  - MetabaseS
