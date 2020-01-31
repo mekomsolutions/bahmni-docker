@@ -1,5 +1,5 @@
 */.DS_Store
-sqls/mysql/*.sql
+sqls/**/*.sql.*
 .DS_Store
 
 # Ignore the docker-compose.override.yml file
