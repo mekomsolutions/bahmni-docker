@@ -3,11 +3,11 @@
 Docker Compose project to start a Bahmni server locally.
 
 <p align="left">
-  <img src="./readme/vertical-logo-monochromatic.png" alt="Docker" height="150"> +  
-  <img src="./readme/bahmni-logo-square.png" alt="Docker" height="155">  
-</p>
+  <img src="./readme/bahmni-logo-square.png" alt="Bahmni Logo" height="155">
+  <img src="./readme/plus.png" alt="plus sign" height="50">
+  <img src="./readme/vertical-logo-monochromatic.png" alt="Docker Logo" height="150">
+  </p>
 
-----
 ## Quick Start
 
 ### Clone the project:
@@ -41,36 +41,34 @@ Export all variables at once:
 GROUP=haiti; DISTRO_PATH=/tmp/bahmni-distro-$GROUP; export OPENMRS_CONFIG_PATH=$DISTRO_PATH/openmrs_config; export BAHMNI_CONFIG_PATH=$DISTRO_PATH/bahmni_config; export OPENMRS_MODULES_PATH=$DISTRO_PATH/openmrs_modules; export BAHMNI_APPS_PATH=$DISTRO_PATH/bahmni_emr/bahmniapps
 ```
 
-For a more detailed list of variables:
-
-`OPENMRS_CONFIG_PATH`: Path to a custom OpenMRS Configuration. See [OpenMRS Initializer](https://github.com/mekomsolutions/openmrs-module-initializer/) for more information.
-
-`BAHMNI_CONFIG_PATH`: Path to a custom Bahmni Config folder.
-
-`OPENMRS_MODULES_PATH`: Path to custom set of OpenMRS modules.
-
-`BAHMNI_APPS_PATH`: Path to Bahmni Apps sources.
-
-`BAHMNI_HOME`: Path to Bahmni Home.
-
-`TIMEZONE`**\***: Server timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a complete list of possible Timezones.
-
-`BAHMNI_MART_CRON_TIME`**\***: Provide a custom cron time (in Crontab format) for the Bahmni Mart flattening. Default is `30 21 * * *` - i.e. 10:30 PM every day.
-
-**\*** Note: Variables with a **\*** require the containers to be rebuilt. Use `docker-compose build`
-
 ### Start Bahmni:
 ```
 docker-compose up
 ```
+<p align="center">
+<img src="./readme/docker-compose-up-shadow.png" alt="docker-compose up" height="200">  
+</p>
 
 ### Access the servers:
 
 - Bahmni: http://localhost/
+
+<p align="left">
+<img src="./readme/bahmni-EMR-login-shadow.png" alt="Bahmni EMR login screen" width="300">  
+</p>
+
+
 - OpenMRS: http://localhost/openmrs
+
+<p align="left">
+<img src="./readme/openmrs-login-shadow.png" alt="OpenMRS login screen" width="300">  
+</p>
+
 - Metabase: http://localhost:9003/
 
-----
+<p align="left">
+<img src="./readme/metabase-login-shadow.png" alt="Metabase login screen" width="300">  
+</p>
 
 ## Advanced
 
@@ -83,11 +81,11 @@ To enable TLS support, just add the line:
 ```
 to the `proxy` service in the [docker-compose.yml](./docker-compose.yml) file.
 
-Default certificates are self-signed.
+Default certificates are self-signed and therefore unsecured.
 
 Provide your own valid certificates as a bound volume mounted at `/etc/tls/`.
 
-This would look like:
+The `proxy` service would look like:
 ```
 services:
   proxy:
@@ -99,13 +97,14 @@ services:
     - [...]
 
 ```
+### Start with a custom MySQL dump
 
-
+To start OpenMRS with your own database, just drop your data file (`.sql` or `.sql.gz`) in the [./sqls/mysql/](./sqls/mysql/) folder and recreate your volumes (`docker-compose -v down`).
 
 
 ### Disable individual services
 If you are developing, you may not want to run the complete Bahmni suite.
-You can disable services by adding a new **docker-compose.override.yml** at the project root with the following contents:
+You can disable services by adding **docker-compose.override.yml** file at the project root with the following contents:
 
 **./docker-compose.override.yml**
 ```
@@ -123,11 +122,12 @@ services:
     entrypoint: ["echo", "[ERROR] Service is disabled in docker-compose.override.yml file"]
 ```
 
-You can also commenting the services directly in the [docker-compose.yml](./docker-compose.yml) file.
+You can also of course comment the services directly in the [docker-compose.yml](./docker-compose.yml) file.
 
 ### Develop in Bahmn Apps
 
-You can use the Bahmni Docker project to setup your dev environment for Bahmni. This is especially easy when working on Bahmni Apps.
+Bahmni Docker project can be used to setup a dev environment for Bahmni. This is especially easy when working on Bahmni Apps.
+
 
 This can be done by using `watch rsync ...` command to see your changes on the running server.
 1. Clone and build Bahmni Apps locally:
@@ -142,9 +142,29 @@ Change JS and HTML files as you like.
 ```
 watch rsync -av ~/repos/openmrs-module-bahmniapps/ui/ /tmp/bahmni-distro-haiti/bahmni_emr/bahmniapps/
 ```
-----
 
-### Known limitations
+
+### All environment variables
+
+
+`OPENMRS_CONFIG_PATH`: Path to a custom OpenMRS Configuration. See [OpenMRS Initializer](https://github.com/mekomsolutions/openmrs-module-initializer/) for more information.
+
+`BAHMNI_CONFIG_PATH`: Path to a custom Bahmni Config folder.
+
+`OPENMRS_MODULES_PATH`: Path to custom set of OpenMRS modules.
+
+`BAHMNI_APPS_PATH`: Path to Bahmni Apps sources.
+
+`BAHMNI_HOME`: Path to Bahmni Home.
+
+`TIMEZONE`**\***: Server timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a complete list of possible Timezones.
+
+`BAHMNI_MART_CRON_TIME`**\***: Provide a custom cron time (in Crontab format) for the Bahmni Mart flattening. Default is `30 21 * * *` - i.e. 10:30 PM every day.
+
+**\*** Note: Variables with a **\*** require the containers to be rebuilt. Use `docker-compose build`
+
+
+## Known limitations
 
 - Supported components:
   - OpenMRS
