@@ -9,7 +9,6 @@ services:
         aliases:
           - bahmni-proxy
           - proxy
-    command: "httpd-foreground -DenableTLS"
     ports:
       - "${PROXY_PORT:-80}:80"
       - "${PROXY_PORT_TLS:-443}:443"
@@ -32,6 +31,8 @@ services:
       bahmni:
         aliases:
           - bahmniapps-1
+    volumes:
+      - "${BAHMNI_APPS_PATH:-bahmni_apps}:/var/www/bahmniapps"
 
   implementer-interface:
     build:
@@ -176,6 +177,7 @@ volumes:
   openmrs_config: ~
   openmrs_modules: ~
   bahmni_config: ~
+  bahmni_apps: ~
   mart-psql-data: ~
   bahmni_home: ~
 networks:
