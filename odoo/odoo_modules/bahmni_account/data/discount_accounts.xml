@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<!--Account for debiting discount amount-->
+	<record id="account_discount" model="account.account">
+		<field name="name">Discount</field>
+	</record>
+
+<!--Account for debiting amount which is paid extra-->
+	<record id="account_overcharge" model="account.account">
+		<field name="name">Overcharge</field>
+	</record>
+	
+</odoo>

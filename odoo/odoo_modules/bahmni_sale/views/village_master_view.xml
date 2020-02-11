@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="tree_village_village" model="ir.ui.view">
+		<field name="name">tree.village.village</field>
+		<field name="model">village.village</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name"/>
+				<field name="tehsil_id"/>
+				<field name="district_id"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="form_village_village" model="ir.ui.view">
+		<field name="name">form.village.village</field>
+		<field name="model">village.village</field>
+		<field name="arch" type="xml">
+			<form>
+				<group>
+					<field name="name" required="1"/>
+					<field name="tehsil_id" required="1"/>
+					<field name="district_id" required="1"/>
+					<field name="state_id" required="1"/>
+					<field name="country_id" required="1"/>
+				</group>
+			</form>
+		</field>
+	</record>
+	
+	<record id="action_village_village" model="ir.actions.act_window">
+		<field name="name">Villages</field>
+		<field name="res_model">village.village</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_village_village" parent="sales_team.menu_localisation" 
+		action="action_village_village" />
+	
+	<record id="tree_state_district" model="ir.ui.view">
+		<field name="name">tree.state.district</field>
+		<field name="model">state.district</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name"/>
+				<field name="state_id"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="form_state_district" model="ir.ui.view">
+		<field name="name">form.state.district</field>
+		<field name="model">state.district</field>
+		<field name="arch" type="xml">
+			<form>
+				<group>
+					<field name="name" required="1"/>
+					<field name="state_id" required="1" />
+					<field name="country_id" required="1" />
+				</group>
+			</form>
+		</field>
+	</record>
+	
+	<record id="action_state_district" model="ir.actions.act_window">
+		<field name="name">Districts</field>
+		<field name="res_model">state.district</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_state_district" action="action_state_district" 
+		parent="sales_team.menu_localisation"/>
+	
+	<record id="tree_district_tehsil" model="ir.ui.view">
+		<field name="name">tree.district.tehsil</field>
+		<field name="model">district.tehsil</field>
+		<field name="arch" type="xml">
+			<tree>
+				<field name="name"/>
+				<field name="district_id"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="form_district_tehsil" model="ir.ui.view">
+		<field name="name">form.district.tehsil</field>
+		<field name="model">district.tehsil</field>
+		<field name="arch" type="xml">
+			<form>
+				<group>
+					<field name="name" required="1"/>
+					<field name="district_id" required="1"/>
+					<field name="state_id" required="1" /> 
+					<field name="country_id" required="1" /> 
+				</group>
+			</form>
+		</field>
+	</record>
+	
+	<record id="action_district_tehsil" model="ir.actions.act_window">
+		<field name="name">Tehsils</field>
+		<field name="res_model">district.tehsil</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_district_tehsil" action="action_district_tehsil"
+		parent="sales_team.menu_localisation"/>
+	
+</odoo>

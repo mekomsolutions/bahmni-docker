@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+	
+	<record id="tree_event_records" model="ir.ui.view">
+		<field name="name">tree.event.records</field>
+		<field name="model">event.records</field>
+		<field name="arch" type="xml">
+			<tree create="0" edit="0">
+				<field name="uuid"/>
+				<field name="title"/>
+				<field name="timestamp"/>
+				<field name="category"/>
+				<field name="uri"/>
+				<field name="object"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="action_event_records" model="ir.actions.act_window">
+		<field name="name">Event Records</field>
+		<field name="res_model">event.records</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree</field>
+	</record>
+	
+	<menuitem id="menu_event_records" action="action_event_records" 
+		parent="base.menu_custom" />
+	
+</odoo>

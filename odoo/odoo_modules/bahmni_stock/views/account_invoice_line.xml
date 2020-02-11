@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="inherit_invoice_form_expiry_date" model="ir.ui.view">
+		<field name="name">inherit.invoice.form</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='quantity']" position="after">
+				<field name="lot_id" readonly="1"/>
+				<field name="expiry_date" readonly="1"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>
+	

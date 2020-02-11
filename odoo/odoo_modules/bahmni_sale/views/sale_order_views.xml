@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="inherit_sale_order_form" model="ir.ui.view">
+		<field name="name">inherit.sale.order.form</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_order_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_shipping_id']" position="after">
+				<field name="partner_village"/>
+				<field name="care_setting" />
+				<field name="provider_name"/>
+			</xpath>
+			<xpath expr="//field[@name='partner_id']" position="after">
+				<field name="partner_uuid" invisible="1"/>
+			</xpath>
+			<xpath expr="//field[@name='payment_term_id']" position="after">
+				<field name="shop_id"/>
+			</xpath>
+			<xpath expr="//notebook/page[1]/group" position="replace">
+				<div class="col-xs-5 pull-right text-right" style="padding-right:0px">
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="amount_untaxed" />
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="amount_untaxed"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="amount_tax"/>
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="amount_tax"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="discount_type"/>
+					</div>
+					<div class="col-xs-6 footer_field"  style="min-height: 28px;">
+						 <field name="discount_type" required="1"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;" 
+						attrs="{'invisible': [('discount_type', '!=', 'percentage')]}">
+						<label for="discount_percentage" />
+					</div>
+					<div class="col-xs-6 footer_field" 
+						style="white-space:nowrap;padding-right:15px;min-height: 28px;"
+						attrs="{'invisible': [('discount_type', '!=', 'percentage')]}" >
+						 <field name="discount_percentage" /> <b style="padding-left:2px">%</b>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height:33px;" 
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						<label for="discount" /> 
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height:33px;"
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						 <field name="discount"  context="{'readonly_by_pass': True}"
+						 attrs="{'readonly': [('discount_type', '=', 'percentage')]}"
+						  style="width:100% !important"/>
+					</div> <!-- readonly bypass added to save the field even if it is in readonly state -->
+					
+					<div class="col-xs-6 footer_label" style="min-height: 28px;"
+						attrs="{'invisible': ['|', ('discount_type', '=', 'none'),
+												('discount', '=', 0.0)]}">
+						<label for="disc_acc_id" /> 
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;"
+						attrs="{'invisible': ['|', ('discount_type', '=', 'none'),
+													('discount', '=', 0.0)]}">
+						 <field name="disc_acc_id"  attrs="{'required': [('discount', '!=', 0.0)]}"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="round_off_amount"  /> 
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="round_off_amount"  />
+					</div>
+					<div class="col-xs-6 footer_label" 
+						style="min-height: 28px;" groups="bahmni_sale.group_allow_change_so_charge">
+						<label for="chargeable_amount"  /> 
+					</div>
+					<div class="col-xs-6 footer_field" 
+						style="min-height: 28px;" groups="bahmni_sale.group_allow_change_so_charge" >
+						 <field name="chargeable_amount"  />
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="default_quantity"  /> 
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="default_quantity"  />
+					</div>
+					<group style="width: 100%; border-top: 1px solid #cacaca;white-space:nowrap;">
+						<div class="col-xs-6 oe_right footer_label">
+							<label for="amount_total" style="font-size:1.3em" string="Net Amount"/>
+							<button name="button_dummy" states="draft,sent" string="(update)" 
+							type="object" class="oe_edit_only oe_link"/>
+						</div>
+						<div class="col-xs-6 footer_field footer_text_bold" >
+							<field name="amount_total" />
+						</div>
+						<div class="col-xs-6 oe_right footer_label">
+							<label for="prev_outstanding_balance" string="Previous Balance"/>
+						</div>
+						<div class="col-xs-6 footer_field" >
+							<field name="prev_outstanding_balance" />
+						</div>
+					</group>
+					<group style="width: 100%; border-top: 1px solid #cacaca;white-space:nowrap;">
+						<div class="col-xs-6 oe_right footer_label footer_text_bold">
+							<label for="total_outstanding_balance" 
+							 style="font-size:1em;font-weight:bold" string="Total Outstanding"/>
+						</div>
+						<div class="col-xs-6 footer_field footer_text_bold" >
+							<field name="total_outstanding_balance" />
+						</div>
+					</group>
+                </div>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/tree/field[@name='qty_delivered']" position="after">
+				<field name="lot_id" domain="[('product_id', '=', product_id)]"/>
+				<field name="expiry_date" readonly="1"/>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/form/group/group/field[@name='price_unit']" position="after">
+				<field name="lot_id" domain="[('product_id', '=', product_id)]"/>
+				<field name="expiry_date" readonly="1"/>
+			</xpath>
+			<xpath expr="//field[@name='order_line']/tree/field[@name='product_id']" position="replace">
+				<field name="product_id" 
+				       context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom, 'company_id': parent.company_id}"/><!--attrs="{'readonly': ['|', ('qty_invoiced', '&gt;', 0), ('procurement_ids', '!=', [])]}"-->
+			</xpath>
+			<xpath expr="//field[@name='order_line']/tree/field[@name='qty_delivered']" position="replace">
+			    <field name="qty_delivered" invisible="context.get('hide_sale')"/>
+                                        <!--attrs="{'readonly': [('qty_delivered_updateable', '=', False)]}"/-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="replace">
+                <field name="price_unit"/>
+                                        <!--attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/-->
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree/field[@name='tax_id']" position="replace">
+                                    <field name="tax_id" widget="many2many_tags" domain="[('type_tax_use','=','sale'),('company_id','=',parent.company_id)]"/>
+                                        <!--attrs="{'readonly': [('qty_invoiced', '&gt;', 0)]}"/-->
+            </xpath>
+		</field>
+	</record>
+	
+	<record id="sale.action_orders" model="ir.actions.act_window">
+		<field name="name">Sales Orders</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">sale.order</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+		<field name="search_view_id" ref="sale.sale_order_view_search_inherit_sale"/>
+		<field name="context">{'readonly_by_pass': True}</field>
+		<field name="domain">[('state', 'not in', ('draft', 'sent'))]</field>
+		<field name="help" type="html">
+			<p class="oe_view_nocontent_create">
+				Create a Quotation, the first step of a new sale.
+			</p>
+			<p>
+				Once the quotation is confirmed, it becomes a sales order.
+				You'll be able to invoice it and collect payments.
+				From the <i>Sales Orders</i> menu, you can track delivery
+				orders or services.
+			</p>
+		</field>
+	</record>
+	
+<!--inherited this action to add readonly by pass in context, 
+as discount fields are readonly in case of chargable amount is editable-->
+	<record id="sale.action_quotations" model="ir.actions.act_window">
+        <field name="name">Quotations</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="sale.view_quotation_tree"/>
+        <field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+        <field name="search_view_id" ref="sale.sale_order_view_search_inherit_quotation"/>
+        <field name="domain">[('state', 'in', ('draft', 'sent'))]</field>
+        <field name="context">{'hide_sale': True,'readonly_by_pass': True}</field>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Create a Quotation, the first step of a new sale.
+          </p><p>
+            Your next actions should flow efficiently: confirm the Quotation
+            to a Sale Order, then create the Invoice and collect the Payment.
+          </p><p>
+            Note that once a Quotation becomes a Sale Order, it will be moved
+            from the Quotations list to the Sales Order list.
+          </p>
+        </field>
+    </record>
+    
+    <menuitem id="sale.menu_sale_quotations"
+                action="sale.action_quotations" parent="sales_team.menu_sales"
+                sequence="11"/>
+
+
+	<record id="inherit_quotation_tree_view_shop" model="ir.ui.view">
+		<field name="name">inherit.quotation.tree.shop</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_quotation_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+				<field name="shop_id"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="inherit_quotation_tree_view_shop" model="ir.ui.view">
+		<field name="name">inherit.quotation.tree.shop</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale.view_quotation_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='partner_id']" position="after">
+				<field name="shop_id"/>
+				<field name="partner_village"/>
+			</xpath>
+			<xpath expr="//field[@name='amount_total']" position="after">
+			    <field name="total_outstanding_balance"/>
+			    <field name="provider_name"/>
+			    <field name="disc_acc_id"/>
+				<field name="care_setting"/>
+			</xpath>
+		</field>
+	</record>
+
+    <record id="bahmni_view_order_form_inherit_sale_stock" model="ir.ui.view">
+		<field name="name">bahmni.sale.order.form.sale.stock</field>
+		<field name="model">sale.order</field>
+		<field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='warehouse_id']" position="after">
+				<field name="location_id"/>
+			</xpath>
+		</field>
+	</record>
+
+	<record id="view_shop_form" model="ir.ui.view">
+		<field name="name">sale.shop</field>
+		<field name="model">sale.shop</field>
+		<field name="arch" type="xml">
+			<form string="Sales Shop">
+				<label for="name" class="oe_edit_only"/>
+				<h1><field name="name"/></h1>
+
+				<label for="warehouse_id" class="oe_edit_only"/>
+				<h2><field name="warehouse_id" required="1"/></h2>
+				
+				<label for="location_id" class="oe_edit_only"/>
+				<h2><field name="location_id" required="1"/></h2>
+
+				<group name="shop">
+					<group>
+						<field name="payment_default_id"/>
+						<field name="pricelist_id" groups="product.group_sale_pricelist"/>
+						<!--domain="[('type','=','sale')]" -->
+					</group>
+					<group>
+						<field name="project_id" groups="analytic.group_analytic_accounting"/>
+						<field name="company_id" widget="selection" groups="base.group_multi_company"/>
+					</group>
+				</group>
+			</form>
+		</field>
+	</record>
+
+	<record id="view_shop_tree" model="ir.ui.view">
+		<field name="name">sale.shop</field>
+		<field name="model">sale.shop</field>
+		<field name="arch" type="xml">
+			<tree string="Sales Shop">
+				<field name="name"/>
+				<field name="warehouse_id"/>
+				<field name="location_id"/>
+				<field name="pricelist_id" groups="product.group_sale_pricelist"/>
+				<field name="project_id" groups="analytic.group_analytic_accounting"/>
+			</tree>
+		</field>
+	</record>
+
+	<record id="action_shop_form" model="ir.actions.act_window">
+		<field name="name">Shop</field>
+		<field name="type">ir.actions.act_window</field>
+		<field name="res_model">sale.shop</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+		<field name="view_id" ref="view_shop_tree"/>
+		<field name="help" type="html">
+		<p class="oe_view_nocontent_create">
+			Click to define a new sale shop.
+		</p><p>
+			Each quotation or sales order must be linked to a shop. The
+			shop also defines the warehouse from which the products will be
+			delivered for each particular sales.
+		</p>
+		</field>
+	</record>
+
+	<menuitem action="action_shop_form" id="menu_action_shop_form" parent="sales_team.menu_sale_config" sequence="35"/>
+
+</odoo>

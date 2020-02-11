@@ -1,0 +1,20 @@
+/* css code for sale order form footer */
+.footer_label{
+padding-right:0px;
+white-space: nowrap;
+}
+
+.footer_label > label:after{
+content: ": "
+}
+
+
+.footer_field{
+padding-right:0px;
+float: right !important;
+}
+
+.footer_text_bold{
+font-size: 1.3em;
+padding-right: 80px;
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="view_account_payment_form_print_report" model="ir.ui.view">
+		<field name="name">view.account.payment.form.print_report</field>
+		<field name="model">account.payment</field>
+		<field name="inherit_id" ref="account.view_account_payment_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//button[@name='post']" position="after">
+				<button name="print_payment" string="Print" type="object" class="oe_highlight" 
+					 groups="base.group_user"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

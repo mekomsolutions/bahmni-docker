@@ -1,0 +1,19 @@
+1. New fields added to account.invoice for applying discounts on invoices.
+	1. Discount Type : None, Fixed, Percentage
+	2. Discount : Total discount amount getting applied.
+	3. Discount Percentage : If percentage type is selected, then for defining percentage.
+		- if discount type is selected as percentage, then discount field will be readonly, 
+			as discount amount will get computed based on given percentage.
+	4. Discount Account Head : Account from/to which discount amount will get credited or debited.
+2. on change method is defined for discount percentage and invoice lines, to compute discount amount, when type percetage is selected.
+3. Customer Invoices form is inherited, and footer is defined completely in new way, 
+	as default footer class was not making form look good.
+4. compute_amount method is overridden to change the logic of computing total of invoice, i.e. deduct discount amount from total.
+5. create method of account_invoice_line is inherited to set value of discount field,
+ 	when invoice is created through Create Invoice button on Sale Order form.
+ 	As method which is getting called through that button, is creating invoice object first 
+ 	and then one-by-one invoice lines are getting created.
+ 6. rouding.off class defined to set round_off_amount value in account_invoice and sale_order.
+ 	for calculating this value, configuration is provided to user under Sales > Configuration > Settings menu, 
+ 	where user can set Round Off Value, this is the amount to which value has to get rounded off.
+ 	

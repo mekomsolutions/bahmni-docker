@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+		<template id="assets_backend" name="bahmni_sale assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/bahmni_sale/static/src/css/sale_order_footer.css"/>
+<!--                <script type="text/javascript" src="/bahmni_sale/static/src/js/sale_order_footer.js"></script-->
+
+                <!-- <script type="text/javascript" src="/account/static/src/js/tour_bank_statement_reconciliation.js"></script> -->
+            </xpath>
+        </template>
+	</data>
+</odoo>

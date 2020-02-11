@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="form_syncable_units" model="ir.ui.view">
+		<field name="name">form.syncable.units</field>
+		<field name="model">syncable.units</field>
+		<field name="arch" type="xml">
+			<form string="Syncable Units"> 
+				<group>
+					<field name="name"/>
+				</group>
+			</form>
+		</field>
+	</record>
+	
+	<record id="tree_syncable_units" model="ir.ui.view">
+		<field name="name">tree.syncable.units</field>
+		<field name="model">syncable.units</field>
+		<field name="arch" type="xml">
+			<tree string="Syncable Units">
+				<field name="name"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="action_syncable_units" model="ir.actions.act_window">
+		<field name="name">Syncable Units</field>
+		<field name="res_model">syncable.units</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_syncable_units" action="action_syncable_units" 
+		parent="sales_team.menu_sale_config"/>
+	
+</odoo>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+	<data>
+<!--conutry_id is made required, 
+in case while creating patient, if country_id is not provided in address, 
+	company's country_id will get set in patient address-->
+		<record id="res_company_country_required" model="ir.ui.view">
+			<field name="name">res.company.country.required</field>
+			<field name="model">res.company</field>
+			<field name="inherit_id" ref="base.view_company_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="//field[@name='country_id']" position="attributes">
+					<attribute name="required">1</attribute>
+				</xpath>
+			</field>
+		</record>
+		
+	</data>
+</openerp>

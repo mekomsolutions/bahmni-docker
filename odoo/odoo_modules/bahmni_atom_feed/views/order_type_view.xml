@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="tree_order_type" model="ir.ui.view">
+		<field name="name">tree.order.type</field>
+		<field name="model">order.type</field>
+		<field name="arch" type="xml">
+			<tree string="Order Type">
+				<field name="name"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="form_order_type" model="ir.ui.view">
+		<field name="name">form.order.type</field>
+		<field name="model">order.type</field>
+		<field name="arch" type="xml">
+			<form string="Order Type">
+				<group>
+					<field name="name" required="1"/>
+				</group>
+			</form>
+		</field>
+	</record>
+	
+	<record id="action_order_type" model="ir.actions.act_window">
+		<field name="name">Order Types</field>
+		<field name="res_model">order.type</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,form</field>
+	</record>
+	
+	<menuitem id="menu_order_type" 
+		action="action_order_type"
+		parent="sales_team.menu_sale_config"/>
+</odoo>

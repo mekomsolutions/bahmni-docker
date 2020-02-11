@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+	<record id="inherit_view_pos_pos_form_shop" model="ir.ui.view">
+		<field name="name">inherit.pos.order.form.shop</field>
+		<field name="model">pos.order</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_pos_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='fiscal_position_id']" position="after">
+				<field name="shop_id"/>
+			</xpath>
+		</field>
+	</record>
+
+
+<!--Shop in Point of Sale-->	
+	<record id="inherit_view_pos_config_form_shop" model="ir.ui.view">
+		<field name="name">inherit.pos.config.form.shop</field>
+		<field name="model">pos.config</field>
+		<field name="inherit_id" ref="point_of_sale.view_pos_config_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='active']" position="after">
+				<field name="shop_id"/>
+			</xpath>
+		</field>
+	</record>
+</odoo>

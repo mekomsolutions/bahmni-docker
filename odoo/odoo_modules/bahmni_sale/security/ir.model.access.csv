@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_shop,access_sale_shop,model_sale_shop,,1,1,1,1
+access_village_village,access_village_village,model_village_village,,1,1,1,1
+access_state_district,access_state_district,model_state_district,,1,1,1,1
+access_district_tehsil,access_district_tehsil,model_district_tehsil,,1,1,1,1
+access_res_partner_attributes,access_res_partner_attributes,model_res_partner_attributes,base.group_user,1,1,1,1

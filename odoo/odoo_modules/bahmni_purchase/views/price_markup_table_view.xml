@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="tree_price_markup_table" model="ir.ui.view">
+		<field name="name">tree.price.markup.table</field>
+		<field name="model">price.markup.table</field>
+		<field name="arch" type="xml">
+			<tree editable="top">
+				<field name="lower_price" required="1"/>
+				<field name="higher_price"/>
+				<field name="markup_percentage" required="1"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="action_price_markup_table" model="ir.actions.act_window">
+		<field name="name">Price Markup Table</field>
+		<field name="res_model">price.markup.table</field>
+		<field name="view_mode">tree</field>
+		<field name="view_type">form</field>
+	</record>
+
+	<menuitem id="menu_price_markup_table" action="action_price_markup_table"
+		parent="purchase.menu_purchase_config"/>
+</odoo>

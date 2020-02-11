@@ -170,6 +170,53 @@ services:
         aliases:
           - metabase
 
+  odoo-postgresql:
+    image: postgres:10
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+    networks:
+      bahmni:
+        aliases:
+          - odoo-postgresql-1
+    volumes:
+      - odoo-postgresql-data:/var/lib/postgresql/data
+
+  odoo:
+    depends_on:
+      - odoo-postgresql
+    image: odoo:10.0
+    environment:
+      HOST: odoo-postgresql
+      PORT: 5432
+      USER: odoo
+      PASSWORD: odoo
+    networks:
+      bahmni:
+        aliases:
+          - odoo-1
+    volumes:
+      - "./odoo/odoo_modules:/mnt/extra-addons"
+      - "./odoo/entrypoint.sh:/entrypoint.sh"
+    ports:
+      - "8069:8069"
+
+  odoo-connect:
+    build:
+      context: odoo-connect/
+    environment:
+      ODOO_DB_SERVER: odoo-postgresql
+      ODOO_DB: bahmni
+      ODOO_DB_USERNAME: odoo
+      ODOO_DB_PASSWORD: odoo
+      APP_PROPERTIES_FILE: "/etc/bahmni-erp-connect/erp-atomfeed.properties"
+    networks:
+      bahmni:
+        aliases:
+          - odoo-connect
+    
+
 version: "3.7"
 volumes:
   openmrs-tomcat-data: ~
@@ -180,5 +227,6 @@ volumes:
   bahmni_apps: ~
   mart-psql-data: ~
   bahmni_home: ~
+  odoo-postgresql-data: ~
 networks:
   bahmni:

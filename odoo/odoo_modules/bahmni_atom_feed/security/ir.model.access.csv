@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_order_type_shop_map,access_order_type_shop_map,model_order_type_shop_map,,1,1,1,1
+access_event_records,access_event_records,model_event_records,,1,1,1,1
+access_order_type,access_order_type,model_order_type,,1,1,1,1
+access_atom_feed_marker,access_atom_feed_marker,model_atom_feed_marker,,1,1,1,1
+access_syncable_units,access_syncable_units,model_syncable_units,,1,1,1,1
+access_order_save_service,access_order_save_service,model_order_save_service,,1,1,1,1
+access_atom_event_worker,access_atom_event_worker,model_atom_event_worker,base.group_user,,1,1,1,1
+access_product_uom_service,access_product_uom_service,model_product_uom_service,,1,1,1,1

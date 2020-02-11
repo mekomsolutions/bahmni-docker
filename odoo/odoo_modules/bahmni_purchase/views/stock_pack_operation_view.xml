@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="view_pack_operation_lot_form_inherit" model="ir.ui.view">
+		<field name="name">view.pack.operation.lot.form.inherit</field>
+		<field name="model">stock.pack.operation</field>
+		<field name="inherit_id" ref="stock.view_pack_operation_lot_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='product_id']" position="before">
+				<field name="id" invisible="1"/>
+			</xpath>
+			<xpath expr="//field[@name='pack_lot_ids']" position="attributes">
+				<attribute name="context">{'product_id': product_id, 'operation_id': id, 
+											'pack_lot_ids': pack_lot_ids}
+				</attribute>
+			</xpath>
+			<xpath expr="//field[@name='pack_lot_ids']/tree/field[@name='plus_visible']" position="after">
+				<field name="move_id" invisible="1"/>
+				<field name="cost_price" invisible="not context.get('only_create', False)"/>
+				<field name="sale_price" invisible="not context.get('only_create', False)"/>
+				<field name="mrp" invisible="not context.get('only_create', False)"/>
+				<field name="expiry_date"/>
+			</xpath>
+			<xpath expr="//field[@name='pack_lot_ids']/tree/field[@name='qty']" position="replace">
+				<field name="qty" />
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>

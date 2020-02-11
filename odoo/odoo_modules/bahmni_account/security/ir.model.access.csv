@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_account_count_report_account_user,Account Count Report Account User,model_account_count_report,account.group_account_user,1,1,1,0
+access_rounding_off,access_rounding_off,model_rounding_off,,1,1,1,1
+access_account_report,access_account_report,model_account_report,,1,1,1,1

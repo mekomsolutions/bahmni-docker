@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+	
+	<t t-name="FormView.buttons">
+	    <div class="o_form_buttons_view">
+	        <button t-if="widget.is_action_enabled('edit')" type="button"
+	                class="btn btn-primary btn-sm o_form_button_edit"  accesskey="T"  ulkey="T"> <!--accesskey="a"-->
+	            Edit
+	        </button>
+	        <button t-if="widget.is_action_enabled('create')" type="button"
+	                class="btn btn-default btn-sm o_form_button_create" accesskey="C"> <!--accesskey="c"-->
+	            Create
+	        </button>
+	    </div>
+	    <div class="o_form_buttons_edit">
+	        <button type="button"
+	               class="btn btn-primary btn-sm o_form_button_save"  accesskey="S"> <!--accesskey="s"-->
+	            Save
+	        </button>
+	        <button type="button"
+	                class="btn btn-default btn-sm o_form_button_cancel" accesskey="D"> <!--accesskey="j"-->
+	            Discard
+	        </button>
+	    </div>
+	</t>
+	
+</odoo>

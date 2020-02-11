@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="tree_batch_future_forecast" model="ir.ui.view">
+		<field name="name">tree.batch.stock.future.forecast</field>
+		<field name="model">batch.stock.future.forecast</field>
+		<field name="arch" type="xml">
+			<tree create="0" string="Stock Batch Future Forecast">
+				<field name="product_id"/>
+				<field name="qty"/>
+				<field name="lot_id"/>
+				<field name="location_id"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="search_stock_batch_future_forecast" model="ir.ui.view">
+		<field name="name">search.batch.stock.future.forecast</field>
+		<field name="model">batch.stock.future.forecast</field>
+		<field name="arch" type="xml">
+			<search string="Stock Batch Future Forecast">
+				<field name="product_id" string="Product"/>
+				<group expand="0" string="Group By">
+					<filter name="group_by_product_id" string="Product" context="{'group_by':'product_id'}"/>
+				</group>
+			</search>
+		</field>
+	</record>
+	
+	<record id="action_batch_stock_future_forecast" model="ir.actions.act_window">
+		<field name="name">Stock Batch Forecast</field>
+		<field name="res_model">batch.stock.future.forecast</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree</field>
+		<field name="search_view_id" ref="search_stock_batch_future_forecast"/>
+		<field name="context">{'search_default_group_by_product_id': 1}</field>
+	</record>
+	
+	<menuitem id="menu_stock_batch_future_forecast" action="action_batch_stock_future_forecast"
+		parent="stock.menu_warehouse_report"/>
+</odoo>

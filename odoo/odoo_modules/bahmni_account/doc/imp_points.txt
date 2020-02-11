@@ -1,0 +1,3 @@
+* rounding.off class is kept in bahmni_account module, as it is used in account_invoice and sale_order class.
+	bahmni_sale already has dependency of bahmni_account module, hence this class can be accessed in that module.
+	vice-versa won't happen; as it will be a round dependency.

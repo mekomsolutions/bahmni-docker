@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="report_payment_document">
+	 <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="o">
+            <t t-call="report.internal_layout">
+                <div class="page">
+                    <h2 style="text-align: center;">R E C E I P T</h2>
+                    <div class="row mt32 mb32">
+                    	<t t-set="data" t-value="o.get_invoice_lines()"/>
+                        <div class="col-xs-6">
+		                   	<t ><strong>Name :</strong> <span t-esc="o.partner_id.name"/><br/></t>
+		                    <t ><strong>ID :</strong> <span t-esc="o.partner_id.ref"/><br/></t>
+		                    <t ><strong>Provider Name : </strong> <span t-esc="data['provider_name']"/><br/></t>
+	                    </div>
+		                <div class="col-xs-6">
+		                    <p>
+		                        <t ><strong>Date :</strong> <span t-esc="o.payment_date"/><br/></t>
+		                        <t ><strong>Bill Number :</strong> <span t-esc="o.name"/></t>
+		                    </p>
+		                </div>
+		            </div>
+
+	                <table class="table table-condensed">
+	                    <thead>
+	                        <tr>
+	                            <th>Product</th>
+	                            <th >Expiry Date</th>
+	                            <th class="text-right">Quantity</th>
+	                            <th class="text-right">Unit Price</th>
+	                            <th class="text-right">Subtotal</th>
+	                        </tr>
+	                   </thead>
+	                   <tbody>
+	                        <t t-foreach="data['invoice_lines']" t-as="l">
+	                            <tr>
+	                                <td><span t-esc="l['product_name']"/></td>
+	                                <td >
+	                                    <span t-esc="l['expiry_date']"/>
+	                                </td>
+	                                <td class="text-right">
+	                                    <span t-esc="l['quantity']"/>
+	                                </td>
+	                                <td class="text-right">
+	                                    <span t-esc="l['price_unit']"/>
+	                                </td>
+	                                <td class="text-right">
+	                                    <span t-esc="l['price_subtotal']"
+	                                        t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+	                                </td>
+	                            </tr>
+	                        </t>
+	                    </tbody>
+	                </table>
+
+		            <div class="row" name="total">
+		                <div class="col-xs-4 pull-right">
+		                    <table class="table table-condensed">
+		                        <tr class="border-black">
+		                            <td><strong>Total Without Taxes</strong></td>
+		                            <td class="text-right">
+		                                <span t-esc="data['amount_untaxed']"
+		                                    t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+		                            </td>
+		                        </tr>
+	                            <tr>
+	                                <td><span >Tax</span></td>
+	                                <td class="text-right">
+	                                    <span t-esc="data['taxes']"
+	                                        t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+	                                </td>
+	                            </tr>
+	                            <tr>
+	                                <td><span >Discount</span></td>
+	                                <td class="text-right">
+	                                    <span t-esc="data['discount']"
+	                                        t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+	                                </td>
+	                            </tr>
+		                        <tr class="border-black">
+		                            <td><strong>Net Amount</strong></td>
+		                            <td class="text-right">
+		                                <span t-esc="data['net_amount']"
+		                                    t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+		                            </td>
+		                        </tr>
+		                        <tr>
+	                                <td><span >Previous Balance</span></td>
+	                                <td class="text-right">
+	                                    <span t-esc="data['previous_balance']"
+	                                        t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+	                                </td>
+	                            </tr>
+	                            <tr >
+		                            <td><strong>Bill Amount</strong></td>
+		                            <td class="text-right">
+		                                <span t-esc="data['bill_amount']"
+		                                    t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+		                            </td>
+		                        </tr>
+		                        <tr>
+	                                <td><span >Paid Amount</span></td>
+	                                <td class="text-right">
+	                                    <span t-esc="data['paid_amount']"
+	                                        t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+	                                </td>
+	                            </tr>
+	                             <tr class="border-black">
+		                            <td><strong>Outstanding Balance</strong></td>
+		                            <td class="text-right">
+		                                <span t-esc="data['outstanding_balance']"
+		                                    t-options='{"widget": "monetary", "display_currency": o.partner_id.currency_id}'/>
+		                            </td>
+		                        </tr>
+		                    </table>
+		                </div>
+		            </div>
+		            
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+
+
+<template id="report_account_payment_template">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="bahmni_stock.report_payment_document" t-lang="doc.partner_id.lang"/>
+        </t>
+    </t>
+</template>
+</odoo>

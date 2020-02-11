@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+stock_batch_future_forecast_user,Stock Batch Future Forecast Stock User,model_batch_stock_future_forecast,stock.group_stock_user,1,1,1,0
+stock_report_prod_by_last_moved_user,Stock Report Products by Last Moved Stock User,model_prod_last_moved_report,stock.group_stock_user,1,1,1,0

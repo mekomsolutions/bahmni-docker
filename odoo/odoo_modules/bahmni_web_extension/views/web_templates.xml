@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+		<template id="assets_backend" name="bahmni_web_extension assets" inherit_id="web.assets_backend">
+			<xpath expr="." position="inside">
+				<script type="text/javascript" src="/bahmni_web_extension/static/src/js/link_prescription_widgets.js"/>
+<!--				<script type="text/javascript" src="/bahmni_web_extension/static/src/js/access_key_highlight.js"></script-->
+<!--				<script type="text/javascript" src="/bahmni_web_extension/static/src/js/add_accesskey_to_one2manylist_view.js"></script-->
+			</xpath>
+		</template>
+	
+</odoo>

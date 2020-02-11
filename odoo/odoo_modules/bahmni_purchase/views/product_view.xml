@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+<!--	<record id="inherit_product_normal_form_view" model="ir.ui.view">-->
+<!--		<field name="name">inherit.view.template.property.form</field>-->
+<!--		<field name="model">product.product</field>-->
+<!--		<field name="inherit_id" ref="product.product_normal_form_view"/>-->
+<!--		<field name="arch" type="xml">-->
+<!--			<xpath expr="//field[@name='company_id']" position="before">-->
+<!--				<field name="low_stock" invisible="1"/>-->
+<!--			</xpath>-->
+<!--		</field>-->
+<!--	</record>-->
+	
+</odoo>

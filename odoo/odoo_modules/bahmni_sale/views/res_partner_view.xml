@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="inherit_partner_view_locate_village" model="ir.ui.view">
+		<field name="name">inherit.partner.view.locate.village</field>
+		<field name="model">res.partner</field>
+		<field name="inherit_id" ref="base.view_partner_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//div[@class='o_address_format']/field[@name='street2']" position="after">
+				<field name="village_id" placeholder="Village.." 
+					class="o_address_state" style="width:30% !important"/>
+				<field name="tehsil_id" placeholder="Tehsil.." class="o_address_state"
+					style="width:31% !important"/>
+				<field name="district_id" placeholder="District.." class="o_address_state"/>
+				<br/>
+			</xpath>
+			<xpath expr="//field[@name='ref']" position="replace">
+			</xpath>
+<!--	this field position is changed, as this field is required 
+and in case user exactly don't know the position, he/she will need to search for the pages, to avoid that..-->
+			<xpath expr="//field[@name='type']" position="after">
+				<field name="ref" />
+			</xpath>
+            <xpath expr="//field[@name='lang']" position="after">
+                <field name="uuid" invisible = "1"/>
+            </xpath>
+            <xpath expr="//form/sheet/notebook" position="inside">
+                <page string="Additional Info">
+                    <field name="attribute_ids">
+                      <tree name="Addition Info">
+                         <field name="name"/>
+                         <field name="value"/>
+                      </tree>
+                    </field>
+                </page>
+            </xpath>
+		</field>
+	</record>
+	
+</odoo>

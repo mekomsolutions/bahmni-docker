@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<record id="form_stock_production_lot_inherit" model="ir.ui.view">
+		<field name="name">form.stock.production.lot.inherit</field>
+		<field name="model">stock.production.lot</field>
+		<field name="inherit_id" ref="stock.view_production_lot_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//group[@name='main_group']" position="replace">
+				<group name="main_group">
+                    <group>
+                        <field name="product_id" attrs="{'readonly':[('quant_ids','!=',[])]}"/>
+                            <label for="product_qty"/>
+                            <div class="o_row">
+                                <field name="product_qty"/>
+                                <field name="product_uom_id" readonly="1" groups="product.group_uom"/>
+                            </div>
+                        <field name="ref"/>
+                    </group>
+                    <group>
+                    	<field name="cost_price"/>
+                    	<field name="sale_price"/>
+                    	<field name="mrp"/>
+                    </group>
+                </group>
+			</xpath>
+        </field>
+	</record>
+	
+	<record id="tree_stock_production_lot_inherit" model="ir.ui.view">
+		<field name="name">tree.stock.production.lot.inherit</field>
+		<field name="model">stock.production.lot</field>
+		<field name="inherit_id" ref="stock.view_production_lot_tree"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='product_id']" position="after">
+				<field name="stock_forecast" invisible="0"/>
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>

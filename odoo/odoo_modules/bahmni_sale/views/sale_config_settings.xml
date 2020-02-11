@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="inherit_view_sales_config" model="ir.ui.view">
+		<field name="name">inherit.view.sales.config</field>
+		<field name="model">sale.config.settings</field>
+		<field name="inherit_id" ref="sale.view_sales_config"/>
+		<field name="arch" type="xml">
+			<xpath expr="//group[@name='quotations_sales']" position="inside">
+				<label string="Sales Features"/>
+                <div name="bahmni_sale_feature">
+                    <field name="group_final_so_charge" class="oe_inline" />
+                    <label for="group_final_so_charge"/>
+                    <br/>
+                    <field name="group_default_quantity" class="oe_inline" />
+                    <label for="group_default_quantity"/>
+                    <br/>
+                    <field name="convert_dispensed" class="oe_inline" />
+                    <label for="convert_dispensed"/>
+                    <br/>
+                    <field name="auto_invoice_dispensed" class="oe_inline" />
+                    <label for="auto_invoice_dispensed"/>
+
+                </div>
+<!--                <field name="auto_convert_dispensed" widget="radio"/-->
+                <label string="Delivery"/>
+                <div name="validate_delivery_feature">
+                    <field name="validate_picking" class="oe_inline" />
+                    <label for="validate_picking"/>
+                    <br/>
+                    <field name="allow_negative_stock" class="oe_inline" />
+                    <label for="allow_negative_stock"/>
+                    <br/>
+                </div>
+                <label string="Markup"/>
+                <div name="sale_price_markup_feature">
+                    <field name="sale_price_markup" class="oe_inline" />
+                    <label for="sale_price_markup"/>
+                </div>
+                <label string="Customer Address"/>
+                <div name="auto_create_customer_address_levels_feature">
+                    <field name="auto_create_customer_address_levels" class="oe_inline" />
+                    <label for="auto_create_customer_address_levels"/>
+                </div>
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>

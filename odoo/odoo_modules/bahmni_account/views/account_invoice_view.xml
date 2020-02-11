@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="inherit_invoice_form" model="ir.ui.view">
+		<field name="name">inherit.invoice.form</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//notebook/page/group" position="replace">
+				<div class="col-xs-5 pull-right text-right" style="padding-right:0px">
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="amount_untaxed" />
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="amount_untaxed"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="amount_tax"/>
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="amount_tax"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="discount_type"/>
+					</div>
+					<div class="col-xs-6 footer_field"  style="min-height: 28px;">
+						 <field name="discount_type" required="1"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="round_off_amount"/>
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						<field name="round_off_amount"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;" 
+						attrs="{'invisible': [('discount_type', '!=', 'percentage')]}">
+						<label for="discount_percentage" />
+					</div>
+					<div class="col-xs-6 footer_field" style="white-space:nowrap;padding-right:15px"
+						attrs="{'invisible': [('discount_type', '!=', 'percentage')]}" >
+						 <field name="discount_percentage" /> <b style="padding-left:2px">%</b>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height:33px;" 
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						<label for="discount" /> 
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height:33px;"
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						 <field name="discount" style="width:100% !important" context="{'readonly_by_pass': True}"
+						 	attrs="{'readonly': [('discount_type', '=', 'percentage')]}"/>
+					</div>
+					<div class="col-xs-6 footer_label" 
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						<label for="disc_acc_id"  name="remove_display_prop"/> 
+					</div>
+					<div class="col-xs-6 footer_field" attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						 <field name="disc_acc_id" 
+						 attrs="{'required': [('discount_type', 'in', ('fixed', 'percentage'))]}"/>
+					</div>
+					<group style="width: 100%; border-top: 1px solid #cacaca;
+								font-weight: bold; white-space:nowrap;">
+						<div class="col-xs-6 oe_right footer_label">
+							<label for="amount_total" style="font-weight:bold"/>
+							<button name="button_dummy" states="draft,sent" string="(update)" 
+							type="object" class="oe_edit_only oe_link"/>
+						</div>
+						<div class="col-xs-6 footer_field footer_text_bold" >
+							<field name="amount_total" />
+						</div>
+					</group>
+					<group style="width: 100%; border-top: 1px solid #cacaca;
+								font-weight: bold; white-space:nowrap;">
+						<div class="col-xs-6 oe_right footer_label">
+							<label for="residual" style="font-weight:bold"/>
+						</div>
+						<div class="col-xs-6 footer_field footer_text_bold" >
+							<field name="residual" />
+						</div>
+					</group>
+				</div>
+			</xpath>
+		</field>
+	</record>
+	
+	<record id="account.action_invoice_tree1" model="ir.actions.act_window">
+		<field name="name">Customer Invoices</field>
+		<field name="res_model">account.invoice</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree,kanban,form,calendar,pivot,graph</field>
+		<field eval="False" name="view_id"/>
+		<field name="domain">[('type','in',('out_invoice', 'out_refund'))]</field>
+		<field name="context">{'type':'out_invoice', 'journal_type': 'sale', 
+								'readonly_by_pass': True}
+		</field>
+		<field name="search_view_id" ref="account.view_account_invoice_filter"/>
+		<field name="help" type="html">
+			<p class="oe_view_nocontent_create">
+				Click to create a customer invoice.
+			</p>
+			<p>
+				Odoo's electronic invoicing allows to ease and fasten the
+				collection of customer payments. Your customer receives the
+				invoice by email and he can pay online and/or import it
+				in his own system.
+			</p>
+			<p>
+				The discussions with your customer are automatically displayed at
+				the bottom of each invoice.
+			</p>
+		</field>
+	</record>
+	
+<!--Supplier Form-->
+	<record id="inherit_invoice_supplier_form" model="ir.ui.view">
+		<field name="name">inherit.invoice.supplier.form</field>
+		<field name="model">account.invoice</field>
+		<field name="inherit_id" ref="account.invoice_supplier_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//notebook/page/group" position="replace">
+				<div class="col-xs-5 pull-right text-right" style="padding-right:0px">
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="amount_untaxed" />
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="amount_untaxed"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="amount_tax"/>
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						 <field name="amount_tax"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="discount_type"/>
+					</div>
+					<div class="col-xs-6 footer_field"  style="min-height: 28px;">
+						 <field name="discount_type" required="1"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;">
+						<label for="round_off_amount"/>
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height: 28px;">
+						<field name="round_off_amount"/>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height: 28px;" 
+						attrs="{'invisible': [('discount_type', '!=', 'percentage')]}">
+						<label for="discount_percentage" />
+					</div>
+					<div class="col-xs-6 footer_field" style="white-space:nowrap;padding-right:15px"
+						attrs="{'invisible': [('discount_type', '!=', 'percentage')]}" >
+						 <field name="discount_percentage" /> <b style="padding-left:2px">%</b>
+					</div>
+					<div class="col-xs-6 footer_label" style="min-height:33px;" 
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						<label for="discount" /> 
+					</div>
+					<div class="col-xs-6 footer_field" style="min-height:33px;"
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						 <field name="discount" style="width:100% !important" context="{'readonly_by_pass': True}"
+						 	attrs="{'readonly': [('discount_type', '=', 'percentage')]}"/>
+					</div>
+					<div class="col-xs-6 footer_label" 
+						attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						<label for="disc_acc_id"  name="remove_display_prop"/> 
+					</div>
+					<div class="col-xs-6 footer_field" attrs="{'invisible': [('discount_type', '=', 'none')]}">
+						 <field name="disc_acc_id" 
+						 attrs="{'required': [('discount_type', 'in', ('fixed', 'percentage'))]}"/>
+					</div>
+					<group style="width: 100%; border-top: 1px solid #cacaca;
+								font-weight: bold; white-space:nowrap;">
+						<div class="col-xs-6 oe_right footer_label">
+							<label for="amount_total" />
+							<button name="button_dummy" states="draft,sent" string="(update)" 
+							type="object" class="oe_edit_only oe_link"/>
+						</div>
+						<div class="col-xs-6 footer_field footer_text_bold" >
+							<field name="amount_total" />
+						</div>
+					</group>
+				</div>
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>

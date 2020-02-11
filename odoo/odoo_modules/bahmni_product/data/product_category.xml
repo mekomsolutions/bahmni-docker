@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="categ_saleable_drugs" model="product.category">
+            <field name="name">Drugs</field>
+            <field name="parent_id" ref="product.product_category_1"/>
+        </record>
+        <record id="categ_saleable_others" model="product.category">
+            <field name="name">Others</field>
+            <field name="parent_id" ref="product.product_category_1"/>
+        </record>
+        <record id="categ_all_services" model="product.category">
+            <field name="name">Services</field>
+            <field name="parent_id" ref="product.product_category_all"/>
+        </record>
+        <record id="categ_services_lab" model="product.category">
+            <field name="name">Lab</field>
+            <field name="parent_id" ref="bahmni_product.categ_all_services"/>
+        </record>
+        <record id="categ_services_lab_panel" model="product.category">
+            <field name="name">Panel</field>
+            <field name="parent_id" ref="bahmni_product.categ_services_lab"/>
+        </record>
+        <record id="categ_services_lab_test" model="product.category">
+            <field name="name">Test</field>
+            <field name="parent_id" ref="bahmni_product.categ_services_lab"/>
+        </record>
+        <record id="categ_services_radiology" model="product.category">
+            <field name="name">Radiology</field>
+            <field name="parent_id" ref="bahmni_product.categ_all_services"/>
+        </record>
+    </data>
+</odoo>

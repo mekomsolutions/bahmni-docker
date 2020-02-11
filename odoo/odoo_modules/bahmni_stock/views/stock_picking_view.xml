@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="form_stock_picking_lot_expiry" model="ir.ui.view">
+		<field name="name">form.stock.picking.lot.expiry</field>
+		<field name="model">stock.picking</field>
+		<field name="inherit_id" ref="stock.view_picking_form"/>
+		<field name="arch" type="xml">
+			<xpath expr="//field[@name='pack_operation_product_ids']" position="attributes">
+				<attribute name="context">{'default_picking_id': id, 
+					'default_location_id': location_id, 
+					'default_location_dest_id': location_dest_id,
+					'picking_type_id': picking_type_id}</attribute>
+			</xpath>
+			<xpath expr="//field[@name='pack_operation_product_ids']/tree/field[@name='product_qty']" position="after">
+				<field name="available_qty" attrs="{'invisible': [('picking_type', '=', 'incoming')]}"/> 
+				<field name="picking_type" invisible="1"/>
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>

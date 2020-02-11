@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="manufacturer_product_suppliernfo" model="ir.ui.view">
+		<field name="name">manufacturer.product.supplierinfo</field>
+		<field name="model">product.supplierinfo</field>
+		<field name="inherit_id" ref="product.product_supplierinfo_form_view"/>
+		<field name="arch" type="xml">
+			<xpath expr="//group/group[1]/div" position="after">
+				<field name="manufacturer" 
+				context="{'default_manufacturer': True, 'default_customer': False}"/>
+			</xpath>
+			<xpath expr="//group/group[2]/div[2]" position="after">
+				<label for="mrp"/>
+				<div>
+					<field name="mrp" class="oe_inline"/>
+				</div>
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>

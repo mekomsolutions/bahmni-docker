@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="tree_stock_report_prod_by_last_moved" model="ir.ui.view">
+		<field name="name">tree.stock_report.prod.by.last.moved</field>
+		<field name="model">prod_last_moved.report</field>
+		<field name="arch" type="xml">
+			<tree create="0" string="Stock Report by Products Last Moved">
+				<field name="product_id"/>
+				<field name="origin"/>
+				<field name="location_id"/>
+				<field name="location_dest_id"/>
+				<field name="last_moved_date"/>
+			</tree>
+		</field>
+	</record>
+	
+	<record id="action_stock_report_prod_by_last_moved" model="ir.actions.act_window">
+		<field name="name">Stock Report Products by Last Moved</field>
+		<field name="res_model">prod_last_moved.report</field>
+		<field name="view_type">form</field>
+		<field name="view_mode">tree</field>
+	</record>
+	
+	<menuitem id="menu_stock_report_prod_by_last_moved" action="action_stock_report_prod_by_last_moved"
+		parent="stock.menu_warehouse_report"/>
+	
+</odoo>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <report 
+            id="report_account_payment"
+            string="Account Payment"
+            model="account.payment" 
+            report_type="qweb-pdf"
+            file="bahmni_stock.report_account_payment_template" 
+            name="bahmni_stock.report_account_payment_template" />
+    </data>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	
+	<record id="inherit_view_account_config_settings" model="ir.ui.view">
+		<field name="name">inherit.view.account.config.settings</field>
+		<field name="model">account.config.settings</field>
+		<field name="inherit_id" ref="account.view_account_config_settings"/>
+		<field name="arch" type="xml">
+			<xpath expr="//separator[@name='analytic_account']" position="before">
+				<group>
+					<label for="round_off_by"/>
+					<field name="round_off_by" nolabel="1"/>
+				</group>
+			</xpath>
+		</field>
+	</record>
+	
+</odoo>
