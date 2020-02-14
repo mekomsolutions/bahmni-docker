@@ -49,6 +49,9 @@ docker-compose up
 <img src="./readme/docker-compose-up-shadow.png" alt="docker-compose up" height="200">  
 </p>
 
+This assumes that you run the `docker` command as the same user and in the same window in which you exported your variables.
+If Docker is run as `sudo`, the variables won't have an effect. Make sure to either export them as root, or run `docker` with `sudo -E` option to preserve the user environment.
+
 ### Access the servers:
 
 - Bahmni: http://localhost/
