@@ -118,60 +118,60 @@ services:
       - "openmrs-mysql-data:/var/lib/mysql"
       - "./sqls/mysql:/docker-entrypoint-initdb.d"
 
-  db-mart:
-    image: postgres:9.6-alpine
-    environment:
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
-    networks:
-      bahmni:
-        aliases:
-          - db-mart
-    volumes:
-      - "mart-psql-data:/var/lib/postgresql/data"
+  # db-mart:
+  #   image: postgres:9.6-alpine
+  #   environment:
+  #     POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
+  #   networks:
+  #     bahmni:
+  #       aliases:
+  #         - db-mart
+  #   volumes:
+  #     - "mart-psql-data:/var/lib/postgresql/data"
 
-  bahmni-mart:
-    build:
-      context: bahmni-mart/
-      args:
-        TIMEZONE: "${TIMEZONE:-UTC}"
-    environment:
-      DB_MART: "${DB_MART_HOST:-db-mart}"
-      DB_OPENMRS: "${DB_OPENMRS_HOST:-openmrs-mysql}"
-      ANALYTICS_PASSWORD: "${ANALYTICS_PASSWORD:-password}"
-      OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
-      MB_DB_PASS: "${METABASE_PASSWORD:-password}"
-      CRON_TIME: "${CRON_TIME:-30 21 * * *}"
-    depends_on:
-       - db-mart
-       - openmrs-mysql
-    networks:
-      bahmni:
-        aliases:
-          - bahmni-mart
-    volumes:
-      - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
-      - "${BAHMNI_HOME:-bahmni_home}:/home/bahmni"
-      - "./bahmni-mart/conf:/opt/bahmni-mart/conf"
+  # bahmni-mart:
+  #   build:
+  #     context: bahmni-mart/
+  #     args:
+  #       TIMEZONE: "${TIMEZONE:-UTC}"
+  #   environment:
+  #     DB_MART: "${DB_MART_HOST:-db-mart}"
+  #     DB_OPENMRS: "${DB_OPENMRS_HOST:-openmrs-mysql}"
+  #     ANALYTICS_PASSWORD: "${ANALYTICS_PASSWORD:-password}"
+  #     OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
+  #     POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
+  #     MB_DB_PASS: "${METABASE_PASSWORD:-password}"
+  #     CRON_TIME: "${CRON_TIME:-30 21 * * *}"
+  #   depends_on:
+  #      - db-mart
+  #      - openmrs-mysql
+  #   networks:
+  #     bahmni:
+  #       aliases:
+  #         - bahmni-mart
+  #   volumes:
+  #     - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
+  #     - "${BAHMNI_HOME:-bahmni_home}:/home/bahmni"
+  #     - "./bahmni-mart/conf:/opt/bahmni-mart/conf"
 
-  metabase:
-    image: metabase/metabase:v0.31.2
-    ports:
-      - "${METABASE_PORT:-9003}:3000"
-    environment:
-      MB_DB_TYPE: postgres
-      MB_DB_DBNAME: metabase
-      MB_DB_PORT: 5432
-      MB_DB_USER: metabase
-      MB_DB_PASS: "${METABASE_PASSWORD:-password}"
-      MB_DB_HOST: db-mart
-    networks:
-      bahmni:
-        aliases:
-          - metabase
+  # metabase:
+  #   image: metabase/metabase:v0.31.2
+  #   ports:
+  #     - "${METABASE_PORT:-9003}:3000"
+  #   environment:
+  #     MB_DB_TYPE: postgres
+  #     MB_DB_DBNAME: metabase
+  #     MB_DB_PORT: 5432
+  #     MB_DB_USER: metabase
+  #     MB_DB_PASS: "${METABASE_PASSWORD:-password}"
+  #     MB_DB_HOST: db-mart
+  #   networks:
+  #     bahmni:
+  #       aliases:
+  #         - metabase
 
   odoo-postgresql:
-    image: postgres:10
+    image: postgres:9.6
     environment:
       POSTGRES_USER: odoo
       POSTGRES_PASSWORD: odoo
