@@ -36,7 +36,7 @@ function odoo_addons_param() {
     fi
   done
 
-  odoo_addons+=" -i stock,sale,point_of_sale,mail,purchase,"
+  odoo_addons+=" -i stock,sale,point_of_sale,mail,purchase,bahmni_account,bahmni_atom_feed,bahmni_product,bahmni_purchase,bahmni_sale,bahmni_stock,bahmni_web_extension,web_readonly_bypass"
 
   for addon in $addons
   do
@@ -59,13 +59,10 @@ case "$1" in
         if [[ "$1" == "scaffold" ]] ; then
             exec odoo "$@"
         else
-            echo "I'm here"
             exec `odoo $odoo_addons --without-demo=all -d bahmni ${DB_ARGS[@]}`
         fi
         ;;
     -*)
-        echo "I'm somewhere else"
-        echo "$@"
         exec odoo "$odoo_addons --without-demo=all -d bahmni $@" "${DB_ARGS[@]}"
         ;;
     *)
