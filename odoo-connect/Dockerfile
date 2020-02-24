@@ -12,9 +12,7 @@ COPY resources/openerp-atomfeed-service.war ${CATALINA_HOME}/webapps/bahmni-erp-
 
 RUN wget -O /etc/bahmni-erp-connect/liquibase-core-2.0.3.jar https://repo1.maven.org/maven2/org/liquibase/liquibase-core/2.0.3/liquibase-core-2.0.3.jar
 
-RUN chmod +x /usr/local/tomcat/wait-for-it.sh
-RUN chmod +x /usr/local/tomcat/startup.sh
-RUN chmod oug+x /etc/bahmni-erp-connect/run-liquibase.sh
+RUN chmod +x /usr/local/tomcat/wait-for-it.sh /usr/local/tomcat/startup.sh /etc/bahmni-erp-connect/run-liquibase.sh
 
 ENV WEBAPP_PATH ${CATALINA_HOME}/webapps
 CMD ["/usr/local/tomcat/startup.sh"]

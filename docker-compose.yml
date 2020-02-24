@@ -198,7 +198,7 @@ services:
         aliases:
           - odoo-1
     volumes:
-      - "${ODOO_EXTRA_ADDONS:-extra_addons}:/mnt/extra-addons"
+      - "${ODOO_EXTRA_ADDONS:-odoo-extra_addons}:/mnt/extra-addons"
       - "${ODOO_CONFIG_PATH:-odoo_config}:/opt/odoo-config"
     ports:
       - "8069:8069"

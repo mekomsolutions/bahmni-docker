@@ -164,10 +164,10 @@ watch rsync -av ~/repos/openmrs-module-bahmniapps/ui/ /tmp/bahmni-distro-haiti/b
 
 `BAHMNI_MART_CRON_TIME`**\***: Provide a custom cron time (in Crontab format) for the Bahmni Mart flattening. Default is `30 21 * * *` - i.e. 10:30 PM every day.
 
-`ODOO_EXTRA_ADDONS`: Path to Odod additional addons.
+`ODOO_EXTRA_ADDONS`: Path to Odoo additional addons.
 
 `ODOO_CONFIG_PATH`: Path to a custom Odoo Configuration. See [Odoo Initializer](https://github.com/mekomsolutions/
-odoo-initializer/) for mor informations.
+odoo-initializer/) for more informations.
 
 **\*** Note: Variables with a **\*** require the containers to be rebuilt. Use `docker-compose build`
 
@@ -179,6 +179,6 @@ odoo-initializer/) for mor informations.
   - Bahmni Apps
   - Bahmni Config
   - Bahmni Mart
-  - Metabases
+  - Metabase
   - Odoo
   - Odoo Connect
