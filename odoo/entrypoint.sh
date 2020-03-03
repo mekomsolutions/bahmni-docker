@@ -10,6 +10,7 @@ set -e
 : ${PASSWORD:=${DB_ENV_POSTGRES_PASSWORD:=${POSTGRES_PASSWORD:='odoo'}}}
 
 : ${ODOO_ADDONS_PATH='/mnt/extra-addons/.'}
+: ${ADDONS_LIST:=${DEFAULT_ADDONS_LIST:='base,stock,sale,point_of_sale,purchase,bahmni_account,bahmni_atom_feed,bahmni_product,bahmni_purchase,bahmni_sale,bahmni_stock,bahmni_web_extension'}}
 
 DB_ARGS=()
 function check_config() {
@@ -27,7 +28,7 @@ check_config "db_password" "$PASSWORD"
 
 function odoo_addons_param() {
   addons=$(find $ODOO_ADDONS_PATH -maxdepth 1 -type d -printf '%f\n')
-  odoo_addons=" -u base"
+  odoo_addons=" -u $ADDONS_LIST"
   for addon in $addons
   do
     if [[ $addon != .* ]]
@@ -36,22 +37,28 @@ function odoo_addons_param() {
     fi
   done
 
-  odoo_addons+=" -i stock,sale,point_of_sale,mail,purchase,bahmni_account,bahmni_atom_feed,bahmni_product,bahmni_purchase,bahmni_sale,bahmni_stock,bahmni_web_extension,web_readonly_bypass"
+  odoo_addons+=" -i $ADDONS_LIST"
 
   for addon in $addons
   do
     if [[ $addon != .* ]]
     then
-      odoo_addons+="$addon,"
+      odoo_addons+=",$addon"
     fi
   done
-  odoo_addons=${odoo_addons%?}
-  odoo_addons+=" "
 }
 
 odoo_addons_param
+
+/etc/odoo/wait-for-it.sh --timeout=3600 ${HOST}:${PORT}
+
 sleep 5
 
+echo "Installing base Odoo & Bahmni Addons"
+
+exec `odoo $odoo_addons --stop-after-init --without-demo=all -d bahmni ${DB_ARGS[@]}`
+
+echo "Addons installed successfully, Restarting Odoo and initializating"
 
 case "$1" in
     -- | odoo)
@@ -59,14 +66,13 @@ case "$1" in
         if [[ "$1" == "scaffold" ]] ; then
             exec odoo "$@"
         else
-            exec `odoo $odoo_addons --without-demo=all -d bahmni ${DB_ARGS[@]}`
+            exec `odoo --without-demo=all -d bahmni ${DB_ARGS[@]}`
         fi
         ;;
     -*)
-        exec odoo "$odoo_addons --without-demo=all -d bahmni $@" "${DB_ARGS[@]}"
+        exec odoo "--without-demo=all -d bahmni $@" "${DB_ARGS[@]}"
         ;;
     *)
-        echo "No Way!"
         exec "$@"
 esac
 
