@@ -118,6 +118,36 @@ services:
       - "openmrs-mysql-data:/var/lib/mysql"
       - "./sqls/mysql:/docker-entrypoint-initdb.d"
 
+  bahmni-reports:
+    build:
+      context: bahmni-reports/
+    environment:
+      OPENMRS_DB_HOSTNAME: "openmrs-mysql"
+      OPENMRS_DB_USERNAME: "${MYSQL_PASSWORD:-openmrs}"
+      OPENMRS_DB_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
+      ERP_DB_HOSTNAME: "postgres-db"
+      ERP_DB_USERNAME: "admin"
+      ERP_DB_PASSWORD: "admin"
+      MYSQL_ROOT_USER: root
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-Admin123}"
+      REPORTS_DB_HOSTNAME: "openmrs-mysql"
+      REPORTS_DB_USERNAME: "reports-user"
+      REPORTS_DB_PASSWORD: "${REPORTS_PASSWORD:-Admin123}"
+      OPENMRS_HOSTNAME: "openmrs-tomcat"
+      OPENMRS_USERNAME: "admin"
+      OPENMRS_PASSWORD: "${OPENMRS_PASSWORD:-Admin123}"
+      BAHMNI_LOGIN_URL: "http://localhost/"
+    depends_on:
+      - db-mart
+      - openmrs-mysql
+    networks:
+      bahmni:
+        aliases:
+          - bahmni-reports
+    volumes:
+        - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
+        - "bahmni-reports-data:/reports"
+
   db-mart:
     image: postgres:9.6-alpine
     environment:
@@ -138,7 +168,7 @@ services:
       DB_MART: "${DB_MART_HOST:-db-mart}"
       DB_OPENMRS: "${DB_OPENMRS_HOST:-openmrs-mysql}"
       ANALYTICS_PASSWORD: "${ANALYTICS_PASSWORD:-password}"
-      OPENMRS_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
+      OPENMRS_DB_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
       MB_DB_PASS: "${METABASE_PASSWORD:-password}"
       CRON_TIME: "${CRON_TIME:-30 21 * * *}"
@@ -180,5 +210,6 @@ volumes:
   bahmni_apps: ~
   mart-psql-data: ~
   bahmni_home: ~
+  bahmni-reports-data: ~
 networks:
   bahmni:
