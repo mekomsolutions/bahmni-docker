@@ -98,7 +98,7 @@ services:
       - /usr/local/tomcat/.OpenMRS/owa/
       - "${OPENMRS_MODULES_PATH:-openmrs_modules}:/usr/local/tomcat/.OpenMRS/modules/"
       - "${OPENMRS_CONFIG_PATH:-openmrs_config}:/usr/local/tomcat/.OpenMRS/configuration/"
-      - ./properties/bahmnicore.properties:/usr/local/tomcat/.OpenMRS/bahmnicore.properties
+      - ./properties/openmrs-bahmnicore.properties:/usr/local/tomcat/.OpenMRS/bahmnicore.properties
 
   openmrs-mysql:
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
@@ -200,6 +200,56 @@ services:
         aliases:
           - metabase
 
+  odoo-postgresql:
+    image: postgres:9.6
+    environment:
+      POSTGRES_USER: odoo
+      POSTGRES_PASSWORD: odoo
+      POSTGRES_DB: postgres
+    networks:
+      bahmni:
+        aliases:
+          - odoo-postgresql-1
+    volumes:
+      - odoo-postgresql-data:/var/lib/postgresql/data
+
+  odoo:
+    depends_on:
+      - odoo-postgresql
+    build:
+      context: odoo/
+    environment:
+      HOST: odoo-postgresql
+      PORT: 5432
+      USER: odoo
+      PASSWORD: odoo
+    networks:
+      bahmni:
+        aliases:
+          - odoo-1
+    volumes:
+      - "${ODOO_EXTRA_ADDONS:-odoo-extra_addons}:/mnt/extra-addons"
+      - "${ODOO_CONFIG_PATH:-odoo_config}:/opt/odoo-config"
+    ports:
+      - "8069:8069"
+
+  odoo-connect:
+    build:
+      context: odoo-connect/
+    environment:
+      ODOO_DB_SERVER: odoo-postgresql
+      ODOO_DB: bahmni
+      ODOO_DB_USERNAME: odoo
+      ODOO_DB_PASSWORD: odoo
+      APP_PROPERTIES_FILE: "/usr/local/tomcat/erp-atomfeed.properties"
+    volumes:
+      - "./properties/odoo-connect-atomfeed.properties:${APP_PROPERTIES_FILE:-/usr/local/tomcat/erp-atomfeed.properties}"
+    networks:
+      bahmni:
+        aliases:
+          - odoo-connect
+    
+
 version: "3.7"
 volumes:
   openmrs-tomcat-data: ~
@@ -210,6 +260,9 @@ volumes:
   bahmni_apps: ~
   mart-psql-data: ~
   bahmni_home: ~
+  odoo-postgresql-data: ~
+  odoo-extra_addons: ~
+  odoo_config: ~
   bahmni-reports-data: ~
 networks:
   bahmni:
