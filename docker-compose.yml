@@ -142,7 +142,10 @@ services:
       OPENMRS_HOSTNAME: "openmrs-tomcat"
       OPENMRS_USERNAME: "admin"
       OPENMRS_PASSWORD: "${OPENMRS_PASSWORD:-Admin123}"
-      BAHMNI_LOGIN_URL: "http://localhost/"
+      BAHMNI_LOGIN_URL: "http://localhost/bahmni/home/index.html#/login"
+      BAHMNI_CONFIG_URL: "http://bahmni-config:8901/bahmni_config"
+    ports:
+      - 8080:8080
     healthcheck:
       test:
         - CMD
