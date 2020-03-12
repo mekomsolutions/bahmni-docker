@@ -4,6 +4,12 @@ services:
       context: proxy/
       args:
         TIMEZONE: "${TIMEZONE:-UTC}"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost/"
     networks:
       bahmni:
         aliases:
@@ -137,6 +143,12 @@ services:
       OPENMRS_USERNAME: "admin"
       OPENMRS_PASSWORD: "${OPENMRS_PASSWORD:-Admin123}"
       BAHMNI_LOGIN_URL: "http://localhost/"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost:8080/bahmni-reports"
     depends_on:
       - db-mart
       - openmrs-mysql
@@ -248,7 +260,7 @@ services:
       bahmni:
         aliases:
           - odoo-connect
-    
+
 
 version: "3.7"
 volumes:
