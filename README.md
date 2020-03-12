@@ -46,7 +46,7 @@ GROUP=haiti; DISTRO_PATH=/tmp/bahmni-distro-$GROUP; export OPENMRS_CONFIG_PATH=$
 docker-compose up
 ```
 <p align="center">
-<img src="./readme/docker-compose-up-shadow.png" alt="docker-compose up" height="200">  
+<img src="./readme/docker-compose-up-shadow.png" alt="docker-compose up" height="200">
 </p>
 
 This assumes that you run the `docker` command as the same user and in the same window in which you exported your variables.
@@ -57,20 +57,26 @@ If Docker is run as `sudo`, the variables won't have an effect. Make sure to eit
 - Bahmni: http://localhost/
 
 <p align="left">
-<img src="./readme/bahmni-EMR-login-shadow.png" alt="Bahmni EMR login screen" width="300">  
+<img src="./readme/bahmni-EMR-login-shadow.png" alt="Bahmni EMR login screen" width="300">
 </p>
 
 
 - OpenMRS: http://localhost/openmrs
 
 <p align="left">
-<img src="./readme/openmrs-login-shadow.png" alt="OpenMRS login screen" width="300">  
+<img src="./readme/openmrs-login-shadow.png" alt="OpenMRS login screen" width="300">
+</p>
+
+- Odoo: http://localhost:8069/
+
+<p align="left">
+<img src="./readme/odoo-login.png" alt="Odoo login screen" width="300">
 </p>
 
 - Metabase: http://localhost:9003/
 
 <p align="left">
-<img src="./readme/metabase-login-shadow.png" alt="Metabase login screen" width="300">  
+<img src="./readme/metabase-login-shadow.png" alt="Metabase login screen" width="300">
 </p>
 
 ## Advanced
