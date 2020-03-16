@@ -11,5 +11,10 @@ DEBUG=${DEBUG:-false}
 sleep 3
 /etc/bahmni-erp-connect/run-liquibase.sh
 
+if [ $DEBUG ]; then
+    export JPDA_ADDRESS="1044"
+    export JPDA_TRANSPORT=dt_socket
+fi
+
 # start tomcat
 /usr/local/tomcat/bin/catalina.sh jpda run
