@@ -10,6 +10,7 @@ cp /tmp/bahmni-reports/WEB-INF/classes/liquibase.xml ${MIGRATIONS_FILES_FOLDER}/
 cp /tmp/bahmni-reports/WEB-INF/classes/liquibase_bahmni_reports.xml ${MIGRATIONS_FILES_FOLDER}/liquibase-bahmni-reports.xml
 cp /tmp/bahmni-reports/WEB-INF/classes/sql/quartz/tables_mysql_innodb.sql ${MIGRATIONS_FILES_FOLDER}/sql/quartz/tables_mysql_innodb.sql
 rm -rf /tmp/bahmni-reports
+echo "Done"
 
 run_migrations(){
 
@@ -23,7 +24,7 @@ run_migrations(){
   (cd ${MIGRATIONS_FILES_FOLDER}/ && java $CHANGE_LOG_TABLE  -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=$CLASSPATH --changeLogFile=$CHANGE_LOG_FILE --url=jdbc:mysql://$2:3306/$3 --username=$4 --password=$5 update)
 }
 
-/opt/scripts/wait-for-url.sh 3600 http://openmrs-tomcat:8080/openmrs/index.htm
+/usr/local/tomcat/wait-for-url.sh 3600 http://openmrs-tomcat:8080/openmrs/index.htm
 
 RESULT=$(mysql -h $REPORTS_DB_HOSTNAME -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD --skip-column-names -e "SHOW DATABASES LIKE 'bahmni_reports'")
 if [ "$RESULT" != "bahmni_reports" ] ; then
