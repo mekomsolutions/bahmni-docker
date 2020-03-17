@@ -4,6 +4,8 @@ DB_CREATE_TABLES=${DB_CREATE_TABLES:-false}
 DB_AUTO_UPDATE=${DB_AUTO_UPDATE:-false}
 MODULE_WEB_ADMIN=${MODULE_WEB_ADMIN:-true}
 DEBUG=${DEBUG:-false}
+DEBUG_PORT=${DEBUG_PORT:-8000}
+catalina_params=()
 
 cat > /usr/local/tomcat/openmrs-server.properties << EOF
 install_method=auto
@@ -52,13 +54,15 @@ connection.password=${DB_PASSWORD}
 EOF
 fi
 
-if [ $DEBUG ]; then
-    export JPDA_ADDRESS="1044"
+if [ $DEBUG == true ]; then
+    export JPDA_ADDRESS=$DEBUG_PORT
     export JPDA_TRANSPORT=dt_socket
+    catalina_params+=(jpda)
 fi
+catalina_params+=(run)
 
-# start tomcat in background
-/usr/local/tomcat/bin/catalina.sh jpda run &
+# start tomcat
+/usr/local/tomcat/bin/catalina.sh "${catalina_params[@]}"
 
 # trigger first filter to start data importation
 sleep 15
