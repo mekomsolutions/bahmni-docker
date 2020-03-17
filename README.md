@@ -100,10 +100,10 @@ services:
   proxy:
     command: "httpd-foreground -DenableTLS"
     build:
-      [...]
+      ...
     volumes:
     - "/etc/letsencrypt/live/domain.com/:/etc/tls/"
-    - [...]
+    - ...
 
 ```
 ### Start with a custom MySQL dump
@@ -152,6 +152,22 @@ Change JS and HTML files as you like.
 watch rsync -av ~/repos/openmrs-module-bahmniapps/ui/ /tmp/bahmni-distro-haiti/bahmni_emr/bahmniapps/
 ```
 
+### Debug the Java apps
+
+The Java apps (OpenMRS, Bahmni Reports, Odoo Connect...) can be remote debugged very simply by setting a the `DEBUG: "true"` environment variable to the service.
+
+Don't forget to open the port `8000` on the service as well:
+Eg:
+```
+...
+environment:
+  DEBUG: "true"
+...
+
+ports:
+  - 8000:8000
+...
+```
 
 ### All environment variables
 
