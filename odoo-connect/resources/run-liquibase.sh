@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e -x
+set -e
 
 ODOO_DB=${ODOO_DB:-bahmni}
 ODOO_DB_SERVER=${ODOO_DB_SERVER:-odoo-postgresql}

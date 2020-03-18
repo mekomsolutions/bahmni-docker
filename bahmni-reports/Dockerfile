@@ -10,11 +10,11 @@ RUN wget -O /tmp/bahmni-reports.war ${BAHMNI_REPORTS_URL} && \
 
 COPY wait-for-url.sh /usr/local/tomcat/wait-for-url.sh
 COPY init-db.sh /usr/local/tomcat/init-db.sh
-COPY setup.sh /usr/local/tomcat/setup.sh
+COPY setup.sh /usr/local/tomcat/bin/startup.sh
 
 ADD conf/ /etc/conf/
 
 VOLUME /reports
-RUN chmod +x /usr/local/tomcat/wait-for-url.sh /usr/local/tomcat/setup.sh /usr/local/tomcat/init-db.sh
+RUN chmod +x /usr/local/tomcat/wait-for-url.sh /usr/local/tomcat/init-db.sh /usr/local/tomcat/bin/statup.sh
 
-CMD ["/usr/local/tomcat/setup.sh"]
+CMD ["/usr/local/tomcat/bin/startup.sh"]

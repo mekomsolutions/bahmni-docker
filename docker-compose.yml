@@ -249,6 +249,9 @@ services:
       - "8069:8069"
 
   odoo-connect:
+    depends_on:
+      - odoo-postgresql
+      - odoo
     build:
       context: odoo-connect/
     environment:
@@ -263,7 +266,6 @@ services:
       bahmni:
         aliases:
           - odoo-connect
-
 
 version: "3.7"
 volumes:
