@@ -22,7 +22,7 @@ echo "OK."
 
 # run liquibase migrations
 sleep 3
-/etc/bahmni-erp-connect/run-liquibase.sh
+/usr/local/tomcat/init-db.sh
 
 if [ $DEBUG == true ]; then
     export JPDA_ADDRESS=$DEBUG_PORT

@@ -4,7 +4,7 @@ set -e
 # Extract liquibase files from WAR archive
 MIGRATIONS_FILES_FOLDER="/opt/migrations"
 echo "Extracting WAR archive to copy the required Liquibase and SQL files"
-unzip -q /usr/local/tomcat/webapps/bahmni-reports.war -d /tmp/bahmni-reports/
+unzip -q -o /usr/local/tomcat/webapps/bahmni-reports.war -d /tmp/bahmni-reports/
 mkdir -p ${MIGRATIONS_FILES_FOLDER}/sql/quartz
 cp /tmp/bahmni-reports/WEB-INF/classes/liquibase.xml ${MIGRATIONS_FILES_FOLDER}/liquibase-openmrs.xml
 cp /tmp/bahmni-reports/WEB-INF/classes/liquibase_bahmni_reports.xml ${MIGRATIONS_FILES_FOLDER}/liquibase-bahmni-reports.xml
