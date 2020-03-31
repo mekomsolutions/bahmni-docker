@@ -20,7 +20,7 @@ auto_update_database=${DB_AUTO_UPDATE}
 EOF
 
 # create datbase credentials file to check the existance of data
-mmkdir -p /etc/mysql/ && touch /etc/mysql/db-credentials.cnf
+mkdir -p /etc/mysql/ && touch /etc/mysql/db-credentials.cnf
 cat > /etc/mysql/db-credentials.cnf << EOF
 [client]
 user=${DB_USERNAME}
