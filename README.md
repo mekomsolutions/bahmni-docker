@@ -38,12 +38,12 @@ unzip /tmp/bahmni-distro-haiti/bahmni-distro-haiti-1.0.0-20200130.172847-69.zip 
 
 Export all variables at once:
 ```
-GROUP=haiti; DISTRO_PATH=/tmp/bahmni-distro-$GROUP; export OPENMRS_CONFIG_PATH=$DISTRO_PATH/openmrs_config; export BAHMNI_CONFIG_PATH=$DISTRO_PATH/bahmni_config; export OPENMRS_MODULES_PATH=$DISTRO_PATH/openmrs_modules; export BAHMNI_APPS_PATH=$DISTRO_PATH/bahmni_emr/bahmniapps
+export GROUP="c2c"; export DISTRO_PATH=/tmp/bahmni-distro-$GROUP; export OPENMRS_CONFIG_PATH=$DISTRO_PATH/openmrs_config; export BAHMNI_CONFIG_PATH=$DISTRO_PATH/bahmni_config; export OPENMRS_MODULES_PATH=$DISTRO_PATH/openmrs_modules; export BAHMNI_APPS_PATH=$DISTRO_PATH/bahmni_emr/bahmniapps
 ```
 
 ### Start Bahmni:
 ```
-docker-compose up
+docker-compose -p $GROUP up
 ```
 <p align="center">
 <img src="./readme/docker-compose-up-shadow.png" alt="docker-compose up" height="200">
