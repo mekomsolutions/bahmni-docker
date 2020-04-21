@@ -64,7 +64,7 @@ catalina_params+=(run)
 # start tomcat
 /usr/local/tomcat/bin/catalina.sh "${catalina_params[@]}"
 
-# trigger first filter to start data importation
+# trigger first filter to start database initialization
 sleep 15
 curl -L http://localhost:8080/openmrs/ > /dev/null
 sleep 15
