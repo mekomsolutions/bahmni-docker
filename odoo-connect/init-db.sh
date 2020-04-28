@@ -10,10 +10,10 @@ cp /tmp/bahmni-erp-connect/WEB-INF/classes/sql/db_migrations.xml ${MIGRATIONS_FI
 rm -rf /tmp/bahmni-erp-connect
 echo "Done"
 
-ODOO_DB=${ODOO_DB:-bahmni}
+ODOO_DB=${ODOO_DB:-odoo}
 ODOO_DB_SERVER=${ODOO_DB_SERVER:-odoo-postgresql}
 ODOO_DB_USERNAME=${ODOO_DB_USERNAME:-odoo}
-ODOO_DB_PASSWORD=${ODOO_DB_PASSWORD:-odoo}
+ODOO_DB_PASSWORD=${ODOO_DB_PASSWORD:-password}
 
 CHANGE_LOG_TABLE="-Dliquibase.databaseChangeLogTableName=liquibasechangelog -Dliquibase.databaseChangeLogLockTableName=liquibasechangeloglock"
 LIQUIBASE_JAR="/opt/liquibase/liquibase-core-2.0.3.jar"

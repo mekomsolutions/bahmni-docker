@@ -1,9 +1,12 @@
 services:
+
+  # Apache HTTPD: Entry point for the application.
   proxy:
     build:
       context: proxy/
       args:
-        TIMEZONE: "${TIMEZONE:-UTC}"
+        TIMEZONE: "${TIMEZONE}"
+    command: "httpd-foreground ${PROXY_TLS}"
     healthcheck:
       test:
         - CMD
@@ -21,11 +24,13 @@ services:
     volumes:
       - "./proxy/confs:/usr/local/apache2/conf/extra"
 
+  # Bahmni Apps: The main front-end component
+  # aka 'Bahmni EMR'
   bahmniapps:
     build:
       context: bahmniapps/
       args:
-        TIMEZONE: "${TIMEZONE:-UTC}"
+        TIMEZONE: "${TIMEZONE}"
     healthcheck:
       test:
         - CMD
@@ -38,13 +43,14 @@ services:
         aliases:
           - bahmniapps-1
     volumes:
-      - "${BAHMNI_APPS_PATH:-bahmni_apps}:/var/www/bahmniapps"
+      - "${BAHMNI_APPS_PATH:-bahmni-apps}:/var/www/bahmniapps"
 
+  # Implementer Interface: Front-end application to bring Bahmni Forms 2.0
   implementer-interface:
     build:
       context: implementer-interface/
       args:
-        TIMEZONE: "${TIMEZONE:-UTC}"
+        TIMEZONE: "${TIMEZONE}"
     healthcheck:
       test:
         - CMD
@@ -57,11 +63,12 @@ services:
         aliases:
           - implementer-interface
 
+  # Bahmni Config: Bahmni Apps configuration
   bahmni-config:
     build:
       context: bahmni_config/
       args:
-        TIMEZONE: "${TIMEZONE:-UTC}"
+        TIMEZONE: "${TIMEZONE}"
     healthcheck:
       test:
         - CMD
@@ -74,45 +81,49 @@ services:
         aliases:
           - bahmni-config-1
     volumes:
-      - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
+      - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www/bahmni_config"
 
-  openmrs-tomcat:
+  # OpenMRS:
+  openmrs:
     build: openmrs/
     depends_on:
-      - openmrs-mysql
+      - mysql
     environment:
+      MODULE_WEB_ADMIN: "true"
       DB_AUTO_UPDATE: "true"
       DB_CREATE_TABLES: "true"
-      DB_DATABASE: "${MYSQL_DB:-openmrs}"
-      DB_HOST: openmrs-mysql
-      DB_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
-      DB_USERNAME: "${MYSQL_USER:-openmrs}"
-      MODULE_WEB_ADMIN: "true"
+      DB_HOST: mysql
+      DB_DATABASE: openmrs
+      DB_USERNAME: ${OPENMRS_DB_USER}
+      DB_PASSWORD: ${OPENMRS_DB_PASSWORD}
     healthcheck:
       test:
         - CMD
         - curl
         - "-f"
         - "http://localhost:8080/openmrs/"
-      timeout: 20s
+      timeout: 5s
     networks:
       bahmni:
         aliases:
-          - openmrs-1
+          - openmrs
+          - openmrs-tomcat
     volumes:
-      - "openmrs-tomcat-data:/usr/local/tomcat/.OpenMRS/"
-      - /usr/local/tomcat/.OpenMRS/owa/
-      - "${OPENMRS_MODULES_PATH:-openmrs_modules}:/usr/local/tomcat/.OpenMRS/modules/"
-      - "${OPENMRS_CONFIG_PATH:-openmrs_config}:/usr/local/tomcat/.OpenMRS/configuration/"
+      - "openmrs-data:/usr/local/tomcat/.OpenMRS/"
+      - "${OPENMRS_OWAS_PATH:-openmrs-owas}:/usr/local/tomcat/.OpenMRS/owa/"
+      - "${OPENMRS_MODULES_PATH:-openmrs-modules}:/usr/local/tomcat/.OpenMRS/modules/"
+      - "${OPENMRS_CONFIG_PATH:-openmrs-config}:/usr/local/tomcat/.OpenMRS/configuration/"
+      - "${OPENMRS_CONFIG_CHECKSUMS_PATH:-openmrs-config-checksums}:/usr/local/tomcat/.OpenMRS/configuration_checksums/"
       - ./properties/openmrs-bahmnicore.properties:/usr/local/tomcat/.OpenMRS/bahmnicore.properties
 
-  openmrs-mysql:
+  # MySQL
+  mysql:
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
     environment:
-      MYSQL_DATABASE: "${MYSQL_DB:-openmrs}"
-      MYSQL_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-Admin123}"
-      MYSQL_USER: "${MYSQL_USER:-openmrs}"
+      MYSQL_DATABASE: openmrs
+      MYSQL_USER: ${OPENMRS_DB_USER}
+      MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     healthcheck:
       test: "exit 0"
     image: "mysql:5.6"
@@ -121,31 +132,38 @@ services:
         aliases:
           - openmrs-mysql
     volumes:
-      - "openmrs-mysql-data:/var/lib/mysql"
+      - "${MYSQL_DATADIR:-mysql-data}:/var/lib/mysql"
       - "./sqls/mysql:/docker-entrypoint-initdb.d"
 
+  # Bahmni Reports: Standalone Java app to provide Reporting capabilities
   bahmni-reports:
     build:
       context: bahmni-reports/
     environment:
-      OPENMRS_DB_HOSTNAME: "openmrs-mysql"
-      OPENMRS_DB_USERNAME: "${MYSQL_PASSWORD:-openmrs}"
-      OPENMRS_DB_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
-      ERP_DB_HOSTNAME: "postgres-db"
-      ERP_DB_USERNAME: "admin"
-      ERP_DB_PASSWORD: "admin"
+      # OpenMRS DB connection details
+      OPENMRS_DB_HOSTNAME: mysql
+      OPENMRS_DB_NAME: openmrs
+      OPENMRS_DB_USERNAME: ${OPENMRS_DB_USER}
+      MYSQL_PASSWORD: ${OPENMRS_DB_PASSWORD}
+      # Odoo DB connection details
+      ERP_DB_HOSTNAME: postgresql
+      ERP_DB_USERNAME: ${ODOO_DB_USER}
+      ERP_DB_PASSWORD: ${ODOO_DB_PASSWORD}
+      # Additional MySQL root creds (?)
       MYSQL_ROOT_USER: root
-      MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD:-Admin123}"
-      REPORTS_DB_HOSTNAME: "openmrs-mysql"
-      REPORTS_DB_USERNAME: "reports-user"
-      REPORTS_DB_PASSWORD: "${REPORTS_PASSWORD:-Admin123}"
-      OPENMRS_HOSTNAME: "openmrs-tomcat"
-      OPENMRS_USERNAME: "admin"
-      OPENMRS_PASSWORD: "${OPENMRS_PASSWORD:-Admin123}"
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      # Bahmni Reports own database
+      REPORTS_DB_HOSTNAME: mysql
+      REPORTS_DB_NAME: bahmni_reports
+      REPORTS_DB_USERNAME: ${REPORTS_DB_USER}
+      REPORTS_DB_PASSWORD: ${REPORTS_DB_PASSWORD}
+      # OpenMRS API credentials
+      OPENMRS_HOSTNAME: openmrs
+      OPENMRS_USERNAME: ${OPENMRS_USER}
+      OPENMRS_PASSWORD: ${OPENMRS_PASSWORD}
+      #
       BAHMNI_LOGIN_URL: "http://localhost/bahmni/home/index.html#/login"
       BAHMNI_CONFIG_URL: "http://bahmni-config:8901/bahmni_config"
-    ports:
-      - 8080:8080
     healthcheck:
       test:
         - CMD
@@ -153,133 +171,165 @@ services:
         - "-f"
         - "http://localhost:8080/bahmni-reports"
     depends_on:
-      - db-mart
-      - openmrs-mysql
+      - postgresql
+      - mysql
     networks:
       bahmni:
         aliases:
           - bahmni-reports
     volumes:
-        - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
+        - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www/bahmni_config"
         - "bahmni-reports-data:/reports"
 
-  db-mart:
-    image: postgres:9.6-alpine
-    environment:
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
-    networks:
-      bahmni:
-        aliases:
-          - db-mart
-    volumes:
-      - "mart-psql-data:/var/lib/postgresql/data"
-
+  # Bahmni Mart: Standalone JAVA app to schedule ETL tasks
   bahmni-mart:
     build:
       context: bahmni-mart/
       args:
-        TIMEZONE: "${TIMEZONE:-UTC}"
+        TIMEZONE: "${TIMEZONE}"
     environment:
-      DB_MART: "${DB_MART_HOST:-db-mart}"
-      DB_OPENMRS: "${DB_OPENMRS_HOST:-openmrs-mysql}"
-      ANALYTICS_PASSWORD: "${ANALYTICS_PASSWORD:-password}"
-      OPENMRS_DB_PASSWORD: "${MYSQL_PASSWORD:-Admin123}"
-      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-password}"
-      MB_DB_PASS: "${METABASE_PASSWORD:-password}"
-      CRON_TIME: "${CRON_TIME:-30 21 * * *}"
+      # OpenMRS DB connection details
+      OPENMRS_DB_HOST:
+      OPENMRS_DB_NAME:
+      OPENMRS_DB_USER:
+      OPENMRS_DB_PASSWORD:
+      # Anayltics DB connection details. This is the actual Bahmni Mart database.
+      ANALYTICS_DB_HOST: postgresql
+      ANALYTICS_DB_NAME: analytics
+      ANALYTICS_DB_USER: analytics
+      ANALYTICS_DB_PASSWORD: password
+      #
+      CRON_TIME: "0/5 * * * *"
     depends_on:
-       - db-mart
-       - openmrs-mysql
+       - postgresql
+       - mysql
     networks:
       bahmni:
         aliases:
           - bahmni-mart
     volumes:
-      - "${BAHMNI_CONFIG_PATH:-bahmni_config}:/var/www/bahmni_config"
-      - "${BAHMNI_HOME:-bahmni_home}:/home/bahmni"
+      - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www/bahmni_config"
+      - "${BAHMNI_HOME:-bahmni-home}:/home/bahmni"
       - "./bahmni-mart/conf:/opt/bahmni-mart/conf"
 
+  # Metabase: Reporting paltform
   metabase:
     image: metabase/metabase:v0.31.2
     ports:
       - "${METABASE_PORT:-9003}:3000"
     environment:
       MB_DB_TYPE: postgres
-      MB_DB_DBNAME: metabase
       MB_DB_PORT: 5432
-      MB_DB_USER: metabase
-      MB_DB_PASS: "${METABASE_PASSWORD:-password}"
-      MB_DB_HOST: db-mart
+      MB_DB_DBNAME: metabase
+      MB_DB_USER: ${METABASE_DB_USER}
+      MB_DB_PASS: ${METABASE_DB_PASSWORD}
+      MB_DB_HOST: postgresql
     networks:
       bahmni:
         aliases:
           - metabase
 
-  odoo-postgresql:
+  # Postgreql: Database shared by multiple services
+  postgresql:
     image: postgres:9.6
     environment:
-      POSTGRES_USER: odoo
-      POSTGRES_PASSWORD: odoo
       POSTGRES_DB: postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      # Metabase DB vars
+      METABASE_DB_NAME: metabase
+      METABASE_DB_USER: ${METABASE_DB_USER}
+      METABASE_DB_PASSWORD: ${METABASE_DB_PASSWORD}
+      # Analystics (Bahmni Mart)
+      ANALYTICS_DB_NAME: analytics
+      ANALYTICS_DB_USER: ${ANALYTICS_DB_USER}
+      ANALYTICS_DB_PASSWORD: ${ANALYTICS_DB_PASSWORD}
+      # Odoo DB vars
+      ODOO_DB_NAME: odoo
+      ODOO_DB_USER: ${ODOO_DB_USER}
+      ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD}
     networks:
       bahmni:
         aliases:
-          - odoo-postgresql-1
+          - odoo-postgresql
+          - bahmni-mart-postgresql
+          - bahmni-mart-db
     volumes:
-      - odoo-postgresql-data:/var/lib/postgresql/data
+      - ${POSTGRES_DATADIR:-postgresql-data}:/var/lib/postgresql/data
+      - "./sqls/postgresql:/docker-entrypoint-initdb.d"
+      - ./postgresql/create_dbs/create_metabase_db.sh:/docker-entrypoint-initdb.d/create_metabase_db.sh
+      - ./postgresql/create_dbs/create_odoo_db.sh:/docker-entrypoint-initdb.d/create_odoo_db.sh
+      - ./postgresql/create_dbs/create_analytics_db.sh:/docker-entrypoint-initdb.d/create_analytics_db.sh
 
+  # Odoo: The ERP component of Bahmni
   odoo:
     depends_on:
-      - odoo-postgresql
+      - postgresql
     build:
       context: odoo/
     environment:
-      HOST: odoo-postgresql
+      HOST: postgresql
       PORT: 5432
-      USER: odoo
-      PASSWORD: odoo
+      USER: ${ODOO_DB_USER}
+      PASSWORD: ${ODOO_DB_PASSWORD}
+      DB_NAME: odoo
     networks:
       bahmni:
         aliases:
-          - odoo-1
+          - odoo-10
     volumes:
-      - "${ODOO_EXTRA_ADDONS:-odoo-extra_addons}:/mnt/extra-addons"
-      - "${ODOO_CONFIG_PATH:-odoo_config}:/opt/odoo-config"
+      - "${ODOO_EXTRA_ADDONS:-odoo-extra-addons}:/mnt/extra-addons"
+      - "${ODOO_CONFIG_PATH:-odoo-config}:/opt/odoo-config"
+      - "${ODOO_FILESTORE:-odoo-filestore}:/var/lib/odoo/filestore"
     ports:
       - "8069:8069"
 
+  # Odoo Connect: Integration layer between OpenMRS, Odoo and OpenELIS (?)
+  # aka 'Bahmni ERP Connect' or 'OpenERP Connect'
   odoo-connect:
     depends_on:
-      - odoo-postgresql
+      - postgresql
       - odoo
     build:
       context: odoo-connect/
     environment:
-      ODOO_DB_SERVER: odoo-postgresql
-      ODOO_DB: bahmni
-      ODOO_DB_USERNAME: odoo
-      ODOO_DB_PASSWORD: odoo
+      # Odoo
+      ODOO_DB_SERVER: postgresql
+      ODOO_DB: odoo
+      ODOO_DB_USERNAME: ${ODOO_DB_USER}
+      ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD}
+      # OpenMRS
+      OPENMRS_HOST: openmrs
+      OPENMRS_USER: ${OPENMRS_USER}
+      OPENMRS_PASSWORD: ${OPENMRS_PASSWORD}
+      # OpenELIS
+      OPENELIS_HOST: openelis
+      OPENELIS_USER: ${OPENELIS_USER:-openelis}
+      OPENELIS_PASSWORD: ${OPENELIS_PASSWORD:-password}
+      #
       APP_PROPERTIES_FILE: "/usr/local/tomcat/erp-atomfeed.properties"
     volumes:
-      - "./properties/odoo-connect-atomfeed.properties:${APP_PROPERTIES_FILE:-/usr/local/tomcat/erp-atomfeed.properties}"
+      - "./odoo-connect/conf/atomfeed.properties:/usr/local/tomcat/erp-atomfeed.properties"
     networks:
-      bahmni:
-        aliases:
-          - odoo-connect
+        bahmni:
+          aliases:
+            - odoo-connect
 
 version: "3.7"
 volumes:
-  openmrs-tomcat-data: ~
-  openmrs-mysql-data: ~
-  openmrs_config: ~
-  openmrs_modules: ~
-  bahmni_config: ~
-  bahmni_apps: ~
-  mart-psql-data: ~
-  bahmni_home: ~
-  odoo-postgresql-data: ~
-  odoo-extra_addons: ~
-  odoo_config: ~
+  openmrs-data: ~
+  mysql-data: ~
+  openmrs-config: ~
+  openmrs-config-checksums: ~
+  openmrs-modules: ~
+  openmrs-owas: ~
+  bahmni-config: ~
+  bahmni-apps: ~
+  bahmni-home: ~
+  postgresql-data: ~
+  odoo-extra-addons: ~
+  odoo-config: ~
+  odoo-filestore: ~
   bahmni-reports-data: ~
 networks:
   bahmni:

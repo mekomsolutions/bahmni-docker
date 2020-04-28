@@ -24,13 +24,13 @@ run_migrations(){
   (cd ${MIGRATIONS_FILES_FOLDER}/ && java $CHANGE_LOG_TABLE  -jar $LIQUIBASE_JAR --driver=$DRIVER --classpath=$CLASSPATH --changeLogFile=$CHANGE_LOG_FILE --url=jdbc:mysql://$2:3306/$3 --username=$4 --password=$5 update)
 }
 
-/usr/local/tomcat/wait-for-url.sh 3600 http://openmrs-tomcat:8080/openmrs/index.htm
+/usr/local/tomcat/wait-for-url.sh 3600 http://${OPENMRS_HOSTNAME}:8080/openmrs/index.htm
 
 RESULT=$(mysql -h $REPORTS_DB_HOSTNAME -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD --skip-column-names -e "SHOW DATABASES LIKE 'bahmni_reports'")
 if [ "$RESULT" != "bahmni_reports" ] ; then
   echo "*********** DB Creation & Migrations  ******************"
   echo "OpenMRS:"
-  run_migrations liquibase-openmrs.xml $OPENMRS_DB_HOSTNAME openmrs $MYSQL_ROOT_USER ${OPENMRS_DB_PASSWORD}
+  run_migrations liquibase-openmrs.xml $OPENMRS_DB_HOSTNAME $OPENMRS_DB_NAME $MYSQL_ROOT_USER ${MYSQL_ROOT_PASSWORD}
   echo "Bahmni Reports:"
   mysql -h $REPORTS_DB_HOSTNAME -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD -e "CREATE DATABASE bahmni_reports;"
   mysql -h $REPORTS_DB_HOSTNAME -u$MYSQL_ROOT_USER -p$MYSQL_ROOT_PASSWORD -e "GRANT ALL PRIVILEGES ON bahmni_reports.* TO '$REPORTS_DB_USERNAME'@'%' identified by '$REPORTS_DB_PASSWORD' WITH GRANT OPTION; FLUSH PRIVILEGES;"

@@ -7,13 +7,11 @@ setup_properties(){
 }
 
 setup_cronjob() {
-   echo "$CRON_TIME  java -jar /opt/bahmni-mart/lib/bahmni-mart.jar --spring.config.location=\"/opt/bahmni-mart/properties/application.properties\" > /proc/1/fd/1 2>/proc/1/fd/2" | crontab - 
+   echo "$CRON_TIME  java -jar /opt/bahmni-mart/lib/bahmni-mart.jar --spring.config.location=\"/opt/bahmni-mart/properties/application.properties\" > /proc/1/fd/1 2>/proc/1/fd/2" | crontab -
 }
 
 setup_properties
-echo "*********** PSQL DB Creation Starts   ******************"
-sh /etc/scripts/createdbuser.sh
-echo "*********** PSQL DB Creation Ends   ******************"
+echo "*********** Post install script: Setting up cron jobs   ******************"
 setup_cronjob
-echo "********** Post Install Script Completed ***************"
+echo "********** Post install script completed ***************"
 crond -f -d 8

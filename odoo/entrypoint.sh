@@ -56,7 +56,7 @@ sleep 5
 
 echo "Installing base Odoo & Bahmni Addons"
 
-exec `odoo $odoo_addons --stop-after-init --without-demo=all -d bahmni ${DB_ARGS[@]}`
+exec `odoo $odoo_addons --stop-after-init --without-demo=all -d ${DB_NAME} ${DB_ARGS[@]}`
 
 echo "Addons installed successfully, Restarting Odoo and initializating"
 
@@ -66,11 +66,11 @@ case "$1" in
         if [[ "$1" == "scaffold" ]] ; then
             exec odoo "$@"
         else
-            exec `odoo --without-demo=all -d bahmni ${DB_ARGS[@]}`
+            exec `odoo --without-demo=all -d ${DB_NAME} ${DB_ARGS[@]}`
         fi
         ;;
     -*)
-        exec odoo "--without-demo=all -d bahmni $@" "${DB_ARGS[@]}"
+        exec odoo "--without-demo=all -d ${DB_NAME} $@" "${DB_ARGS[@]}"
         ;;
     *)
         exec "$@"
