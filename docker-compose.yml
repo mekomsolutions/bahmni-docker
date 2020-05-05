@@ -257,9 +257,6 @@ services:
     volumes:
       - ${POSTGRES_DATADIR:-postgresql-data}:/var/lib/postgresql/data
       - "./sqls/postgresql:/docker-entrypoint-initdb.d"
-      - ./postgresql/create_dbs/create_metabase_db.sh:/docker-entrypoint-initdb.d/create_metabase_db.sh
-      - ./postgresql/create_dbs/create_odoo_db.sh:/docker-entrypoint-initdb.d/create_odoo_db.sh
-      - ./postgresql/create_dbs/create_analytics_db.sh:/docker-entrypoint-initdb.d/create_analytics_db.sh
 
   # Odoo: The ERP component of Bahmni
   odoo:
