@@ -133,7 +133,7 @@ services:
           - openmrs-mysql
     volumes:
       - "${MYSQL_DATADIR:-mysql-data}:/var/lib/mysql"
-      - "./sqls/mysql:/docker-entrypoint-initdb.d"
+      - "${SQL_SCRIPTS_PATH:-./sqls}/mysql:/docker-entrypoint-initdb.d"
 
   # Bahmni Reports: Standalone Java app to provide Reporting capabilities
   bahmni-reports:
@@ -256,7 +256,7 @@ services:
           - bahmni-mart-db
     volumes:
       - ${POSTGRES_DATADIR:-postgresql-data}:/var/lib/postgresql/data
-      - "./sqls/postgresql:/docker-entrypoint-initdb.d"
+      - "${SQL_SCRIPTS_PATH:-./sqls}/postgresql:/docker-entrypoint-initdb.d"
 
   # Odoo: The ERP component of Bahmni
   odoo:
