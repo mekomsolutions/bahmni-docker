@@ -295,6 +295,9 @@ services:
       ODOO_DB: odoo
       ODOO_DB_USERNAME: ${ODOO_DB_USER}
       ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD}
+      ODOO_HOST: odoo 
+      ODOO_USERNAME: ${ODOO_USER}
+      ODOO_PASSWORD: ${ODOO_PASSWORD}
       # OpenMRS
       OPENMRS_HOST: openmrs
       OPENMRS_USER: ${OPENMRS_USER}
