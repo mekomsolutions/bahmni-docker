@@ -7,17 +7,12 @@ DEBUG=${DEBUG:-false}
 DEBUG_PORT=${DEBUG_PORT:-8000}
 catalina_params=()
 
-cat > /usr/local/tomcat/openmrs-server.properties << EOF
-install_method=auto
-connection.url=jdbc\:mysql\://${DB_HOST}\:3306/${DB_DATABASE}?autoReconnect\=true&sessionVariables\=default_storage_engine\=InnoDB&useUnicode\=true&characterEncoding\=UTF-8
-connection.username=${DB_USERNAME}
-connection.password=${DB_PASSWORD}
-has_current_openmrs_database=true
-create_database_user=false
-module_web_admin=${MODULE_WEB_ADMIN}
-create_tables=${DB_CREATE_TABLES}
-auto_update_database=${DB_AUTO_UPDATE}
-EOF
+
+for file in /etc/properties/*; do
+name=$(basename "${file}")
+envsubst < ${file} > /usr/local/tomcat/${name}
+done
+
 
 # create datbase credentials file to check the existance of data
 mkdir -p /etc/mysql/ && touch /etc/mysql/db-credentials.cnf

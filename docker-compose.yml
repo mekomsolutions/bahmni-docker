@@ -89,6 +89,8 @@ services:
     depends_on:
       - mysql
     environment:
+      ODOO_DB: odoo
+      ODOO_HOST: odoo
       MODULE_WEB_ADMIN: "true"
       DB_AUTO_UPDATE: "true"
       DB_CREATE_TABLES: "true"
@@ -114,7 +116,7 @@ services:
       - "${OPENMRS_MODULES_PATH:-openmrs-modules}:/usr/local/tomcat/.OpenMRS/modules/"
       - "${OPENMRS_CONFIG_PATH:-openmrs-config}:/usr/local/tomcat/.OpenMRS/configuration/"
       - "${OPENMRS_CONFIG_CHECKSUMS_PATH:-openmrs-config-checksums}:/usr/local/tomcat/.OpenMRS/configuration_checksums/"
-      - ./properties/openmrs-bahmnicore.properties:/usr/local/tomcat/.OpenMRS/bahmnicore.properties
+      - ./properties/openmrs/:/etc/properties/
 
   # MySQL
   mysql:
