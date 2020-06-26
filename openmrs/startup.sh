@@ -10,7 +10,7 @@ catalina_params=()
 
 for file in /etc/properties/*; do
 name=$(basename "${file}")
-envsubst < ${file} > /usr/local/tomcat/${name}
+envsubst < ${file} > /usr/local/tomcat/.OpenMRS/${name}
 done
 
 

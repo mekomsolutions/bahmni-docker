@@ -281,7 +281,7 @@ services:
       - "${ODOO_CONFIG_PATH:-odoo-config}:/opt/odoo-config"
       - "${ODOO_FILESTORE:-odoo-filestore}:/var/lib/odoo/filestore"
     ports:
-      - "8069:8069"
+      - "${ODOO_PORT:-8069}:8069"
 
   # Odoo Connect: Integration layer between OpenMRS, Odoo and OpenELIS (?)
   # aka 'Bahmni ERP Connect' or 'OpenERP Connect'
