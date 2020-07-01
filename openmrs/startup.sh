@@ -19,6 +19,12 @@ create_tables=${DB_CREATE_TABLES}
 auto_update_database=${DB_AUTO_UPDATE}
 EOF
 
+for file in /etc/properties/*; do
+name=$(basename "${file}")
+envsubst < ${file} > /usr/local/tomcat/.OpenMRS/${name}
+done
+
+
 # create datbase credentials file to check the existance of data
 mkdir -p /etc/mysql/ && touch /etc/mysql/db-credentials.cnf
 cat > /etc/mysql/db-credentials.cnf << EOF
