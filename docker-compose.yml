@@ -90,7 +90,10 @@ services:
       - mysql
     environment:
       ODOO_DB: odoo
+      ODOO_PORT: 8069
       ODOO_HOST: odoo
+      ODOO_USER: ${ODOO_USER}
+      ODOO_PASSWORD: ${ODOO_PASSWORD}
       MODULE_WEB_ADMIN: "true"
       DB_AUTO_UPDATE: "true"
       DB_CREATE_TABLES: "true"
@@ -281,7 +284,7 @@ services:
       - "${ODOO_CONFIG_PATH:-odoo-config}:/opt/odoo-config"
       - "${ODOO_FILESTORE:-odoo-filestore}:/var/lib/odoo/filestore"
     ports:
-      - "${ODOO_PORT:-8069}:8069"
+      - "8069:8069"
 
   # Odoo Connect: Integration layer between OpenMRS, Odoo and OpenELIS (?)
   # aka 'Bahmni ERP Connect' or 'OpenERP Connect'
