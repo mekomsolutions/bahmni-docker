@@ -29,4 +29,4 @@ ProxyPassReverse /bahmnireports http://bahmni-reports:8080/bahmni-reports
 # Rewrite the OpenMRS Session Cookie as reporting_session Cookie for Bahmni Reports
 RewriteCond %{REQUEST_URI} ^/openmrs*
 RewriteCond %{HTTP_COOKIE} ^.*JSESSIONID=([^;]+)
-RewriteRule ^.*$ - [CO=reporting_session;%1:%{SERVER_NAME}:86400:/:false:true]
+RewriteRule ^.*$ - [CO=reporting_session:%1:%{SERVER_NAME}:86400:/:false:true]
