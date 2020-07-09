@@ -50,6 +50,11 @@ function odoo_addons_param() {
 
 odoo_addons_param
 
+for file in /etc/properties/*; do
+name=$(basename "${file}")
+envsubst < ${file} > /etc/odoo/${name}
+done
+
 /etc/odoo/wait-for-it.sh --timeout=3600 ${HOST}:${PORT}
 
 sleep 5

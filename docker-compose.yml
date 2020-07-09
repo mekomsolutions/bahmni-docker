@@ -276,6 +276,7 @@ services:
       USER: ${ODOO_DB_USER}
       PASSWORD: ${ODOO_DB_PASSWORD}
       DB_NAME: odoo
+      ODOO_MASTER_PASSWORD: ${ODOO_MASTER_PASSWORD}
     networks:
       bahmni:
         aliases:
@@ -284,6 +285,7 @@ services:
       - "${ODOO_EXTRA_ADDONS:-odoo-extra-addons}:/mnt/extra-addons"
       - "${ODOO_CONFIG_PATH:-odoo-config}:/opt/odoo-config"
       - "${ODOO_FILESTORE:-odoo-filestore}:/var/lib/odoo/filestore"
+      - ./properties/odoo/:/etc/properties/
     ports:
       - "${ODOO_PUBLIC_PORT:-8069}:8069"
 
