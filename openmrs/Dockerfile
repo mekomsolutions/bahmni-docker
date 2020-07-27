@@ -15,6 +15,7 @@ RUN sed -i '/Connector port="8080"/a URIEncoding="UTF-8" relaxedPathChars="[]|" 
 
 RUN chmod +x /usr/local/tomcat/wait-for-it.sh
 RUN chmod +x /usr/local/tomcat/startup.sh
+RUN mkdir /usr/local/tomcat/.OpenMRS
 
 # For documentation purpose only
 COPY openmrs-distro.properties /root/openmrs-distro.properties
