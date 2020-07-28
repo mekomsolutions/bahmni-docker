@@ -219,7 +219,7 @@ services:
 
   # Metabase: Reporting paltform
   metabase:
-    image: metabase/metabase:v0.31.2
+    image: zouchine/metabase:arm-0.31.2
     environment:
       MB_DB_TYPE: postgres
       MB_DB_PORT: 5432
