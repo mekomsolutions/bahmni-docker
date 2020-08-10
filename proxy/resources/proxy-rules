@@ -20,6 +20,10 @@ ProxyPassReverse /bahmni_config http://bahmni-config:8901/bahmni_config
 ProxyPass /implementer-interface http://implementer-interface:8902/implementer-interface
 ProxyPassReverse /implementer-interface http://implementer-interface:8902/implementer-interface
 
+# Appointments
+ProxyPass /appointments http://appointments:8903/appointments
+ProxyPassReverse /appointments http://appointments:8903/appointments
+
 # Others
 Redirect permanent  /home  /bahmni/home/
 

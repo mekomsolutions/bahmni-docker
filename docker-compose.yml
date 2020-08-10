@@ -63,6 +63,26 @@ services:
         aliases:
           - implementer-interface
 
+  # Appointments
+  appointments:
+    build:
+      context: appointments/
+      args:
+        TIMEZONE: "${TIMEZONE}"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost:8903/appointments/index.html"
+      timeout: 20s
+    ports:
+      - 8903:8903
+    networks:
+      bahmni:
+        aliases:
+          - appointments-1
+
   # Bahmni Config: Bahmni Apps configuration
   bahmni-config:
     build:
