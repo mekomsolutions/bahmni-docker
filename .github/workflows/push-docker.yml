@@ -1,0 +1,23 @@
+on: [push]
+
+jobs:
+  build:
+    name: Build and push Docker images
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set Docker registry credentials
+      env:
+        DOCKER_REGISTRY_PASSWORD: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+      run: |
+        echo "$DOCKER_REGISTRY_PASSWORD" > $GITHUB_WORKSPACE/secret.txt
+    # Use the output from the `hello` step
+    - run: cat $GITHUB_WORKSPACE/secret.txt
+    - run: |
+        cd $GITHUB_WORKSPACE/.github/actions/publish_images && npm install
+    - name: Build and push images
+      env:
+        REGISTRY_USERNAME: "mekomsolutions"
+        REGISTRY_URL: ""
+      uses: ./.github/actions/publish_images
