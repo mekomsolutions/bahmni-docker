@@ -252,8 +252,7 @@ services:
         aliases:
           - metabase
     ports:
-      - "${METABASE_PULIC_PORT:-9003}:3000"
-
+      - "${METABASE_PUBLIC_PORT:-9003}:3000"
 
   # Postgreql: Database shared by multiple services
   postgresql:
