@@ -18,32 +18,42 @@ cd bahmni-docker
 
 ### Retrieve the Bahmni distribution of your choice:
 
-The Docker images do not provide a default Bahmni distribution yet, therefore you need to first fetch one.
+The Docker images do not provide a default Bahmni distribution so you need to first fetch one.
+You have multiple options available:
+- Clone and build one of the Bahmni Distros ([Haiti](https://github.com/mekomsolutions/bahmni-distro-haiti), [C2C](https://github.com/mekomsolutions/bahmni-distro-c2c) , [HSC](https://github.com/CRUDEM/bahmni-distro-hsc), [Cambodia](https://github.com/mekomsolutions/openmrs-distro-cambodia)...)
 
-You can use the Haiti distribution for example:
-- fetch the Maven artifact
+- or manually download the Zip distro from Nexus:
+https://nexus.mekomsolutions.net/#browse/search=name.raw%3Dbahmni-distro-*
+
+
+Once you have the Zip file (built or downloaded) unzip it in `/tmp/` for instance:
+
+Export you distro name as env var:
+For example:
 ```
-mvn dependency:get -DrepoUrl=https://nexus.mekomsolutions.net/repository/maven-public -Dartifact=net.mekomsolutions:bahmni-distro-haiti:1.0.0-SNAPSHOT:zip
+export DISTRO_GROUP="haiti"
 ```
-- copy it in `/tmp/bahmni-distro-haiti/`
+
 ```
-mvn dependency:copy -Dartifact=net.mekomsolutions:bahmni-distro-haiti:1.0.0-SNAPSHOT:zip -DoutputDirectory=/tmp/bahmni-distro-haiti/
-```
-- unzip it in `/tmp/bahmni-distro-haiti/`
-```
-unzip /tmp/bahmni-distro-haiti/bahmni-distro-haiti-1.0.0-20200130.172847-69.zip -d /tmp/bahmni-distro-haiti/
+unzip path/to/the/zip/file -d /tmp/bahmni-distro-$GROUP/
 ```
 
 ### Export the variables:
 
-Export all variables at once:
+The Bahmni Docker project relies on environment variable to document where the Distro sources are to be found.
+As an example, you can export the following variables:
 ```
-export GROUP="c2c"; export DISTRO_PATH=/tmp/bahmni-distro-$GROUP; export OPENMRS_CONFIG_PATH=$DISTRO_PATH/openmrs_config; export BAHMNI_CONFIG_PATH=$DISTRO_PATH/bahmni_config; export OPENMRS_MODULES_PATH=$DISTRO_PATH/openmrs_modules; export BAHMNI_APPS_PATH=$DISTRO_PATH/bahmni_emr/bahmniapps
+export DISTRO_PATH=/tmp/bahmni-distro-$DISTRO_GROUP;  \
+export OPENMRS_CONFIG_PATH=$DISTRO_PATH/openmrs_config;  \
+export BAHMNI_CONFIG_PATH=$DISTRO_PATH/bahmni_config;  \
+export OPENMRS_MODULES_PATH=$DISTRO_PATH/openmrs_modules;  \
+export BAHMNI_APPS_PATH=$DISTRO_PATH/bahmni_emr/bahmniapps
 ```
 
 ### Start Bahmni:
+
 ```
-docker-compose -p $GROUP up
+docker-compose -p $DISTRO_GROUP up
 ```
 <p align="center">
 <img src="./readme/docker-compose-up-shadow.png" alt="docker-compose up" height="200">
