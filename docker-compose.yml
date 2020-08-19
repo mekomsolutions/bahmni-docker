@@ -214,20 +214,21 @@ services:
         TIMEZONE: "${TIMEZONE}"
     environment:
       # OpenMRS DB connection details
-      OPENMRS_DB_HOST:
-      OPENMRS_DB_NAME:
-      OPENMRS_DB_USER:
-      OPENMRS_DB_PASSWORD:
+      OPENMRS_DB_HOST: mysql
+      OPENMRS_DB_NAME: openmrs
+      OPENMRS_DB_USER: ${OPENMRS_DB_USER}
+      OPENMRS_DB_PASSWORD: ${OPENMRS_DB_PASSWORD}
       # Anayltics DB connection details. This is the actual Bahmni Mart database.
       ANALYTICS_DB_HOST: postgresql
       ANALYTICS_DB_NAME: analytics
-      ANALYTICS_DB_USER: analytics
-      ANALYTICS_DB_PASSWORD: password
+      ANALYTICS_DB_USER: ${ANALYTICS_DB_USER}
+      ANALYTICS_DB_PASSWORD: ${ANALYTICS_DB_PASSWORD}
       #
       CRON_TIME: "0/5 * * * *"
     depends_on:
-       - postgresql
+       - openmrs
        - mysql
+       - postgresql
     networks:
       bahmni:
         aliases:

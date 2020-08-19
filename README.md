@@ -137,7 +137,11 @@ services:
     entrypoint: ["echo", "[ERROR] Service is disabled in docker-compose.override.yml file"]
   bahmni-mart:
     entrypoint: ["echo", "[ERROR] Service is disabled in docker-compose.override.yml file"]
-  db-mart:
+  odoo:
+    entrypoint: ["echo", "[ERROR] Service is disabled in docker-compose.override.yml file"]
+  odoo-connect:
+    entrypoint: ["echo", "[ERROR] Service is disabled in docker-compose.override.yml file"]
+  postgresql:
     entrypoint: ["echo", "[ERROR] Service is disabled in docker-compose.override.yml file"]
 ```
 
