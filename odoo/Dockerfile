@@ -8,6 +8,8 @@ RUN apt update
 RUN apt-get -y install libsasl2-dev python-dev libldap2-dev libssl-dev  \
         npm node nodejs ca-certificates node-less \
         git gettext-base
+RUN npm install -g less \
+    && npm install -g less-plugin-clean-css
 
 RUN addgroup odoo && adduser odoo --shel /bin/sh --disabled-password --ingroup odoo \
     && echo "odoo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
