@@ -194,7 +194,7 @@ ports:
 
 `BAHMNI_APPS_PATH`: Path to Bahmni Apps sources.
 
-`BAHMNI_HOME`: Path to Bahmni Home.
+`BAHMNI_HOME_PATH`: Path to Bahmni Home. Bahmni Home is mostly used to 
 
 `TIMEZONE`**\***: Server timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a complete list of possible Timezones.
 

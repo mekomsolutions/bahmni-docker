@@ -63,6 +63,25 @@ services:
         aliases:
           - implementer-interface
 
+  bahmni-home:
+    build:
+      context: bahmni_home/
+      args:
+        TIMEZONE: "${TIMEZONE}"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - "-f"
+        - "http://localhost:8904/document_images/index.html"
+      timeout: 20s
+    networks:
+      bahmni:
+        aliases:
+          - bahmni-home-1
+    volumes:
+      - "${BAHMNI_HOME_PATH:-bahmni-home}:/var/www/"
+
   # Appointments
   appointments:
     build:
@@ -76,8 +95,6 @@ services:
         - "-f"
         - "http://localhost:8903/appointments/index.html"
       timeout: 20s
-    ports:
-      - 8903:8903
     networks:
       bahmni:
         aliases:
@@ -139,6 +156,7 @@ services:
       - "${OPENMRS_MODULES_PATH:-openmrs-modules}:/usr/local/tomcat/.OpenMRS/modules/"
       - "${OPENMRS_CONFIG_PATH:-openmrs-config}:/usr/local/tomcat/.OpenMRS/configuration/"
       - "${OPENMRS_CONFIG_CHECKSUMS_PATH:-openmrs-config-checksums}:/usr/local/tomcat/.OpenMRS/configuration_checksums/"
+      - "${BAHMNI_HOME_PATH:-bahmni-home}/:/home/bahmni/"
       - ./properties/openmrs/:/etc/properties/
 
   # MySQL
@@ -235,7 +253,7 @@ services:
           - bahmni-mart
     volumes:
       - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www/bahmni_config"
-      - "${BAHMNI_HOME:-bahmni-home}:/home/bahmni"
+      - "${BAHMNI_HOME_PATH:-bahmni-home}:/home/bahmni"
       - "./bahmni-mart/conf:/opt/bahmni-mart/conf"
 
   # Metabase: Reporting paltform

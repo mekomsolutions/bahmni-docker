@@ -24,6 +24,28 @@ ProxyPassReverse /implementer-interface http://implementer-interface:8902/implem
 ProxyPass /appointments http://appointments:8903/appointments
 ProxyPassReverse /appointments http://appointments:8903/appointments
 
+# Bahmni Home
+ProxyPass /document_images http://bahmni-home:8904/document_images
+ProxyPassReverse /document_images http://bahmni-home:8904/document_images
+#
+ProxyPass /clinical_forms http://bahmni-home:8904/document_images
+ProxyPassReverse /document_images http://bahmni-home:8904/document_images
+#
+ProxyPass /patient_images http://bahmni-home:8904/patient_images
+ProxyPassReverse /patient_images http://bahmni-home:8904/patient_images
+#
+ProxyPass /reports http://bahmni-home:8904/reports
+ProxyPassReverse /reports http://bahmni-home:8904/reports
+#
+ProxyPass /pacs_images http://bahmni-home:8904/pacs_images
+ProxyPassReverse /pacs_images http://bahmni-home:8904/pacs_images
+#
+ProxyPass /uploaded_results http://bahmni-home:8904/uploaded_results
+ProxyPassReverse /uploaded_results http://bahmni-home:8904/uploaded_results
+#
+ProxyPass /uploaded-files http://bahmni-home:8904/uploaded-files
+ProxyPassReverse /uploaded-files http://bahmni-home:8904/uploaded-files
+
 # Others
 Redirect permanent  /home  /bahmni/home/
 
