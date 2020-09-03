@@ -1,4 +1,4 @@
-FROM armhf/python:2.7
+FROM python:2.7
 
 ARG ODOO_VERSION=10.0
 # ODOO_RELEASE Should be a nightly build snapshot date of ODOO_VERSION
@@ -6,7 +6,7 @@ ARG ODOO_RELEASE=20200101
 
 RUN apt update
 RUN apt-get -y install libsasl2-dev python-dev libldap2-dev libssl-dev  \
-        npm node nodejs ca-certificates node-less \
+        npm nodejs ca-certificates node-less \
         git gettext-base
 RUN npm install -g less \
     && npm install -g less-plugin-clean-css

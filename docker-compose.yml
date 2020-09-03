@@ -238,7 +238,7 @@ services:
 
   # Postgreql: Database shared by multiple services
   postgresql:
-    image: armhf/postgres:9.6-alpine
+    image: postgres:9.6-alpine
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: ${POSTGRES_USER}
