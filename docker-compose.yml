@@ -157,6 +157,7 @@ services:
       - "${OPENMRS_CONFIG_PATH:-openmrs-config}:/usr/local/tomcat/.OpenMRS/configuration/"
       - "${OPENMRS_CONFIG_CHECKSUMS_PATH:-openmrs-config-checksums}:/usr/local/tomcat/.OpenMRS/configuration_checksums/"
       - "${BAHMNI_HOME_PATH:-bahmni-home}/:/home/bahmni/"
+      - "${BAHMNI_OBSCALCULATOR_PATH:-bahmni-obscalculator}:/usr/local/tomcat/.OpenMRS/obscalculator"
       - ./properties/openmrs/:/etc/properties/
 
   # MySQL
@@ -372,6 +373,7 @@ volumes:
   openmrs-modules: ~
   openmrs-owas: ~
   bahmni-config: ~
+  bahmni-obscalculator: ~
   bahmni-apps: ~
   bahmni-home: ~
   postgresql-data: ~
