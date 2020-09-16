@@ -170,7 +170,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     healthcheck:
       test: "exit 0"
-    image: "mysql:5.6"
+    image: "mariadb:10.3"
     networks:
       bahmni:
         aliases:
@@ -259,7 +259,8 @@ services:
 
   # Metabase: Reporting paltform
   metabase:
-    image: metabase/metabase:v0.31.2
+    build:
+      context: metabase/
     environment:
       MB_DB_TYPE: postgres
       MB_DB_PORT: 5432
@@ -276,7 +277,7 @@ services:
 
   # Postgreql: Database shared by multiple services
   postgresql:
-    image: postgres:9.6
+    image: postgres:9.6-alpine
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: ${POSTGRES_USER}
