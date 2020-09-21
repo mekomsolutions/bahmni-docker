@@ -9,12 +9,12 @@ ProxyPassReverse /openmrs http://openmrs:8080/openmrs
 # Bahmni Apps
 # Bahmni Apps requires to lookup the server date. Redirecting calls to "cgi-bin/systemdate".
 ProxyPass /cgi-bin/systemdate http://bahmniapps:8900/cgi-bin/systemdate
-ProxyPass /bahmni http://bahmniapps:8900/bahmniapps
-ProxyPassReverse /bahmni http://bahmniapps:8900/bahmniapps
+ProxyPass /bahmni http://bahmniapps:8900
+ProxyPassReverse /bahmni http://bahmniapps:8900
 
 # Bahmni Config
-ProxyPass /bahmni_config http://bahmni-config:8901/bahmni_config
-ProxyPassReverse /bahmni_config http://bahmni-config:8901/bahmni_config
+ProxyPass /bahmni_config http://bahmni-config:8901
+ProxyPassReverse /bahmni_config http://bahmni-config:8901
 
 # Implementer Interface
 ProxyPass /implementer-interface http://implementer-interface:8902/implementer-interface

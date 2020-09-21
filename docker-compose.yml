@@ -36,14 +36,14 @@ services:
         - CMD
         - curl
         - "-f"
-        - "http://localhost:8900/bahmniapps/home/index.html"
+        - "http://localhost:8900/home/index.html"
       timeout: 20s
     networks:
       bahmni:
         aliases:
           - bahmniapps-1
     volumes:
-      - "${BAHMNI_APPS_PATH:-bahmni-apps}:/var/www/bahmniapps"
+      - "${BAHMNI_APPS_PATH:-bahmni-apps}:/var/www"
 
   # Implementer Interface: Front-end application to bring Bahmni Forms 2.0
   implementer-interface:
@@ -64,10 +64,9 @@ services:
           - implementer-interface
 
   bahmni-home:
-    build:
-      context: bahmni_home/
-      args:
-        TIMEZONE: "${TIMEZONE}"
+    image: httpd:2.4
+    expose:
+      - "8904"
     healthcheck:
       test:
         - CMD
@@ -81,6 +80,7 @@ services:
           - bahmni-home-1
     volumes:
       - "${BAHMNI_HOME_PATH:-bahmni-home}:/var/www/"
+      - ./properties/apache/httpd-8904.conf:/usr/local/apache2/conf/httpd.conf
 
   # Appointments
   appointments:
@@ -102,23 +102,23 @@ services:
 
   # Bahmni Config: Bahmni Apps configuration
   bahmni-config:
-    build:
-      context: bahmni_config/
-      args:
-        TIMEZONE: "${TIMEZONE}"
+    image: httpd:2.4
+    expose:
+      - "8901"
     healthcheck:
       test:
         - CMD
         - curl
         - "-f"
-        - "http://localhost:8901/bahmni_config/openmrs/apps/home/app.json"
+        - "http://localhost:8901/openmrs/apps/home/app.json"
       timeout: 20s
     networks:
       bahmni:
         aliases:
           - bahmni-config-1
     volumes:
-      - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www/bahmni_config"
+      - ./properties/apache/httpd-8901.conf:/usr/local/apache2/conf/httpd.conf 
+      - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www"
 
   # OpenMRS:
   openmrs:
