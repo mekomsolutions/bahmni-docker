@@ -36,14 +36,14 @@ services:
         - CMD
         - curl
         - "-f"
-        - "http://localhost:8900/bahmniapps/home/index.html"
+        - "http://localhost:8900/home/index.html"
       timeout: 20s
     networks:
       bahmni:
         aliases:
           - bahmniapps-1
     volumes:
-      - "${BAHMNI_APPS_PATH:-bahmni-apps}:/var/www/bahmniapps"
+      - "${BAHMNI_APPS_PATH:-bahmni-apps}:/var/www"
 
   # Implementer Interface: Front-end application to bring Bahmni Forms 2.0
   implementer-interface:
@@ -110,7 +110,7 @@ services:
         - CMD
         - curl
         - "-f"
-        - "http://localhost:8901/bahmni_config/openmrs/apps/home/app.json"
+        - "http://localhost:8901/openmrs/apps/home/app.json"
       timeout: 20s
     networks:
       bahmni:
@@ -118,7 +118,7 @@ services:
           - bahmni-config-1
     volumes:
       - ./properties/apache/httpd-8901.conf:/usr/local/apache2/conf/httpd.conf 
-      - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www/bahmni_config"
+      - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www"
 
   # OpenMRS:
   openmrs:
