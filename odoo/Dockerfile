@@ -11,15 +11,15 @@ RUN apt-get -y install libsasl2-dev python-dev libldap2-dev libssl-dev  \
 RUN npm install -g less \
     && npm install -g less-plugin-clean-css
 
-RUN addgroup odoo && adduser odoo --shel /bin/sh --disabled-password --ingroup odoo \
+RUN addgroup odoo && adduser odoo --shel /bin/sh --gecos "" --disabled-password --ingroup odoo  \
     && echo "odoo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
     && mkdir -p /opt \
-    && wget https://nightly.odoo.com/10.0/nightly/src/odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz \
-    && tar -xzf odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -C /opt \
+    && wget https://nightly.odoo.com/10.0/nightly/src/odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -q \
+    && tar -xzf odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz -C /opt >/dev/null \
     && rm odoo_${ODOO_VERSION}.${ODOO_RELEASE}.tar.gz \
     && cd /opt/odoo-${ODOO_VERSION}.post${ODOO_RELEASE} \
-    && pip install -r requirements.txt \
-    && python setup.py install \
+    && pip install -r requirements.txt >/dev/null \
+    && python setup.py install > /dev/null \
     && rm -r /opt/odoo-${ODOO_VERSION}.post${ODOO_RELEASE}
 
 # Copy entrypoint script and Odoo configuration file
