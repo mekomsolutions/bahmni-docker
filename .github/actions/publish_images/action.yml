@@ -1,5 +1,0 @@
-name: 'Publish Docker Images'
-description: 'Builds and publishes all Dockerfile found in the project'
-runs:
-  using: 'node12'
-  main: 'index.js'
