@@ -19,9 +19,11 @@ create_tables=${DB_CREATE_TABLES}
 auto_update_database=${DB_AUTO_UPDATE}
 EOF
 
-for file in /etc/properties/*; do
-name=$(basename "${file}")
-envsubst < ${file} > /usr/local/tomcat/.OpenMRS/${name}
+configFiles=`ls /etc/properties/`
+for file in $configFiles
+do
+    name=$(basename "${file}")
+    envsubst < ${file} > /usr/local/tomcat/.OpenMRS/${name}
 done
 
 
