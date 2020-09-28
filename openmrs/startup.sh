@@ -68,7 +68,7 @@ fi
 catalina_params+=(run)
 
 # start tomcat
-/usr/local/tomcat/bin/catalina.sh "${catalina_params[@]}"
+/usr/local/tomcat/bin/catalina.sh "${catalina_params[@]}" &
 
 # trigger first filter to start database initialization
 sleep 15
