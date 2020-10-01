@@ -19,7 +19,7 @@ create_tables=${DB_CREATE_TABLES}
 auto_update_database=${DB_AUTO_UPDATE}
 EOF
 
-configFiles=`ls /etc/properties/`
+configFiles=`ls -d /etc/properties/*`
 for file in $configFiles
 do
     name=$(basename "${file}")
