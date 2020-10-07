@@ -35,7 +35,7 @@ export DISTRO_GROUP="haiti"
 ```
 
 ```
-unzip path/to/the/zip/file -d /tmp/bahmni-distro-$GROUP/
+unzip path/to/the/zip/file -d /tmp/bahmni-distro-$DISTRO_GROUP/
 ```
 
 ### Export the variables:
@@ -59,8 +59,8 @@ docker-compose -p $DISTRO_GROUP up
 <img src="./readme/docker-compose-up-shadow.png" alt="docker-compose up" height="200">
 </p>
 
-This assumes that you run the `docker` command as the same user and in the same window in which you exported your variables.
-If Docker is run as `sudo`, the variables won't have an effect. Make sure to either export them as root, or run `docker` with `sudo -E` option to preserve the user environment.
+**Important:** This assumes that you run the `docker` command as the same user and in the same window in which you exported your variables.
+If Docker is run as `sudo`, the variables won't have an effect. Make sure to either export them as root, or run `docker` with `sudo -E` option to preserve the user environment. See [Docker on Linux Post-install steps](https://docs.docker.com/engine/install/linux-postinstall/)
 
 ### Access the servers:
 
@@ -194,7 +194,7 @@ ports:
 
 `BAHMNI_APPS_PATH`: Path to Bahmni Apps sources.
 
-`BAHMNI_HOME_PATH`: Path to Bahmni Home. Bahmni Home is mostly used to 
+`BAHMNI_HOME_PATH`: Path to Bahmni Home. Bahmni Home is mostly used to
 
 `TIMEZONE`**\***: Server timezone. See https://en.wikipedia.org/wiki/List_of_tz_database_time_zones for a complete list of possible Timezones.
 
