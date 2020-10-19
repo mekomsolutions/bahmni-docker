@@ -89,6 +89,12 @@ If Docker is run as `sudo`, the variables won't have an effect. Make sure to eit
 <img src="./readme/metabase-login-shadow.png" alt="Metabase login screen" width="300">
 </p>
 
+- OpenELIS: http://localhost/openelis
+
+<p align="left">
+<img src="./readme/openelis-login.png" alt="OpenELIS login screen" width="300">
+</p>
+
 ## Advanced
 
 ### TLS support
@@ -218,3 +224,4 @@ odoo-initializer/) for more informations.
   - Metabase
   - Odoo
   - Odoo Connect
+  - OpenELIS

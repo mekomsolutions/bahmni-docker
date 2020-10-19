@@ -364,6 +364,23 @@ services:
         bahmni:
           aliases:
             - odoo-connect
+  openelis:
+    build: openelis/
+    depends_on:
+      - postgresql
+    environment:
+      OPENELIS_DB_HOST: "${PGSQL_HOST:-postgresql}"
+      OPENMRS_HOST: openmrs
+      ATOMFEED_PROPERTIES_FILE_PATH: ${ATOMFEED_PROPERTIES_FILE_PATH:-/usr/local/tomcat/.OpenELIS/atomfeed.properties}
+      HIBERNATE_PROPERTIES_FILE_PATH: ${HIBERNATE_PROPERTIES_FILE_PATH:-/usr/local/tomcat/.OpenELIS/hibernate.properties}
+    healthcheck:
+      test: "exit 0"
+    networks:
+      bahmni:
+        aliases:
+          - openelis
+    volumes:
+      - ./properties/openelis/:/etc/properties/
 
 version: "3.7"
 volumes:

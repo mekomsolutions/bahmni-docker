@@ -1,5 +1,6 @@
 */.DS_Store
 sqls/**/*.sql*
+!sqls/postgresql/db/OpenELIS_demo.sql
 .DS_Store
 
 # Ignore the docker-compose.override.yml file
