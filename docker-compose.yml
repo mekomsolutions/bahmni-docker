@@ -294,6 +294,8 @@ services:
       ODOO_DB_NAME: odoo
       ODOO_DB_USER: ${ODOO_DB_USER}
       ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD}
+      OPENELIS_DB_USER: ${OPENELIS_DB_USER}
+      OPENELIS_DB_PASSWORD: ${OPENELIS_DB_PASSWORD}
     networks:
       bahmni:
         aliases:

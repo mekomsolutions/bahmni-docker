@@ -10,10 +10,10 @@ function create_user_and_database() {
 	psql -v ON_ERROR_STOP=1 --username postgres postgres <<-EOSQL
 	    CREATE USER $user WITH UNENCRYPTED PASSWORD '$password';
 	    CREATE DATABASE $database;
-	    GRANT ALL PRIVILEGES ON DATABASE $user TO $database;
+	    GRANT ALL PRIVILEGES ON DATABASE $database TO $user;
 EOSQL
 }
 
-create_user_and_database clinlims clinlims clinlims
+create_user_and_database clinlims ${OPENELIS_DB_USER} ${OPENELIS_DB_PASSWORD}
 
 psql -U clinlims -d clinlims < /docker-entrypoint-initdb.d/db/OpenELIS_demo.sql

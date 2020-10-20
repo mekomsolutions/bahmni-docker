@@ -1,10 +1,14 @@
 FROM tomcat:8-jdk8
 
+ARG BAHMNI_ERP_CONNECT_WAR_URL=https://nexus.mekomsolutions.net/repository/maven-releases/org/bahmni/openelis/3.1/openelis-3.1.war
+
 RUN apt update \
   && apt install -y gettext-base
 
-ADD resources/openelis.war /usr/local/tomcat/webapps/
+RUN wget -O /tmp/openelis.war ${BAHMNI_ERP_CONNECT_WAR_URL} && \
+    mv /tmp/openelis.war /usr/local/tomcat/webapps/openelis.war
+
 EXPOSE 8080
-ADD resources/catalina_openelis.sh /catalina-openelis.sh
+ADD resources/startup.sh /startup.sh
 COPY resources/setenv.sh /usr/local/tomcat/bin/setenv.sh
-CMD ["/catalina-openelis.sh"]
+CMD ["/startup.sh"]
