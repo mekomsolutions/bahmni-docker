@@ -14,6 +14,6 @@ function create_user_and_database() {
 EOSQL
 }
 
-create_user_and_database clinlims ${OPENELIS_DB_USER} ${OPENELIS_DB_PASSWORD}
+create_user_and_database ${OPENELIS_DB_NAME} ${OPENELIS_DB_USER} ${OPENELIS_DB_PASSWORD}
 
-psql -U clinlims -d clinlims < /docker-entrypoint-initdb.d/db/OpenELIS_demo.sql
+psql -U ${OPENELIS_DB_USER} -d ${OPENELIS_DB_NAME} < /docker-entrypoint-initdb.d/db/OpenELIS_demo.sql

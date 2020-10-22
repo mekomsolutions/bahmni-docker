@@ -126,6 +126,8 @@ services:
     depends_on:
       - mysql
     environment:
+      OPENELIS_ATOMFEED_USER: ${OPENELIS_ATOMFEED_USER}
+      OPENELIS_ATOMFEED_PASSWORD: ${OPENELIS_ATOMFEED_PASSWORD}
       ODOO_USER: ${ODOO_USER}
       ODOO_PASSWORD: ${ODOO_PASSWORD}
       ODOO_DB: odoo
@@ -294,8 +296,10 @@ services:
       ODOO_DB_NAME: odoo
       ODOO_DB_USER: ${ODOO_DB_USER}
       ODOO_DB_PASSWORD: ${ODOO_DB_PASSWORD}
+      # OpenELIS DB Vars
       OPENELIS_DB_USER: ${OPENELIS_DB_USER}
       OPENELIS_DB_PASSWORD: ${OPENELIS_DB_PASSWORD}
+      OPENELIS_DB_NAME: ${OPENELIS_DB_NAME}
     networks:
       bahmni:
         aliases:
@@ -371,8 +375,13 @@ services:
     depends_on:
       - postgresql
     environment:
-      OPENELIS_DB_HOST: "${PGSQL_HOST:-postgresql}"
+      OPENELIS_DB_HOST: postgresql
       OPENMRS_HOST: openmrs
+      OPENMRS_USER: ${OPENMRS_USER}
+      OPENMRS_PASSWORD: ${OPENMRS_PASSWORD}
+      OPENELIS_DB_USER: ${OPENELIS_DB_USER}
+      OPENELIS_DB_PASSWORD: ${OPENELIS_DB_PASSWORD}
+      OPENELIS_DB_NAME: ${OPENELIS_DB_NAME}
       ATOMFEED_PROPERTIES_FILE_PATH: ${ATOMFEED_PROPERTIES_FILE_PATH:-/usr/local/tomcat/.OpenELIS/atomfeed.properties}
       HIBERNATE_PROPERTIES_FILE_PATH: ${HIBERNATE_PROPERTIES_FILE_PATH:-/usr/local/tomcat/.OpenELIS/hibernate.properties}
     healthcheck:
