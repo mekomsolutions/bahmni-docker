@@ -32,8 +32,8 @@ ProxyPassReverse /appointments http://appointments:8903/appointments
 ProxyPass /document_images http://bahmni-home:8904/document_images
 ProxyPassReverse /document_images http://bahmni-home:8904/document_images
 #
-ProxyPass /clinical_forms http://bahmni-home:8904/document_images
-ProxyPassReverse /document_images http://bahmni-home:8904/document_images
+ProxyPass /clinical_forms http://bahmni-home:8904/clinical_forms
+ProxyPassReverse /clinical_forms http://bahmni-home:8904/clinical_forms
 #
 ProxyPass /patient_images http://bahmni-home:8904/patient_images
 ProxyPassReverse /patient_images http://bahmni-home:8904/patient_images
