@@ -16,4 +16,4 @@ EOSQL
 
 create_user_and_database ${OPENELIS_DB_NAME} ${OPENELIS_DB_USER} ${OPENELIS_DB_PASSWORD}
 
-psql -U ${OPENELIS_DB_USER} -d ${OPENELIS_DB_NAME} < /docker-entrypoint-initdb.d/db/OpenELIS_demo.sql
+psql -U ${OPENELIS_DB_USER} -d ${OPENELIS_DB_NAME} < /docker-entrypoint-initdb.d/db/OpenELIS_base.sql
