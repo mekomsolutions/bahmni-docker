@@ -210,7 +210,7 @@ services:
       OPENMRS_PASSWORD: ${OPENMRS_PASSWORD}
       #
       BAHMNI_LOGIN_URL: "http://localhost/bahmni/home/index.html#/login"
-      BAHMNI_CONFIG_URL: "http://bahmni-config:8901/bahmni_config"
+      BAHMNI_CONFIG_URL: "http://bahmni-config:8901/"
     healthcheck:
       test:
         - CMD
