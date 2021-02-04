@@ -246,7 +246,7 @@ services:
       ANALYTICS_DB_USER: ${ANALYTICS_DB_USER}
       ANALYTICS_DB_PASSWORD: ${ANALYTICS_DB_PASSWORD}
       #
-      CRON_TIME: "0/5 * * * *"
+      CRON_TIME: "0 23 * * *"
     depends_on:
        - openmrs
        - mysql

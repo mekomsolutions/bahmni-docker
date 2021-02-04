@@ -1,6 +1,6 @@
 FROM tomcat:8-jre11
 
-ARG MB_VERSION=v0.36.3
+ARG MB_VERSION=v0.37.8
 RUN apt update \
   && apt install -y postgresql-client wget
 
