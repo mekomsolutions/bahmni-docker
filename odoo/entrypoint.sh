@@ -10,7 +10,7 @@ set -e
 : ${PASSWORD:=${DB_ENV_POSTGRES_PASSWORD:=${POSTGRES_PASSWORD:='odoo'}}}
 
 : ${ODOO_ADDONS_PATH='/mnt/extra-addons/.'}
-: ${ADDONS_LIST:=${DEFAULT_ADDONS_LIST:='base,stock,sale,point_of_sale,purchase,bahmni_account,bahmni_atom_feed,bahmni_product,bahmni_purchase,bahmni_sale,bahmni_stock,bahmni_web_extension'}}
+: ${ADDONS_LIST:=${DEFAULT_ADDONS_LIST:='stock,sale,point_of_sale,purchase,bahmni_account,bahmni_atom_feed,bahmni_product,bahmni_purchase,bahmni_sale,bahmni_stock,bahmni_web_extension'}}
 
 DB_ARGS=()
 function check_config() {
@@ -71,11 +71,11 @@ case "$1" in
         if [[ "$1" == "scaffold" ]] ; then
             exec odoo "$@"
         else
-            exec `odoo --without-demo=all -d ${DB_NAME} ${DB_ARGS[@]}`
+            exec `odoo -u odoo_initializer --without-demo=all -d ${DB_NAME} ${DB_ARGS[@]}`
         fi
         ;;
     -*)
-        exec odoo "--without-demo=all -d ${DB_NAME} $@" "${DB_ARGS[@]}"
+        exec odoo "-u odoo_initializer --without-demo=all -d ${DB_NAME} $@" "${DB_ARGS[@]}"
         ;;
     *)
         exec "$@"
