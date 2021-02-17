@@ -240,6 +240,11 @@ services:
       OPENMRS_DB_NAME: openmrs
       OPENMRS_DB_USER: ${OPENMRS_DB_USER}
       OPENMRS_DB_PASSWORD: ${OPENMRS_DB_PASSWORD}
+      # Odoo DB connection details
+      ERP_DB_HOSTNAME: postgresql
+      ERP_DB_NAME: odoo
+      ERP_DB_USERNAME: ${ODOO_DB_USER}
+      ERP_DB_PASSWORD: ${ODOO_DB_PASSWORD}
       # Anayltics DB connection details. This is the actual Bahmni Mart database.
       ANALYTICS_DB_HOST: postgresql
       ANALYTICS_DB_NAME: analytics

@@ -7,11 +7,11 @@ setup_properties(){
 }
 
 setup_cronjob() {
-   echo "$CRON_TIME  java -jar /opt/bahmni-mart/lib/bahmni-mart.jar --spring.config.location=\"/opt/bahmni-mart/properties/application.properties\" > /proc/1/fd/1 2>/proc/1/fd/2" | crontab -
+   echo -e "$CRON_TIME  java -jar /opt/bahmni-mart/lib/bahmni-mart.jar --spring.config.location=\"/opt/bahmni-mart/properties/application.properties\" > /proc/1/fd/1 2>/proc/1/fd/2 \n$CRON_TIME /bin/bash /opt/flatten_odoo.sh > /proc/1/fd/1 2>/proc/1/fd/2" | crontab -
 }
 
 setup_properties
-echo "*********** Post install script: Setting up cron jobs   ******************"
+echo "[INFO] Setting up cron jobs..."
 setup_cronjob
-echo "********** Post install script completed ***************"
+echo "[INFO] Success!"
 crond -f -d 8
