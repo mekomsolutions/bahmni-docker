@@ -1,6 +1,6 @@
 #!/bin/bash
 
-Services=odoo,appointments,bahmni-mart,bahmni-reports,bahmniapps,implementer-interface,metabase,odoo-connect,openmrs
+Services=odoo,appointments,bahmni-mart,bahmni-reports,bahmniapps,implementer-interface,metabase,odoo-connect,openmrs,openelis
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
