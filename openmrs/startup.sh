@@ -35,10 +35,6 @@ user=${DB_USERNAME}
 password=${DB_PASSWORD}
 EOF
 
-echo "------  Starting distribution -----"
-cat /root/openmrs-distro.properties
-echo "-----------------------------------"
-
 # wait for mysql to initialise
 /usr/local/tomcat/wait-for-it.sh --timeout=3600 ${DB_HOST}:3306
 
