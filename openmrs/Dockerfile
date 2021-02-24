@@ -1,5 +1,5 @@
 FROM tomcat:7-jre8-alpine
-ARG OPENMRS_WAR_URL=https://openmrs.jfrog.io/artifactory/public/org/openmrs/web/openmrs-webapp/2.3.1/openmrs-webapp-2.3.1.war
+ARG OPENMRS_WAR_URL=https://openmrs.jfrog.io/artifactory/public/org/openmrs/web/openmrs-webapp/2.1.3/openmrs-webapp-2.1.3.war
 
 RUN apk add mysql-client gettext coreutils curl wget
 
