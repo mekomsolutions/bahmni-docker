@@ -34,16 +34,4 @@ MB_TOKEN=$(curl -s -X POST \
     }
 }' | jq -r '.id')
 
-
-echo -e "\n👥 Creating some basic users: "
-curl -s "http://${METABASE_HOST}:${METABASE_PORT}/api/user" \
-    -H 'Content-Type: application/json' \
-    -H "X-Metabase-Session: ${MB_TOKEN}" \
-    -d '{"first_name":"Basic","last_name":"User","email":"basic@somewhere.com","login_attributes":{"region_filter":"WA"},"password":"'${ADMIN_PASSWORD}'"}'
-
-curl -s "http://${METABASE_HOST}:${METABASE_PORT}/api/user" \
-    -H 'Content-Type: application/json' \
-    -H "X-Metabase-Session: ${MB_TOKEN}" \
-    -d '{"first_name":"Basic 2","last_name":"User","email":"basic2@somewhere.com","login_attributes":{"region_filter":"CA"},"password":"'${ADMIN_PASSWORD}'"}'
-
-echo -e "\n👥 Basic users created!"
+echo -e "\n👥 Admin user created!"

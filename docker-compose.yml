@@ -283,7 +283,7 @@ services:
     ports:
       - "${METABASE_PUBLIC_PORT:-9003}:3000"
     volumes:
-      - ${METABASE_CONFIG_PATH:-metabase-config}:/opt/metabase-config
+      - ${BAHMNI_CONFIG_PATH}/metabase:/opt/metabase-config
 
   # Postgreql: Database shared by multiple services
   postgresql:
@@ -421,6 +421,5 @@ volumes:
   odoo-config: ~
   odoo-filestore: ~
   bahmni-reports-data: ~
-  metabase-config: ~
 networks:
   bahmni:
