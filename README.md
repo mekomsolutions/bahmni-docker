@@ -73,11 +73,19 @@ If Docker is run as `sudo`, the variables won't have an effect. Make sure to eit
 
 - OpenMRS: http://localhost/openmrs
 
+<ins>Default credentials</ins>:
+  - username: superman
+  - password: Admin123
+
 <p align="left">
 <img src="./readme/openmrs-login-shadow.png" alt="OpenMRS login screen" width="300">
 </p>
 
 - Odoo: http://localhost:8069/
+
+<ins>Default credentials</ins>:
+  - username: admin
+  - password: admin
 
 <p align="left">
 <img src="./readme/odoo-login.png" alt="Odoo login screen" width="300">
@@ -85,11 +93,19 @@ If Docker is run as `sudo`, the variables won't have an effect. Make sure to eit
 
 - Metabase: http://localhost:9003/
 
+<ins>Default credentials</ins>:
+  - username: admin@metabase.local
+  - password: Metapass123
+
 <p align="left">
-<img src="./readme/metabase-login-shadow.png" alt="Metabase login screen" width="300">
+<img src="./readme/metabase-login.png" alt="Metabase login screen" width="300">
 </p>
 
 - OpenELIS: http://localhost/openelis
+
+<ins>Default credentials</ins>:
+  - username: admin
+  - password: adminADMIN!
 
 <p align="left">
 <img src="./readme/openelis-login.png" alt="OpenELIS login screen" width="300">

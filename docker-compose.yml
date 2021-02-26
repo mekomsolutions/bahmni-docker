@@ -276,6 +276,8 @@ services:
       MB_DB_USER: ${METABASE_DB_USER}
       MB_DB_PASS: ${METABASE_DB_PASSWORD}
       MB_DB_HOST: postgresql
+      MB_ADMIN_EMAIL: ${METABASE_USER}
+      MB_ADMIN_PASSWORD: ${METABASE_PASSWORD}
     networks:
       bahmni:
         aliases:
