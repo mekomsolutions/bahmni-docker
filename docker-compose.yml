@@ -276,12 +276,16 @@ services:
       MB_DB_USER: ${METABASE_DB_USER}
       MB_DB_PASS: ${METABASE_DB_PASSWORD}
       MB_DB_HOST: postgresql
+      MB_ADMIN_EMAIL: ${METABASE_USER}
+      MB_ADMIN_PASSWORD: ${METABASE_PASSWORD}
     networks:
       bahmni:
         aliases:
           - metabase
     ports:
       - "${METABASE_PUBLIC_PORT:-9003}:3000"
+    volumes:
+      - ${BAHMNI_CONFIG_PATH}/metabase:/opt/metabase-config
 
   # Postgreql: Database shared by multiple services
   postgresql:
