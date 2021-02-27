@@ -285,7 +285,7 @@ services:
     ports:
       - "${METABASE_PUBLIC_PORT:-9003}:3000"
     volumes:
-      - ${BAHMNI_CONFIG_PATH}/metabase:/opt/metabase-config
+      - ${BAHMNI_CONFIG_PATH:-}/metabase:/opt/metabase-config
 
   # Postgreql: Database shared by multiple services
   postgresql:
