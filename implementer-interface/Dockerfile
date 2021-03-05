@@ -1,5 +1,5 @@
 FROM alpine as extracter
-ARG IMPLEMENTER_INTERFACE_URL=http://repo.mybahmni.org.s3.amazonaws.com/rpm/bahmni/bahmni-implementer-interface-0.93-77.noarch.rpm
+ARG IMPLEMENTER_INTERFACE_URL=https://nexus.mekomsolutions.net/repository/maven-releases/org/bahmni/implementer-interface/0.93-80/implementer-interface-0.93-80.rpm
 RUN apk add wget zip cpio rpm2cpio \
     && wget -O /tmp/bahmni-implementer-interface.rpm ${IMPLEMENTER_INTERFACE_URL} \
     && rpm2cpio /tmp/bahmni-implementer-interface.rpm | cpio -idmv \
