@@ -1,13 +1,11 @@
-FROM httpd:2.4
+FROM httpd:2.4-alpine
 
 EXPOSE 8903/tcp
 
-RUN apt update \
-&& apt install -y curl iproute2 iputils-ping less nano tree unzip ca-certificates tzdata rsync
+RUN apk add curl iproute2 iputils less nano tree unzip ca-certificates tzdata rsync
 
 ARG TIMEZONE
-RUN unlink /etc/localtime && \
-   ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
 ARG APPOINTMENTS_URL=https://github.com/Bahmni/openmrs-module-appointments-frontend/releases/download/0.0.2/openmrs-module-appointments-frontend.zip
 

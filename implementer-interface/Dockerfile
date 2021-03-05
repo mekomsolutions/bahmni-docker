@@ -6,14 +6,12 @@ RUN apk add wget zip cpio rpm2cpio \
     && cd /opt/bahmni-implementer-interface/etc/ \
     && zip -r  /tmp/implementer_interface.zip implementer_interface/*
 
-FROM httpd:2.4
+FROM httpd:2.4-alpine
 EXPOSE 8902/tcp
-RUN apt update \
-&& apt install -y curl  iproute2 iputils-ping less nano tree unzip
+RUN apk add coreutils curl wget unzip bash nano tree less iproute2
 
 ARG TIMEZONE
-RUN unlink /etc/localtime && \
-   ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
+RUN ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
 COPY --from=extracter /tmp/implementer_interface.zip .
 RUN mkdir -p  /var/www/ \

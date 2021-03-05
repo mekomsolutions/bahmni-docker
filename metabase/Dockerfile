@@ -1,8 +1,9 @@
-FROM tomcat:8-jre11
+FROM tomcat:8-jre11-slim
 
 ARG MB_VERSION=v1.36.11
+RUN mkdir -p /usr/share/man/man1 && mkdir -p /usr/share/man/man7
 RUN apt update \
-  && apt install -y postgresql-client wget jq
+  && apt install -y postgresql-client wget jq curl
 
 RUN wget -O /usr/local/tomcat/webapps/metabase.jar https://nexus.mekomsolutions.net/repository/maven-releases/com/metabase/metabase/${MB_VERSION}/metabase-${MB_VERSION}.jar
 
