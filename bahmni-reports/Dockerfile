@@ -12,8 +12,6 @@ COPY wait-for-url.sh /usr/local/tomcat/wait-for-url.sh
 COPY init-db.sh /usr/local/tomcat/init-db.sh
 COPY startup.sh /usr/local/tomcat/bin/startup.sh
 
-ADD conf/ /etc/conf/
-
 VOLUME /reports
 RUN chmod +x /usr/local/tomcat/wait-for-url.sh /usr/local/tomcat/init-db.sh /usr/local/tomcat/bin/startup.sh
 

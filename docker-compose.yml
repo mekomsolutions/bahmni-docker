@@ -117,7 +117,7 @@ services:
         aliases:
           - bahmni-config-1
     volumes:
-      - ./properties/apache/httpd-8901.conf:/usr/local/apache2/conf/httpd.conf 
+      - ./properties/apache/httpd-8901.conf:/usr/local/apache2/conf/httpd.conf
       - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www"
 
   # OpenMRS:
@@ -227,6 +227,7 @@ services:
     volumes:
         - "${BAHMNI_CONFIG_PATH:-bahmni-config}:/var/www/bahmni_config"
         - "bahmni-reports-data:/reports"
+        - ./properties/bahmni-reports/:/etc/conf/
 
   # Bahmni Mart: Standalone JAVA app to schedule ETL tasks
   bahmni-mart:
