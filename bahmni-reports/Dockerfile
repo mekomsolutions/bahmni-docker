@@ -6,7 +6,7 @@ RUN mkdir -p /var/www/bahmni_config/ /root/.bahmni-reports/ && \
     wget -O /opt/liquibase-core-2.0.5.jar   https://repo1.maven.org/maven2/org/liquibase/liquibase-core/2.0.5/liquibase-core-2.0.5.jar
 RUN wget -O /tmp/bahmni-reports.war ${BAHMNI_REPORTS_URL} && \
     mv /tmp/bahmni-reports.war /usr/local/tomcat/webapps/bahmni-reports.war
-
+RUN apk add ttf-dejavu
 COPY wait-for-url.sh /usr/local/tomcat/wait-for-url.sh
 COPY init-db.sh /usr/local/tomcat/init-db.sh
 COPY startup.sh /usr/local/tomcat/bin/startup.sh
