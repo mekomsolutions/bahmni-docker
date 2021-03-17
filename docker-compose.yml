@@ -23,6 +23,7 @@ services:
       - "${PROXY_PUBLIC_PORT_TLS}:443"
     volumes:
       - "./proxy/confs:/usr/local/apache2/conf/extra"
+      - "${PROXY_TLS_CERTS_PATH:-proxy-tls-certs}:/etc/tls"
 
   # Bahmni Apps: The main front-end component
   # aka 'Bahmni EMR'
@@ -409,6 +410,7 @@ services:
 
 version: "3.7"
 volumes:
+  proxy-tls-certs: ~
   openmrs-data: ~
   mysql-data: ~
   openmrs-config: ~
