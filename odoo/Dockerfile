@@ -6,7 +6,7 @@ ARG ODOO_RELEASE=20200101
 
 RUN apt update
 RUN apt -y install libsasl2-dev python-dev libldap2-dev libssl-dev \
-    npm nodejs ca-certificates node-less git gettext-base
+    npm nodejs ca-certificates node-less git gettext-base wkhtmltopdf
 RUN npm install -g less@3.10.3 less-plugin-clean-css
 
 RUN addgroup odoo && adduser odoo --shel /bin/sh --disabled-password --ingroup odoo
