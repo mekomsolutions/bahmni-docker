@@ -25,10 +25,10 @@ RUN chmod +x /etc/odoo/wait-for-it.sh
 
 # Mount /mnt/extra-addons for users addons
 RUN mkdir -p /mnt/extra-addons \
-        && chown -R odoo /mnt/extra-addons 
+        && chown -R odoo /mnt/extra-addons
 RUN git clone https://github.com/Bahmni/odoo-modules.git /opt/bahmni-addons
 RUN cd /opt/bahmni-addons/ \
-        && git checkout 37ff23e
+        && git checkout 4c09da9
 
 # Expose Odoo services
 EXPOSE 8069 8071
