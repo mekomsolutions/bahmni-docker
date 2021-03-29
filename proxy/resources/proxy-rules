@@ -2,7 +2,7 @@ RewriteEngine on
 RewriteCond %{REQUEST_URI} ^/$
 RewriteRule (.*) /bahmni/home [R=301,L]
 
-#
+# OpenELIS
 ProxyPass /openelis http://openelis:8080/openelis
 ProxyPassReverse /openelis http://openelis:8080/openelis
 

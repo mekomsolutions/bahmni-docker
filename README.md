@@ -205,6 +205,27 @@ ports:
 ...
 ```
 
+### Provide additional properties files to OpenMRS (including runtime properties)
+
+In order to provide additional properties files to openmrs, you can drop your file in the [./properties/openmrs/](./properties/openmrs/) folder.
+
+Files will be made available in the application directory after a convenient environment variable substitution is applied.
+
+Special case of runtime properties:
+In order to provide some additional runtime properties to OpenMRS, you can drop a file that is named after `<name>-runtime.properties`.
+It will be treated differently than other properties files and will therefore be merged to the existing **openmrs-runtime.properties**
+
+For instance:
+
+`
+cat properties/openmrs/initializer-runtime.properties
+`
+```
+initializer.exclude.locations=*void_h1*
+```
+
+Will add such props to the openmrs-runtime.properties file.
+
 ### All environment variables
 
 
