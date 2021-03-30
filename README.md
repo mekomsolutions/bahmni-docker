@@ -211,20 +211,20 @@ In order to provide additional properties files to openmrs, you can drop your fi
 
 Files will be made available in the application directory after a convenient environment variable substitution is applied.
 
-Special case of runtime properties:
-In order to provide some additional runtime properties to OpenMRS, you can drop a file that is named after `<name>-runtime.properties`.
-It will be treated differently than other properties files and will therefore be merged to the existing **openmrs-runtime.properties**
+Special case of _runtime properties_:
+
+In order to provide additional runtime properties to OpenMRS, you can drop a file that is named such as `<name>-runtime.properties`.
+It will be handled differently than the other properties files to be merged to the existing **openmrs-runtime.properties**
 
 For instance:
 
-`
-cat properties/openmrs/initializer-runtime.properties
-`
+
+Create a file named `initializer-runtime.properties` in **properties/openmrs/**, with following contents:
 ```
 initializer.exclude.locations=*void_h1*
 ```
 
-Will add such props to the openmrs-runtime.properties file.
+This will be added to the openmrs-runtime.properties file.
 
 ### All environment variables
 

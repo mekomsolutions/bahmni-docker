@@ -48,11 +48,10 @@ cat > /etc/mysql/db-credentials.cnf << EOF
 user=${DB_USERNAME}
 password=${DB_PASSWORD}
 EOF
-
 # checking if the database is already available
 db_tables_count=`mysql --defaults-extra-file=/etc/mysql/db-credentials.cnf -h${DB_HOST} --skip-column-names -e "SELECT count(*) FROM information_schema.tables WHERE table_schema = '${DB_DATABASE}'"`
 
-echo "⚙️  Generate random encryption seeds"
+echo "⚙️  Generate random encryption seeds..."
 # generate encryption keys
 encryption_key=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
 encryption_vector=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
@@ -72,7 +71,7 @@ EOF
 fi
 
 # Merge additional runtime props
-echo "🔨 Merge additional runtime properties"
+echo "🔨 Merge additional *-runtime.properties files"
 extraRuntimePropertiesFile=`find /tmp/properties/*-runtime.properties -maxdepth 1 -type f -print0 | xargs -0r ls`
 for file in $extraRuntimePropertiesFile
 do
@@ -84,10 +83,10 @@ do
     rm ${file}
 done
 
-echo "🔬 Display 'opemnrs-runtime.properties'"
+echo "🔬 Inspect 'opemnrs-runtime.properties':"
 cat  $openmrs_runtime_props_path
 
-echo "🔧 Set debug mode, \$DEBUG ==  true"
+echo "🔧 Set debug mode to \$DEBUG ==  $DEBUG"
 if [ $DEBUG == true ]; then
     export JPDA_ADDRESS=$DEBUG_PORT
     export JPDA_TRANSPORT=dt_socket
