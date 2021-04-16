@@ -56,7 +56,7 @@ echo "⚙️  Generate random encryption seeds..."
 encryption_key=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
 encryption_vector=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
 
-echo "🔩 Set the default 'opemnrs-runtime.properties' file"
+echo "🔩 Set the default 'openmrs-runtime.properties' file"
 if [ ${db_tables_count} > 1 ]; then
     cat > ${openmrs_runtime_props_path} << EOF
 encryption.vector=${encryption_vector}
@@ -95,7 +95,7 @@ fi
 catalina_params+=(run)
 
 # start tomcat
-echo -e "🩺 \033[1mStart OpenMRS\033[1m"
+echo "🩺 Start OpenMRS"
 /usr/local/tomcat/bin/catalina.sh "${catalina_params[@]}" &
 
 # trigger first filter to start database initialization
