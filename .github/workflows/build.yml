@@ -83,23 +83,30 @@ jobs:
 
           cd $BUILD_DIR
 
-          TEMPFILE=$(mktemp)
-          TEMPFILE_2=$(mktemp)
+          HOST_KEY_FILE=$(mktemp)
+          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
 
           # Set AWS AMI access private key
           echo "⚙️ Set AWS AMI private key."
-          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $TEMPFILE_2
-          chmod 600 $TEMPFILE_2
+          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
+          chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
           # Set SSH vars
-          ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i $TEMPFILE_2 -p 22"
+          ssh_params=" -o 'UserKnownHostsFile $HOST_KEY_FILE' -i $AWS_AMI_PRIVATE_KEY_FILE -p 22"
           server="ubuntu@$INSTANCE_IP"
 
-          # Save the public key
+          # Get the public key
+          echo "⚙️ Get the remote server key from Terraform state."
           server_public_key=$(cat $PWD/terraform.tfstate | jq -r '.resources[] | select(.name == "host-rsa") | .instances[].attributes.public_key_openssh')
 
           # Send the project to remote
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 $server "mkdir -p /home/ubuntu/bahmni-docker"
+          echo "⚙️ Copy files to remote."
+          echo HOST_KEY_FILE: $HOST_KEY_FILE
+          cat $HOST_KEY_FILE
+          echo AWS_AMI_PRIVATE_KEY_FILE: $AWS_AMI_PRIVATE_KEY_FILE
+          cat $AWS_AMI_PRIVATE_KEY_FILE
+          
+          ssh -o "UserKnownHostsFile $HOST_KEY_FILE" -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server "mkdir -p /home/ubuntu/bahmni-docker"
           rsync -av -e "ssh $ssh_params" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
 
           echo "HOSTKEY=$INSTANCE_IP $server_public_key" >> $GITHUB_ENV
@@ -127,7 +134,7 @@ jobs:
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
           echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
 
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 $server /bin/bash -x << 'EOF'
+          ssh -o "UserKnownHostsFile $HOST_KEY_FILE" -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server /bin/bash -x << 'EOF'
           cd bahmni-docker/
 
           services=$(cat services.txt)
