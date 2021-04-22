@@ -2,7 +2,7 @@
 
 name: CI
 
-# Controls when the action will run. 
+# Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
@@ -35,9 +35,9 @@ jobs:
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
 
-          wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip -O $WORKDIR/terraform.zip
-          #wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_darwin_amd64.zip -O $WORKDIR/terraform.zip
-          unzip $WORKDIR/terraform.zip
+          wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip -O terraform.zip
+          #wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_darwin_amd64.zip -O terraform.zip
+          unzip terraform.zip
           chmod +x ./terraform
           ./terraform version
           ./terraform init
@@ -103,4 +103,3 @@ jobs:
           EOF
 
           ./terraform destroy -auto-approve
-
