@@ -52,14 +52,13 @@ jobs:
 
           TEMPFILE=$(mktemp)
           TEMPFILE_2=$(mktemp)
-          
+
           # Set AWS AMI access private key
           echo "⚙️ Set AWS AMI private key."
           echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $TEMPFILE_2
           chmod 600 $TEMPFILE_2
 
           # Set SSH vars
-          TEMPFILE=$(mktemp)
           ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i $TEMPFILE_2 -p 22"
           server="ubuntu@$ip"
 
