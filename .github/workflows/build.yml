@@ -30,8 +30,10 @@ jobs:
         run: |
           #!/usr/bin/env bash -e
           WORKDIR=$PWD/workdir
-          REPO_DIR=$PWD/..
+          REPO_DIR=$PWD
+          BUILD_DIR=$REPO_DIR/build
 
+          cd $BUILD_DIR
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
 
