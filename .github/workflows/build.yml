@@ -110,7 +110,7 @@ jobs:
           echo "📑 Services to build: "
           echo $services
 
-          echo "⚙️ Set the Revision and CPU architecture:
+          echo "⚙️ Set the Revision and CPU architecture:"
           rm -f vars.env
           echo "REVISION=$(git rev-parse --short HEAD)" >> vars.env
           echo "CPU_ARCH=arm64" >> vars.env
