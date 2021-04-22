@@ -100,9 +100,7 @@ jobs:
           cat $AWS_AMI_PRIVATE_KEY_FILE
 
           ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server "mkdir -p /home/ubuntu/bahmni-docker"
-          rsync -av -e "-o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
-
-          echo "HOSTKEY=$INSTANCE_IP $server_public_key" >> $GITHUB_ENV
+          rsync -av -e "ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
 
       - name: Build images on remote instance
         run: |
@@ -127,7 +125,7 @@ jobs:
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
           echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
 
-          ssh -o "UserKnownHostsFile $HOST_KEY_FILE" -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server /bin/bash -x << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server /bin/bash -x << 'EOF'
           cd bahmni-docker/
 
           services=$(cat services.txt)
