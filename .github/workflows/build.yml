@@ -60,7 +60,7 @@ jobs:
 
           # Read and save the list of services to build
           services=""
-          folders=`ls -d ../*/`
+          folders=`ls -d */`
           for folder in $folders
           do
             service=`echo $folder | sed -e 's/^..\///' -e 's/.$//'`
@@ -117,7 +117,8 @@ jobs:
           # Set the CPU arch
           echo "CPU_ARCH=arm64" >> $REPO_DIR/vars.env
 
-          echo "⚙️ Set the Revision and CPU architecture: $(cat $REPO_DIR/vars.env)"
+          echo "⚙️ Set the Revision and CPU architecture:
+          cat $REPO_DIR/vars.env
 
           # Set the Docker creds
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
@@ -128,7 +129,7 @@ jobs:
           echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
           chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
-          ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server /bin/bash -x << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$INSTANCE_IP /bin/bash -x << 'EOF'
           cd bahmni-docker/
 
           services=$(cat services.txt)
