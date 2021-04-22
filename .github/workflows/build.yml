@@ -110,19 +110,15 @@ jobs:
           echo "📑 Services to build: "
           echo $services
 
-          # Set the Git revision
-          rm -f $REPO_DIR/vars.env
-          echo "REVISION"=$(git rev-parse --short HEAD) >> $REPO_DIR/vars.env
-
-          # Set the CPU arch
-          echo "CPU_ARCH=arm64" >> $REPO_DIR/vars.env
-
           echo "⚙️ Set the Revision and CPU architecture:
-          cat $REPO_DIR/vars.env
+          rm -f vars.env
+          echo "REVISION=$(git rev-parse --short HEAD)" >> vars.env
+          echo "CPU_ARCH=arm64" >> vars.env
+          cat vars.env
 
           # Set the Docker creds
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
-          echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
+          echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> vars.env
 
           echo "⚙️ Set AWS AMI private key."
           AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
