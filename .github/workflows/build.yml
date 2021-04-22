@@ -91,25 +91,16 @@ jobs:
           echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
           chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
-          # Set SSH vars
-          ssh_params=" -o 'UserKnownHostsFile $HOST_KEY_FILE' -i $AWS_AMI_PRIVATE_KEY_FILE -p 22"
           server="ubuntu@$INSTANCE_IP"
-
-          # Get the public key
-          echo "⚙️ Get the remote server key from Terraform state."
-          server_public_key=$(cat $PWD/terraform.tfstate | jq -r '.resources[] | select(.name == "host-rsa") | .instances[].attributes.public_key_openssh')
 
           # Send the project to remote
           echo "⚙️ Copy files to remote."
 
-          echo "$INSTANCE_IP $server_public_key" > $HOST_KEY_FILE
-          echo HOST_KEY_FILE: $HOST_KEY_FILE
-          cat $HOST_KEY_FILE
           echo AWS_AMI_PRIVATE_KEY_FILE: $AWS_AMI_PRIVATE_KEY_FILE
           cat $AWS_AMI_PRIVATE_KEY_FILE
 
-          ssh -o "UserKnownHostsFile $HOST_KEY_FILE" -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server "mkdir -p /home/ubuntu/bahmni-docker"
-          rsync -av -e "ssh $ssh_params" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
+          ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server "mkdir -p /home/ubuntu/bahmni-docker"
+          rsync -av -e "-o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
 
           echo "HOSTKEY=$INSTANCE_IP $server_public_key" >> $GITHUB_ENV
 
