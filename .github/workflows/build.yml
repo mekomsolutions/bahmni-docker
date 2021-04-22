@@ -83,11 +83,8 @@ jobs:
 
           cd $BUILD_DIR
 
-          HOST_KEY_FILE=$(mktemp)
-          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
-
-          # Set AWS AMI access private key
           echo "⚙️ Set AWS AMI private key."
+          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
           echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
           chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
@@ -110,9 +107,8 @@ jobs:
           BUILD_DIR=$REPO_DIR/build
           services=$SERVICES
 
-          echo -e $services > $REPO_DIR/services.txt
-          echo -e "📑 List of services to build: "
-          cat $REPO_DIR/services.txt
+          echo "📑 Services to build: "
+          echo $services
 
           # Set the Git revision
           rm -f $REPO_DIR/vars.env
@@ -121,9 +117,16 @@ jobs:
           # Set the CPU arch
           echo "CPU_ARCH=arm64" >> $REPO_DIR/vars.env
 
+          echo "⚙️ Set the Revision and CPU architecture: $(cat $REPO_DIR/vars.env)"
+
           # Set the Docker creds
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
           echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
+
+          echo "⚙️ Set AWS AMI private key."
+          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
+          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
+          chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
           ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server /bin/bash -x << 'EOF'
           cd bahmni-docker/
