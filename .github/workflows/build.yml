@@ -48,16 +48,15 @@ jobs:
 
           ip=$(cat $PWD/terraform.tfstate | jq -r .outputs.arm_builder_stats.value.ip)
           echo "☑️ AWS instance started. IP=$ip"
-          echo "::set-env name=INSTANCE_IP::$ip"
+          echo "INSTANCE_IP=$ip" > vars.env
           exit 0
-
-      - name: Setup SSH connection and parse services
+      - name: Setup SSH connection and copy files
         run: |
           #!/usr/bin/env bash
           WORKDIR=$PWD/workdir
           REPO_DIR=$PWD
           BUILD_DIR=$REPO_DIR/build
-          ip=$INSTANCE_IP
+          source vars.env
 
           cd $BUILD_DIR
 
@@ -77,6 +76,14 @@ jobs:
           server_public_key=$(cat $PWD/terraform.tfstate | jq -r '.resources[] | select(.name == "host-rsa") | .instances[].attributes.public_key_openssh')
           echo "$ip $server_public_key" >> $TEMPFILE
 
+      - name: Parse services
+        run: |
+          #!/usr/bin/env bash
+          WORKDIR=$PWD/workdir
+          REPO_DIR=$PWD
+          BUILD_DIR=$REPO_DIR/build
+          source vars.env
+          
           # Read and save the list of services to build
           services=""
           folders=`ls -d ../*/`
@@ -134,6 +141,7 @@ jobs:
           EOF
 
       - name: Destroy Terraform infrastructure
+        if: always()
         run: |
           #!/usr/bin/env bash
           WORKDIR=$PWD/workdir
