@@ -50,14 +50,17 @@ jobs:
           ip=$(cat $PWD/terraform.tfstate | jq -r .outputs.arm_builder_stats.value.ip)
           echo "☑️ AWS instance started. IP=$ip"
 
+          TEMPFILE=$(mktemp)
+          TEMPFILE_2=$(mktemp)
+          
           # Set AWS AMI access private key
           echo "⚙️ Set AWS AMI private key."
-          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > certs/deploy.key
-          chmod 600 certs/deploy.key
+          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $TEMPFILE_2
+          chmod 600 $TEMPFILE_2
 
           # Set SSH vars
           TEMPFILE=$(mktemp)
-          ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i certs/deploy.key -p 22"
+          ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i $TEMPFILE_2 -p 22"
           server="ubuntu@$ip"
 
           # Save the public key
@@ -94,9 +97,9 @@ jobs:
           echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
 
           # Send the project to remote
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i certs/deploy.key -p 22 ubuntu@$ip "mkdir -p /home/ubuntu/bahmni-docker"
+          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip "mkdir -p /home/ubuntu/bahmni-docker"
           rsync -av -e "ssh $ssh_params" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i certs/deploy.key -p 22 ubuntu@$ip /bin/bash -x << 'EOF'
+          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip /bin/bash -x << 'EOF'
 
           cd bahmni-docker/
           source vars.env
