@@ -51,31 +51,6 @@ jobs:
           echo "INSTANCE_IP=$ip" >> $GITHUB_ENV
           exit 0
 
-      - name: Setup SSH connection and copy files
-        run: |
-          #!/usr/bin/env bash
-          WORKDIR=$PWD/workdir
-          REPO_DIR=$PWD
-          BUILD_DIR=$REPO_DIR/build
-
-          cd $BUILD_DIR
-
-          TEMPFILE=$(mktemp)
-          TEMPFILE_2=$(mktemp)
-
-          # Set AWS AMI access private key
-          echo "⚙️ Set AWS AMI private key."
-          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $TEMPFILE_2
-          chmod 600 $TEMPFILE_2
-
-          # Set SSH vars
-          ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i $TEMPFILE_2 -p 22"
-          server="ubuntu@$INSTANCE_IP"
-
-          # Save the public key
-          server_public_key=$(cat $PWD/terraform.tfstate | jq -r '.resources[] | select(.name == "host-rsa") | .instances[].attributes.public_key_openssh')
-          echo "HOSTKEY=$INSTANCE_IP $server_public_key" >> $GITHUB_ENV
-
       - name: Parse services
         run: |
           #!/usr/bin/env bash
@@ -99,6 +74,37 @@ jobs:
           done
           echo "SERVICES=$services" >> $GITHUB_ENV
 
+      - name: Setup SSH connection and copy files
+        run: |
+          #!/usr/bin/env bash
+          WORKDIR=$PWD/workdir
+          REPO_DIR=$PWD
+          BUILD_DIR=$REPO_DIR/build
+
+          cd $BUILD_DIR
+
+          TEMPFILE=$(mktemp)
+          TEMPFILE_2=$(mktemp)
+
+          # Set AWS AMI access private key
+          echo "⚙️ Set AWS AMI private key."
+          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $TEMPFILE_2
+          chmod 600 $TEMPFILE_2
+
+          # Set SSH vars
+          ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i $TEMPFILE_2 -p 22"
+          server="ubuntu@$INSTANCE_IP"
+
+          # Save the public key
+          server_public_key=$(cat $PWD/terraform.tfstate | jq -r '.resources[] | select(.name == "host-rsa") | .instances[].attributes.public_key_openssh')
+
+          # Send the project to remote
+          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip "mkdir -p /home/ubuntu/bahmni-docker"
+          rsync -av -e "ssh $ssh_params" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
+          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip /bin/bash -x << 'EOF'
+
+          echo "HOSTKEY=$INSTANCE_IP $server_public_key" >> $GITHUB_ENV
+
       - name: Build images on remote instance
         run: |
           #!/usr/bin/env bash
@@ -121,11 +127,6 @@ jobs:
           # Set the Docker creds
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
           echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
-
-          # Send the project to remote
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip "mkdir -p /home/ubuntu/bahmni-docker"
-          rsync -av -e "ssh $ssh_params" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip /bin/bash -x << 'EOF'
 
           cd bahmni-docker/
 
