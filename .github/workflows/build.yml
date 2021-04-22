@@ -82,7 +82,6 @@ jobs:
           WORKDIR=$PWD/workdir
           REPO_DIR=$PWD
           BUILD_DIR=$REPO_DIR/build
-          source vars.env
 
           # Read and save the list of services to build
           services=""
@@ -129,7 +128,6 @@ jobs:
           ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip /bin/bash -x << 'EOF'
 
           cd bahmni-docker/
-          source vars.env
 
           services=$(cat services.txt)
           echo $services
