@@ -49,6 +49,12 @@ jobs:
 
           ip=$(cat $PWD/terraform.tfstate | jq -r .outputs.arm_builder_stats.value.ip)
           echo "☑️ AWS instance started. IP=$ip"
+
+          # Set AWS AMI access private key
+          echo "⚙️ Set AWS AMI private key."
+          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > certs/deploy.key
+          chmod 600 certs/deploy.key
+
           # Set SSH vars
           TEMPFILE=$(mktemp)
           ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i certs/deploy.key -p 22"
