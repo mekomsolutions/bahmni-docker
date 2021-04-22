@@ -83,7 +83,7 @@ jobs:
 
           # Set the Docker creds
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
-          echo "DOCKER_PASSWORD=${{ mekomsolutionsDOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
+          echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
 
           # Send the project to remote
           ssh -o "UserKnownHostsFile $TEMPFILE" -i certs/deploy.key -p 22 ubuntu@$ip "mkdir -p /home/ubuntu/bahmni-docker"
