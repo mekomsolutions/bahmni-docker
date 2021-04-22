@@ -99,9 +99,8 @@ jobs:
           server_public_key=$(cat $PWD/terraform.tfstate | jq -r '.resources[] | select(.name == "host-rsa") | .instances[].attributes.public_key_openssh')
 
           # Send the project to remote
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip "mkdir -p /home/ubuntu/bahmni-docker"
+          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 $server "mkdir -p /home/ubuntu/bahmni-docker"
           rsync -av -e "ssh $ssh_params" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
-          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 ubuntu@$ip /bin/bash -x << 'EOF'
 
           echo "HOSTKEY=$INSTANCE_IP $server_public_key" >> $GITHUB_ENV
 
@@ -128,6 +127,7 @@ jobs:
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
           echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> $REPO_DIR/vars.env
 
+          ssh -o "UserKnownHostsFile $TEMPFILE" -i $TEMPFILE_2 -p 22 $server /bin/bash -x << 'EOF'
           cd bahmni-docker/
 
           services=$(cat services.txt)
