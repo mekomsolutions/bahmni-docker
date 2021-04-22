@@ -48,15 +48,15 @@ jobs:
 
           ip=$(cat $PWD/terraform.tfstate | jq -r .outputs.arm_builder_stats.value.ip)
           echo "☑️ AWS instance started. IP=$ip"
-          echo "INSTANCE_IP=$ip" > vars.env
+          echo "INSTANCE_IP=$ip" >> $GITHUB_ENV
           exit 0
+
       - name: Setup SSH connection and copy files
         run: |
           #!/usr/bin/env bash
           WORKDIR=$PWD/workdir
           REPO_DIR=$PWD
           BUILD_DIR=$REPO_DIR/build
-          source vars.env
 
           cd $BUILD_DIR
 
@@ -70,11 +70,11 @@ jobs:
 
           # Set SSH vars
           ssh_params=" -o 'UserKnownHostsFile $TEMPFILE' -i $TEMPFILE_2 -p 22"
-          server="ubuntu@$ip"
+          server="ubuntu@$INSTANCE_IP"
 
           # Save the public key
           server_public_key=$(cat $PWD/terraform.tfstate | jq -r '.resources[] | select(.name == "host-rsa") | .instances[].attributes.public_key_openssh')
-          echo "$ip $server_public_key" >> $TEMPFILE
+          echo "HOSTKEY=$INSTANCE_IP $server_public_key" >> $GITHUB_ENV
 
       - name: Parse services
         run: |
@@ -83,7 +83,7 @@ jobs:
           REPO_DIR=$PWD
           BUILD_DIR=$REPO_DIR/build
           source vars.env
-          
+
           # Read and save the list of services to build
           services=""
           folders=`ls -d ../*/`
@@ -94,11 +94,11 @@ jobs:
                 sqls|readme|properties)
                   ;;
                 *)
-                  services=$service"\n"$services
+                  services=$service" "$services
                   ;;
             esac
           done
-          echo "::set-env name=SERVICES::$services"
+          echo "SERVICES=$services" >> $GITHUB_ENV
 
       - name: Build images on remote instance
         run: |
