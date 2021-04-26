@@ -16,9 +16,9 @@ chmod +x ./terraform
 ./terraform validate
 ./terraform apply -auto-approve
 
-arm64_ip=$(cat $BUILD_DIR/terraform.tfstate | jq -r .outputs.arm64_builder_stats.value.ip)
-amd64_ip=$(cat $BUILD_DIR/terraform.tfstate | jq -r .outputs.amd64_builder_stats.value.ip)
-ls -al
+arm64_ip=$(cat ./terraform.tfstate | jq -r .outputs.arm64_builder_stats.value.ip)
+amd64_ip=$(cat ./terraform.tfstate | jq -r .outputs.amd64_builder_stats.value.ip)
+
 echo "☑️ AWS instance started. ARM64 instance IP: $arm64_ip, AMD64 instance IP: $amd64_ip"
 echo "arm64=$arm64_ip" >> $GITHUB_ENV
 echo "amd64=$amd64_ip" >> $GITHUB_ENV
