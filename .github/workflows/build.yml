@@ -131,7 +131,7 @@ jobs:
             for service in \${services//,/ }
             do
                 echo "⚙️ Building '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}'"
-                docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}
+                sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}
             done
           EOF
 
