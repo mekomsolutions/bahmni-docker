@@ -17,15 +17,10 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a set of commands using the runners shell
       - name: Start Terraform infrastructure
         run: |
           #!/usr/bin/env bash
@@ -100,6 +95,7 @@ jobs:
           rsync -av -e "ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
 
       - name: Build images on remote instance
+        if: ${{ false }}
         run: |
           #!/usr/bin/env bash
           WORKDIR=$PWD/workdir
@@ -130,8 +126,50 @@ jobs:
             echo "⚙️ Will build the following list of services:" $services
             for service in \${services//,/ }
             do
-                echo "⚙️ Building '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}'"
+                echo "⚙️ Building '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}'..."
                 sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}
+            done
+          EOF
+
+      - name: Deploy images
+        if: ${{ github.ref == 'refs/heads/master' }}
+        run: |
+          #!/usr/bin/env bash
+          WORKDIR=$PWD/workdir
+          REPO_DIR=$PWD
+          BUILD_DIR=$REPO_DIR/build
+          services=$SERVICES
+
+          echo "📑 Services to push: "
+          echo $services
+
+          echo "⚙️ Set the Revision and CPU architecture:"
+          REVISION=$(git rev-parse --short HEAD)
+          CPU_ARCH=arm64
+
+          # Set the Docker creds
+          DOCKER_USERNAME=mekomsolutions
+          DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+
+          echo "⚙️ Set AWS AMI private key."
+          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
+          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
+          chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
+
+          echo "🔑 Log in Docker Hub"
+          ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$INSTANCE_IP /bin/bash -x << EOF
+            docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
+          EOF
+
+          echo "⚙️ Run Docker push commands on remote."
+          ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$INSTANCE_IP /bin/bash -x << EOF
+            cd bahmni-docker/
+            services=$services
+            echo "⚙️ Will push the following list of services:" $services
+            for service in \${services//,/ }
+            do
+                echo "⚙️ Pushing '$DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}'..."
+                sudo docker push -t $DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}
             done
           EOF
 
