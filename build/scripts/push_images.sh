@@ -21,23 +21,23 @@ do
 
   echo "🔑 Log in Docker Hub"
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
-    sudo docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
-  EOF
+  sudo docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
+EOF
 
-  echo "⚙️ Run Docker push commands on remote."
-  ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
-    cd bahmni-docker/
-    services=$services
-    echo "⚙️ Will push the following list of services:" $services
-    for service in \${services//,/ }
-    do
-        echo "⚙️ Pushing '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
-        sudo docker push $DOCKER_USERNAME/\${service}:${REVISION}_$arch
-        echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
-        docker manifest create $DOCKER_USERNAME/${service}:$(git rev-parse --short HEAD) --amend $DOCKER_USERNAME/${service}:$(git rev-parse --short HEAD)_arm64 --amend $DOCKER_USERNAME/${service}:$(git rev-parse --short HEAD)_amd64
-        docker manifest push $DOCKER_USERNAME/${service}:$(git rev-parse --short HEAD)
-        docker manifest push $DOCKER_USERNAME/${service}:latest
-    done
-  EOF
+echo "⚙️ Run Docker push commands on remote."
+ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
+  cd bahmni-docker/
+  services=$services
+  echo "⚙️ Will push the following list of services:" $services
+  for service in \${services//,/ }
+  do
+      echo "⚙️ Pushing '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
+      sudo docker push $DOCKER_USERNAME/\${service}:${REVISION}_$arch
+      echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
+      sudo docker manifest create $DOCKER_USERNAME/${service}:${REVISION} --amend $DOCKER_USERNAME/${service}:${REVISION}_${arch}
+      sudo docker manifest push $DOCKER_USERNAME/${service}:${REVISION}
+      sudo docker manifest push $DOCKER_USERNAME/${service}:latest
+  done
+EOF
 
 done
