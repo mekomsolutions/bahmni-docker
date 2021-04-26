@@ -127,14 +127,14 @@ jobs:
 
           echo "⚙️ Run Docker build commands on remote."
           ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$INSTANCE_IP /bin/bash -x << 'EOF'
-          cd bahmni-docker/
+            cd bahmni-docker/
 
-          echo "⚙️ Will build the following list of services:"
-          for service in ${services}
-          do
-              echo "⚙️ Building '$service' ($CPU_ARCH) image"
-              docker build ${service}/ -t $DOCKER_USERNAME/${service}:${REVISION}_${CPU_ARCH}
-          done
+            echo "⚙️ Will build the following list of services:" $services
+            for service in ${services}
+            do
+                echo "⚙️ Building '$service' ($CPU_ARCH) image"
+                docker build ${service}/ -t $DOCKER_USERNAME/${service}:${REVISION}_${CPU_ARCH}
+            done
           EOF
 
       - name: Destroy Terraform infrastructure
