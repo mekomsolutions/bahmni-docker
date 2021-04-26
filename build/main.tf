@@ -26,6 +26,7 @@ resource "aws_instance" "arm64_builder" {
     volume_type           = "gp2"
     delete_on_termination = "true"
   }
+}
 
 output "arm64_builder_stats" {
   value = {
