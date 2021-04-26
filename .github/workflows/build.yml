@@ -90,11 +90,11 @@ jobs:
 
           server="ubuntu@$INSTANCE_IP"
 
-          # Send the project to remote
-          echo "⚙️ Copy files to remote."
+          echo "Wait for 10s..."
+          sleep 10s
 
-          echo AWS_AMI_PRIVATE_KEY_FILE: $AWS_AMI_PRIVATE_KEY_FILE
-          cat $AWS_AMI_PRIVATE_KEY_FILE
+          # Send the project to remote
+          echo "⚙️ Copy files to remote"
 
           ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 $server "mkdir -p /home/ubuntu/bahmni-docker"
           rsync -av -e "ssh -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22" ../ $server:/home/ubuntu/bahmni-docker/ --exclude .git --exclude build
