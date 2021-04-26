@@ -91,7 +91,7 @@ jobs:
           server="ubuntu@$INSTANCE_IP"
 
           echo "Wait for 10s..."
-          sleep 10s
+          sleep 30s
 
           # Send the project to remote
           echo "⚙️ Copy files to remote"
