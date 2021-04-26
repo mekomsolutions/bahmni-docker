@@ -3,7 +3,8 @@ services=$SERVICES
 
 echo "📑 Services to build: "
 echo $services
-
+echo "GITHUB_ENV:"
+echo "$GITHUB_ENV"
 echo "⚙️ Set the Revision:"
 REVISION=$(git rev-parse --short HEAD)
 
