@@ -18,10 +18,10 @@ jobs:
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
-          ./github/resources/scripts/start_terraform.sh
+          ./.github/resources/scripts/start_terraform.sh
 
       - name: Parse services
-        run: ./github/resources/scripts/parse_services.sh
+        run: ./.github/resources/scripts/parse_services.sh
 
       - name: Set new AWS instances private key
         run: |
@@ -36,22 +36,22 @@ jobs:
 
       - name: Copy files
         run: |
-          ./github/resources/scripts/copy_files.sh
+          ./.github/resources/scripts/copy_files.sh
 
       - name: Build images on remote instances
         if: ${{ true }}
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-          ./github/resources/scripts/build_images.sh
+          ./.github/resources/scripts/build_images.sh
 
       - name: Deploy images on Docker Hub
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-          ./github/resources/scripts/push_images.sh
+          ./.github/resources/scripts/push_images.sh
 
       - name: Destroy Terraform infrastructure
         if: always()
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
-          ./github/resources/scripts/destroy_terraform.sh
+          ./.github/resources/scripts/destroy_terraform.sh
