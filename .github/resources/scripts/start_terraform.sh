@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-BUILD_DIR=".github/build"
+BUILD_DIR=".github/resources"
 mkdir $BUILD_DIR && cd $BUILD_DIR/
 
 echo AWS_API_KEY_1="$TF_VAR_aws_api_key"
