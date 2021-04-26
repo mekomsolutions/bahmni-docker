@@ -111,10 +111,8 @@ jobs:
           echo $services
 
           echo "⚙️ Set the Revision and CPU architecture:"
-          rm -f vars.env
-          echo "REVISION=$(git rev-parse --short HEAD)" >> vars.env
-          echo "CPU_ARCH=arm64" >> vars.env
-          cat vars.env
+          REVISION=$(git rev-parse --short HEAD)
+          CPU_ARCH=arm64
 
           # Set the Docker creds
           echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
