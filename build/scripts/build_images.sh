@@ -20,13 +20,13 @@ do
   echo "Remote: $arch: $ip"
 
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
-    cd bahmni-docker/
-    services=$services
-    echo "⚙️ Will build the following list of services:" $services
-    for service in \${services//,/ }
-    do
-        echo "⚙️ Build '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
-        sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
-    done
-  EOF
+cd bahmni-docker/
+services=$services
+echo "⚙️ Will build the following list of services:" $services
+for service in \${services//,/ }
+do
+  echo "⚙️ Build '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
+  sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
+done
+EOF
 done
