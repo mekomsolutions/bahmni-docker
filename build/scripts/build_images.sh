@@ -21,8 +21,8 @@ echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
 chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
 echo "⚙️ Run Docker build commands on remotes..."
-IPs=$arm64 $amd64
-for ip in $IPs
+IPs=$arm64,$amd64
+for ip in ${IPs//,/ }
 do
   echo "Remote: $ip"
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
