@@ -16,7 +16,7 @@ resource "aws_instance" "arm64_builder" {
     "SSH"
   ]
   tags = {
-    Name   = "[CI] [Ubuntu] [ARM64 Docker Builder] [Terraform]",
+    Name   = "[GitHub Actions] [Ubuntu] [ARM64 Docker Builder] [Terraform]",
     Type   = "test",
     Owner  = "${data.aws_caller_identity.current.user_id}",
     Groups = "arm64_builder, terraform",
@@ -44,7 +44,7 @@ resource "aws_instance" "amd64_builder" {
     "SSH"
   ]
   tags = {
-    Name   = "[CI] [Ubuntu] [AMD64 Docker Builder] [Terraform]",
+    Name   = "[GitHub Actions] [Ubuntu] [AMD64 Docker Builder] [Terraform]",
     Type   = "test",
     Owner  = "${data.aws_caller_identity.current.user_id}",
     Groups = "amd64_builder, terraform",
