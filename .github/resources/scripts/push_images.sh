@@ -5,7 +5,6 @@ services=$SERVICES
 echo "📑 Services to push: "
 echo $services
 
-echo "⚙️ Set the Revision:"
 REVISION=$(git rev-parse --short HEAD)
 
 DOCKER_USERNAME=mekomsolutions
@@ -34,9 +33,9 @@ ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip
 
       echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
 
-      sudo docker manifest create $DOCKER_USERNAME/${service}:${REVISION} --amend $DOCKER_USERNAME/${service}:${REVISION}_${arch}
-      sudo docker manifest push $DOCKER_USERNAME/${service}:${REVISION}
-      sudo docker manifest push $DOCKER_USERNAME/${service}:latest
+      sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} --amend $DOCKER_USERNAME/${service}:${REVISION}_${arch}
+      sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}
+      sudo docker manifest push $DOCKER_USERNAME/\${service}:latest
   done
 EOF
 

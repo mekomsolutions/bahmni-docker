@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+    build_and_deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -39,18 +39,18 @@ jobs:
           ./.github/resources/scripts/copy_files.sh
 
       - name: Build images on remote instances
-        if: ${{ true }}
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/build_images.sh
 
       - name: Deploy images on Docker Hub
+        #if: github.ref == 'refs/heads/master'
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/push_images.sh
 
-      - name: Destroy Terraform infrastructure
-        if: always()
+      - name: Disabled - Destroy Terraform infrastructure
+        if: {{ false }}
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
