@@ -18,12 +18,12 @@ jobs:
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
-          ./build/scripts/start_terraform.sh
+          ./github/resources/scripts/start_terraform.sh
 
       - name: Parse services
-        run: ./build/scripts/parse_services.sh
+        run: ./github/resources/scripts/parse_services.sh
 
-      - name: Set AWS AMI key
+      - name: Set new AWS instances private key
         run: |
           echo "⚙️ Set AWS AMI private key."
           AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
@@ -31,28 +31,27 @@ jobs:
           chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
           echo "AWS_AMI_PRIVATE_KEY_FILE=$AWS_AMI_PRIVATE_KEY_FILE" >> $GITHUB_ENV
 
+      - name: Wait for 20s
+        run: sleep 20s
+
       - name: Copy files
         run: |
-          echo "⚙️ Set AWS AMI private key."
-          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
-          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
-          chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
-          ./build/scripts/copy_files.sh
+          ./github/resources/scripts/copy_files.sh
 
       - name: Build images on remote instances
         if: ${{ true }}
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-          ./build/scripts/build_images.sh
+          ./github/resources/scripts/build_images.sh
 
       - name: Deploy images on Docker Hub
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-          ./build/scripts/push_images.sh
+          ./github/resources/scripts/push_images.sh
 
       - name: Destroy Terraform infrastructure
         if: always()
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
-          ./build/scripts/destroy_terraform.sh
+          ./github/resources/scripts/destroy_terraform.sh

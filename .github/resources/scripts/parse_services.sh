@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-WORKDIR=$PWD/workdir
-REPO_DIR=$PWD
-BUILD_DIR=$REPO_DIR/build
 
 # Read and save the list of services to build
 services=""

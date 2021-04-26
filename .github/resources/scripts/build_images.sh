@@ -1,7 +1,4 @@
 #!/usr/bin/env bash
-WORKDIR=$PWD/workdir
-REPO_DIR=$PWD
-BUILD_DIR=$REPO_DIR/build
 services=$SERVICES
 
 echo "📑 Services to build: "
