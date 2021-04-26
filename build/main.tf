@@ -35,3 +35,31 @@ output "arm64_builder_stats" {
     user   = "${aws_instance.arm64_builder.tags.User}"
   }
 }
+
+resource "aws_instance" "amd64_builder" {
+  ami           = "ami-00c5ee06663571065"
+  instance_type = "t2.xlarge"
+  security_groups = [
+    "Ping",
+    "SSH"
+  ]
+  tags = {
+    Name   = "[CI] [Ubuntu] [AMD64 Docker Builder] [Terraform]",
+    Type   = "test",
+    Owner  = "${data.aws_caller_identity.current.user_id}",
+    Groups = "amd64_builder, terraform",
+    User   = "centos"
+  }
+  root_block_device {
+    volume_type           = "gp2"
+    delete_on_termination = "true"
+  }
+}
+
+output "amd64_builder_stats" {
+  value = {
+    ip     = "${aws_instance.amd64_builder.public_ip}",
+    groups = "${aws_instance.amd64_builder.tags.Groups}"
+    user   = "${aws_instance.amd64_builder.tags.User}"
+  }
+}
