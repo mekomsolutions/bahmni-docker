@@ -18,7 +18,7 @@ jobs:
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}
-          ./build/scripts/start_terraform.sh
+          bash build/scripts/start_terraform.sh
 
       - name: Debug
         run: |
