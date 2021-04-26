@@ -90,7 +90,7 @@ jobs:
 
           server="ubuntu@$INSTANCE_IP"
 
-          echo "Wait for 10s..."
+          echo "Wait for 30s..."
           sleep 30s
 
           # Send the project to remote
@@ -126,14 +126,14 @@ jobs:
           chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
           echo "⚙️ Run Docker build commands on remote."
-          ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$INSTANCE_IP /bin/bash -x << 'EOF'
+          ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$INSTANCE_IP /bin/bash -x << EOF
             cd bahmni-docker/
-
+            services=$services
             echo "⚙️ Will build the following list of services:" $services
-            for service in ${services}
+            for service in \${services}
             do
-                echo "⚙️ Building '$service' ($CPU_ARCH) image"
-                docker build ${service}/ -t $DOCKER_USERNAME/${service}:${REVISION}_${CPU_ARCH}
+                echo "⚙️ Building '\$service' (\$CPU_ARCH) image"
+                docker build \${service}/ -t $DOCKER_USERNAME/\${service}:\${REVISION}_\${CPU_ARCH}
             done
           EOF
 
