@@ -15,3 +15,9 @@ do
   esac
 done
 echo "SERVICES=$services" >> $GITHUB_ENV
+
+# Persist GITHUB_ENV vars inherited from previous job
+echo "arm64=$arm64" >> $GITHUB_ENV
+echo "amd64=$amd64" >> $GITHUB_ENV
+
+echo $GITHUB_ENV
