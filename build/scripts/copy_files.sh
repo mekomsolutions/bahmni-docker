@@ -5,11 +5,6 @@ BUILD_DIR=$REPO_DIR/build
 
 cd $BUILD_DIR
 
-echo "⚙️ Set AWS AMI private key."
-AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
-echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
-chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
-
 echo "Wait for 30s..."
 sleep 30s
 
