@@ -7,24 +7,18 @@ services=$SERVICES
 echo "📑 Services to build: "
 echo $services
 
-echo "⚙️ Set the Revision and CPU architecture:"
+echo "⚙️ Set the Revision:"
 REVISION=$(git rev-parse --short HEAD)
-CPU_ARCH=arm64
 
-# Set the Docker creds
 DOCKER_USERNAME=mekomsolutions
-DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-
-echo "⚙️ Set AWS AMI private key."
-AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
-echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
-chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
 echo "⚙️ Run Docker build commands on remotes..."
-IPs=$arm64,$amd64
-for ip in ${IPs//,/ }
+archs=arm64 amd64
+for arch in archs
 do
-  echo "Remote: $ip"
+  ip=${!arch}
+  echo "Remote: $arch: $ip"
+
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
     cd bahmni-docker/
     services=$services
@@ -32,7 +26,7 @@ do
     for service in \${services//,/ }
     do
         echo "⚙️ Build '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
-        sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${CPU_ARCH}
+        sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
     done
   EOF
 done

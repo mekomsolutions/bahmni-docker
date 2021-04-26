@@ -7,17 +7,10 @@ services=$SERVICES
 echo "📑 Services to push: "
 echo $services
 
-echo "⚙️ Set the Revision and CPU architecture:"
+echo "⚙️ Set the Revision:"
 REVISION=$(git rev-parse --short HEAD)
 
-# Set the Docker creds
 DOCKER_USERNAME=mekomsolutions
-DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-
-echo "⚙️ Set AWS AMI private key."
-AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
-echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
-chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
 
 echo "⚙️ Run Docker build commands on remotes..."
 archs=arm64 amd64

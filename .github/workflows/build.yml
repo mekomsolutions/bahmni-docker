@@ -41,10 +41,14 @@ jobs:
 
       - name: Build images on remote instances
         if: ${{ true }}
-        run: ./build/scripts/build_images.sh
+        run: |
+          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+          ./build/scripts/build_images.sh
 
       - name: Deploy images on Docker Hub
-        run: ./build/scripts/push_images.sh
+        run: |
+          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+          ./build/scripts/push_images.sh
 
       - name: Destroy Terraform infrastructure
         if: always()
