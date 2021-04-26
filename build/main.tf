@@ -53,6 +53,7 @@ resource "aws_instance" "amd64_builder" {
     volume_type           = "gp2"
     delete_on_termination = "true"
   }
+}
 
 output "amd64_builder_stats" {
   value = {
