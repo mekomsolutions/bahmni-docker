@@ -1,4 +1,5 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+set -e
 echo "⚙️ Copy files to remotes"
 IPs=$arm64,$amd64
 for ip in ${IPs//,/ }

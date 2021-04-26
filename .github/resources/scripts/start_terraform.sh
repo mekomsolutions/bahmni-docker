@@ -1,4 +1,5 @@
-#!/usr/bin/env bash -e
+#!/usr/bin/env bash
+set -e
 
 BUILD_DIR=".github/build"
 mkdir $BUILD_DIR && cd $BUILD_DIR/
