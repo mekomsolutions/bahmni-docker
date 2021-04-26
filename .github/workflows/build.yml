@@ -115,8 +115,8 @@ jobs:
           CPU_ARCH=arm64
 
           # Set the Docker creds
-          echo "DOCKER_USERNAME=mekomsolutions" >> $REPO_DIR/vars.env
-          echo "DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}" >> vars.env
+          DOCKER_USERNAME=mekomsolutions
+          DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
 
           echo "⚙️ Set AWS AMI private key."
           AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
