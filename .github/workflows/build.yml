@@ -132,8 +132,8 @@ jobs:
             echo "⚙️ Will build the following list of services:" $services
             for service in \${services//,/ }
             do
-                echo "⚙️ Building '\$service' (\$CPU_ARCH) image"
-                docker build \${service}/ -t $DOCKER_USERNAME/\${service}:\${REVISION}_\${CPU_ARCH}
+                echo "⚙️ Building '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:\${REVISION}_${CPU_ARCH}'"
+                docker build \${service}/ -t $DOCKER_USERNAME/\${service}:\${REVISION}_${CPU_ARCH}
             done
           EOF
 
