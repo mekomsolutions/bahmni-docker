@@ -132,7 +132,6 @@ jobs:
           EOF
 
       - name: Deploy images
-        if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           #!/usr/bin/env bash
           WORKDIR=$PWD/workdir
