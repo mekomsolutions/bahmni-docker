@@ -50,7 +50,7 @@ jobs:
           ./.github/resources/scripts/push_images.sh
 
       - name: Disabled - Destroy Terraform infrastructure
-        if: {{ false }}
+        if: ${{ false }}
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
