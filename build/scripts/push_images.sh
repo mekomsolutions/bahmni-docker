@@ -22,7 +22,7 @@ do
   echo "🔑 Log in Docker Hub"
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
     sudo docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
-EOF
+  EOF
 
   echo "⚙️ Run Docker push commands on remote."
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
@@ -38,6 +38,6 @@ EOF
         docker manifest push $DOCKER_USERNAME/${service}:$(git rev-parse --short HEAD)
         docker manifest push $DOCKER_USERNAME/${service}:latest
     done
-EOF
+  EOF
 
 done
