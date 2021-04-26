@@ -13,8 +13,8 @@ REVISION=$(git rev-parse --short HEAD)
 DOCKER_USERNAME=mekomsolutions
 
 echo "⚙️ Run Docker build commands on remotes..."
-archs=arm64 amd64
-for arch in archs
+archs=arm64,amd64
+for arch in ${archs//,/ }
 do
   ip=${!arch}
   echo "Remote: $arch: $ip"
@@ -22,7 +22,7 @@ do
   echo "🔑 Log in Docker Hub"
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
     sudo docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
-  EOF
+EOF
 
   echo "⚙️ Run Docker push commands on remote."
   ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
@@ -38,6 +38,6 @@ do
         docker manifest push $DOCKER_USERNAME/${service}:$(git rev-parse --short HEAD)
         docker manifest push $DOCKER_USERNAME/${service}:latest
     done
-  EOF
+EOF
 
 done
