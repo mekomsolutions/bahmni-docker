@@ -157,7 +157,7 @@ jobs:
 
           echo "🔑 Log in Docker Hub"
           ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$INSTANCE_IP /bin/bash -x << EOF
-            docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
+            sudo docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
           EOF
 
           echo "⚙️ Run Docker push commands on remote."
