@@ -2,11 +2,12 @@
 set -e
 
 BUILD_DIR=".github/resources"
-mkdir $BUILD_DIR && cd $BUILD_DIR/
-
-echo AWS_API_KEY_1="$TF_VAR_aws_api_key"
+mkdir -p $BUILD_DIR
+cd $BUILD_DIR/
 
 wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip -O terraform.zip
+# wget https://releases.hashicorp.com/terraform/0.15.0/terraform_0.15.0_darwin_amd64.zip -O terraform.zip
+
 unzip terraform.zip
 chmod +x ./terraform
 ./terraform version
