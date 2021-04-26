@@ -8,14 +8,6 @@ provider "aws" {
   region     = "eu-west-1"
 }
 
-resource "tls_private_key" "host-rsa" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-resource "tls_private_key" "host-ecdsa" {
-  algorithm = "ECDSA"
-}
-
 resource "aws_instance" "arm64_builder" {
   ami           = "ami-0f4fb321056ea2a14"
   instance_type = "a1.xlarge"
