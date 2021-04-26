@@ -4,9 +4,7 @@ REPO_DIR=$PWD
 BUILD_DIR=$REPO_DIR/build
 
 cd $BUILD_DIR
-export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
-export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
-echo AWS_API_KEY_1='${{ secrets.AWS_API_KEY_1 }}'
+echo AWS_API_KEY_1="$TF_VAR_aws_api_key"
 
 wget https://releases.hashicorp.com/terraform/0.13.0/terraform_0.13.0_linux_amd64.zip -O terraform.zip
 unzip terraform.zip
