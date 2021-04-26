@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
 services=$SERVICES
 
 echo "📑 Services to push: "
@@ -17,12 +17,12 @@ do
   echo "Remote: $arch: $ip"
 
   echo "🔑 Log in Docker Hub"
-  ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
+  ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -e << EOF
   sudo docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
 EOF
 
 echo "⚙️ Run Docker push commands on remote."
-ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
+ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -e << EOF
   cd bahmni-docker/
   services=$services
   echo "⚙️ Will push the following list of services:" $services

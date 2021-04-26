@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
 services=$SERVICES
 
 echo "📑 Services to build: "
@@ -18,7 +18,7 @@ do
   ip=${!arch}
   echo "Remote: $arch: $ip"
 
-  ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -x << EOF
+  ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -e << EOF
 cd bahmni-docker/
 services=$services
 echo "⚙️ Will build the following list of services:" $services

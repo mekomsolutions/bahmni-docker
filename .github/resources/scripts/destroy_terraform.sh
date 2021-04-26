@@ -1,4 +1,6 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
 
-cd ./github/resources/
+BUILD_DIR=".github/build"
+cd $BUILD_DIR
+
 ./terraform destroy -auto-approve
