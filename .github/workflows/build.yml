@@ -68,7 +68,7 @@ jobs:
                 sqls|readme|properties)
                   ;;
                 *)
-                  services=$service" "$services
+                  services=$service","$services
                   ;;
             esac
           done
@@ -130,7 +130,7 @@ jobs:
             cd bahmni-docker/
             services=$services
             echo "⚙️ Will build the following list of services:" $services
-            for service in \${services}
+            for service in \${services//,/ }
             do
                 echo "⚙️ Building '\$service' (\$CPU_ARCH) image"
                 docker build \${service}/ -t $DOCKER_USERNAME/\${service}:\${REVISION}_\${CPU_ARCH}
