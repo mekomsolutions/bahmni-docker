@@ -24,15 +24,14 @@ EOF
 # Substitute environment variables in all properties files
 echo "📑 Substitute environment variables found in /etc/properties/"
 propertiesFiles=`find /etc/properties/ -print -mindepth 1`
-mkdir -p /tmp/properties
 for file in $propertiesFiles
 do
     name=$(basename "${file}")
-    envsubst < ${file} > /tmp/properties/${name}
+    envsubst < ${file} > /etc/properties/${name}
     # Copy only properties that are not *-runtime.properties to application directory.
     # Leave *-runtime.properties here for further processing.
     if [[ ${name} != *"-runtime.properties" ]]; then
-      mv /tmp/properties/${name} /usr/local/tomcat/.OpenMRS/
+      mv /etc/properties/${name} /usr/local/tomcat/.OpenMRS/
     fi
 done
 
