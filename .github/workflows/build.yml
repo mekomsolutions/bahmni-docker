@@ -52,7 +52,7 @@ jobs:
         # if: github.ref == 'refs/heads/master'
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-          ./.github/resources/scripts/push_images.sh
+          ./.github/resources/scripts/push_tags.sh
 
       - name: Disabled - Destroy Terraform infrastructure
         if: ${{ false }}
