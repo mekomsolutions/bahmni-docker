@@ -25,19 +25,11 @@ echo "⚙️ Run Docker push commands on remote."
 ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -e << EOF
   cd bahmni-docker/
   services=$services
-  echo "⚙️ Will push the following list of services:" $services
+  echo "⚙️ Pushing images for the following list of services:" $services
   for service in \${services//,/ }
   do
       echo "⚙️ Pushing '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
       sudo docker push $DOCKER_USERNAME/\${service}:${REVISION}_$arch
-
-      echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}'..."
-      sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} --amend $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
-      sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}
-
-      echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:latest'..."
-      sudo docker manifest create $DOCKER_USERNAME/\${service}:latest --amend $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
-      sudo docker manifest push $DOCKER_USERNAME/\${service}:latest
   done
 EOF
 
