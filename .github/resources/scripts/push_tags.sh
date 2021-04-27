@@ -37,8 +37,9 @@ services=$services
 echo "⚙️ Will push the following list of services:" $services
 for service in \${services//,/ }
 do
-    echo "sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}"
+    set -x
     echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}'..."
+    echo "sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} ${args}"
     sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} ${args}
     sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}
 
