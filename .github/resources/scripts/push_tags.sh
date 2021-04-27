@@ -5,7 +5,8 @@ services=$SERVICES
 echo "📑 "
 echo $services
 
-REVISION=$(git rev-parse --short HEAD)
+#REVISION=$(git rev-parse --short HEAD)
+REVISION="85e000c"
 
 DOCKER_USERNAME=mekomsolutions
 

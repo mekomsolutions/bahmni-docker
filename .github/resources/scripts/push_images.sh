@@ -5,7 +5,7 @@ services=$SERVICES
 echo "📑 Services to push: "
 echo $services
 
-REVISION="85e000c"
+REVISION=$(git rev-parse --short HEAD)
 
 DOCKER_USERNAME=mekomsolutions
 
