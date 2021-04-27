@@ -36,10 +36,12 @@ for service in \${services//,/ }
 do
     echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}'..."
     sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} ${args}
+    echo "⚙️ Pushing manifest..."
     sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}
 
     echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:latest'..."
     sudo docker manifest create $DOCKER_USERNAME/\${service}:latest ${args}
+    echo "⚙️ Pushing manifest..."
     sudo docker manifest push $DOCKER_USERNAME/\${service}:latest
 done
 EOF

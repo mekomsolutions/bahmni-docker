@@ -43,18 +43,18 @@ jobs:
           ./.github/resources/scripts/build_images.sh
 
       - name: Push images on Docker Hub
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/push_images.sh
 
       - name: Push tags on Docker Hub
-        # if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master'
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/push_tags.sh
 
-      - name: Disabled - Destroy Terraform infrastructure
+      - name: Destroy Terraform infrastructure
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
