@@ -38,9 +38,11 @@ jobs:
           echo "AWS_AMI_PRIVATE_KEY_FILE=$AWS_AMI_PRIVATE_KEY_FILE" >> $GITHUB_ENV
 
       - name: Wait for 30s
+        if: ${{ false }}
         run: sleep 30s
 
       - name: Copy files
+        if: ${{ false }}
         run: |
           ./.github/resources/scripts/copy_files.sh
 
