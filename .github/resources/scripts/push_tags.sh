@@ -14,7 +14,7 @@ archs=arm64,amd64
 args=" "
 for arch in ${archs//,/ }
 do
-  args="${args} --amend $DOCKER_USERNAME/\\\${service}:${REVISION}_${arch}"
+  args="${args} --amend $DOCKER_USERNAME/\${service}:${REVISION}_${arch}"
 done
 echo "$args"
 
