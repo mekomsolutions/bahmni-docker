@@ -7,3 +7,5 @@ sqls/**/*.sql*
 docker-compose.override.*
 *.env
 !.env
+
+build

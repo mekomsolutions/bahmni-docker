@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Start Terraform infrastructure
+        run: |
+          export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
+          export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
+          ./.github/resources/scripts/start_terraform.sh
+
+      - name: Parse services
+        run: ./.github/resources/scripts/parse_services.sh
+
+      - name: Set new AWS instances private key
+        run: |
+          echo "⚙️ Set AWS AMI private key."
+          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
+          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
+          chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
+          echo "AWS_AMI_PRIVATE_KEY_FILE=$AWS_AMI_PRIVATE_KEY_FILE" >> $GITHUB_ENV
+
+      - name: Wait for 30s
+        run: sleep 30s
+
+      - name: Copy files
+        run: |
+          ./.github/resources/scripts/copy_files.sh
+
+      - name: Build images on remote instances
+        run: |
+          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+          ./.github/resources/scripts/build_images.sh
+
+      - name: Deploy images on Docker Hub
+        if: github.ref == 'refs/heads/master'
+        run: |
+          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+          ./.github/resources/scripts/push_images.sh
+
+      - name: Destroy Terraform infrastructure
+        run: |
+          export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
+          export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
+          ./.github/resources/scripts/destroy_terraform.sh
