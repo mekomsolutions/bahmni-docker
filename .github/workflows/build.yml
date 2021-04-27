@@ -40,14 +40,19 @@ jobs:
 
       - name: Build images on remote instances
         run: |
-          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/build_images.sh
 
-      - name: Deploy images on Docker Hub
+      - name: Push images on Docker Hub
         if: github.ref == 'refs/heads/master'
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/push_images.sh
+
+      - name: Push tags on Docker Hub
+        if: github.ref == 'refs/heads/master'
+        run: |
+          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+          ./.github/resources/scripts/push_tags.sh
 
       - name: Destroy Terraform infrastructure
         run: |

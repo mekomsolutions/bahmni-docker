@@ -12,7 +12,6 @@ REVISION=$(git rev-parse --short HEAD)
 DOCKER_USERNAME=mekomsolutions
 
 echo "⚙️ Run Docker build commands on remotes..."
-echo "arm64 IP: $arm64"
 archs=arm64,amd64
 for arch in ${archs//,/ }
 do
