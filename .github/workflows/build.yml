@@ -15,16 +15,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Start Terraform infrastructure
-        if: ${{ false }}
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
           ./.github/resources/scripts/start_terraform.sh
-
-      - name: Export AWS machines IPs
-        run: |
-          echo "arm64=34.244.170.83" >> $GITHUB_ENV
-          echo "amd64=3.249.154.253" >> $GITHUB_ENV
 
       - name: Parse services
         run: ./.github/resources/scripts/parse_services.sh
@@ -38,34 +32,29 @@ jobs:
           echo "AWS_AMI_PRIVATE_KEY_FILE=$AWS_AMI_PRIVATE_KEY_FILE" >> $GITHUB_ENV
 
       - name: Wait for 30s
-        if: ${{ false }}
         run: sleep 30s
 
       - name: Copy files
-        if: ${{ false }}
         run: |
           ./.github/resources/scripts/copy_files.sh
 
       - name: Build images on remote instances
-        if: ${{ false }}
         run: |
           ./.github/resources/scripts/build_images.sh
 
       - name: Push images on Docker Hub
-        if: ${{ false }}
-        #if: github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/master'
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/push_images.sh
 
       - name: Push tags on Docker Hub
-        #if: github.ref == 'refs/heads/master'
+        # if: github.ref == 'refs/heads/master'
         run: |
           export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
           ./.github/resources/scripts/push_tags.sh
 
       - name: Disabled - Destroy Terraform infrastructure
-        if: ${{ false }}
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'

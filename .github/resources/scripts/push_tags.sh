@@ -5,24 +5,21 @@ services=$SERVICES
 echo "📑 "
 echo $services
 
-#REVISION=$(git rev-parse --short HEAD)
-REVISION="85e000c"
+REVISION=$(git rev-parse --short HEAD)
 
 DOCKER_USERNAME=mekomsolutions
 
-# Build the docker manifests commands
+echo "⚙️ Compute docker manifest CLI arguments"
 archs=arm64,amd64
 args=" "
 for arch in ${archs//,/ }
 do
   args="${args} --amend $DOCKER_USERNAME/\${service}:${REVISION}_${arch}"
 done
-echo "$args"
+echo "Args: $args"
 
-# Log in one of the machines
-echo "⚙️ "
+# Log in one of the machines only
 arch=arm64
-
 ip=${!arch}
 echo "Remote: $arch: $ip"
 
@@ -31,16 +28,13 @@ ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip
 sudo docker login -p $DOCKER_PASSWORD -u $DOCKER_USERNAME
 EOF
 
-echo "⚙️ "
 ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip /bin/bash -e << EOF
 cd bahmni-docker/
 services=$services
-echo "⚙️ Will push the following list of services:" $services
+echo "⚙️ Will push the manifests for the following services:" $services
 for service in \${services//,/ }
 do
-    set -x
     echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}'..."
-    echo "sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} ${args}"
     sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} ${args}
     sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}
 
@@ -49,5 +43,3 @@ do
     sudo docker manifest push $DOCKER_USERNAME/\${service}:latest
 done
 EOF
-
-done
