@@ -31,10 +31,12 @@ ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip
       echo "⚙️ Pushing '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
       sudo docker push $DOCKER_USERNAME/\${service}:${REVISION}_$arch
 
-      echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
-
-      sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} --amend $DOCKER_USERNAME/${service}:${REVISION}_${arch}
+      echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}'..."
+      sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} --amend $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
       sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}
+
+      echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:latest'..."
+      sudo docker manifest create $DOCKER_USERNAME/\${service}:latest --amend $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
       sudo docker manifest push $DOCKER_USERNAME/\${service}:latest
   done
 EOF
