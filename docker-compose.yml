@@ -174,7 +174,7 @@ services:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     healthcheck:
       test: "exit 0"
-    image: "mysql:5.6"
+    image: "mariadb:10.3"
     networks:
       bahmni:
         aliases:
