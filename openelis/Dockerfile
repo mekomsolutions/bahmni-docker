@@ -1,4 +1,4 @@
-FROM tomcat:8-jre8-alpine
+FROM tomcat:7-jre8-alpine
 
 ARG OPENELIS_WAR_URL=https://nexus.mekomsolutions.net/repository/maven-releases/org/bahmni/openelis/3.1/openelis-3.1.war
 
