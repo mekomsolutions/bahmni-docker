@@ -49,22 +49,22 @@ user=${DB_USERNAME}
 password=${DB_PASSWORD}
 EOF
 # checking if the database is already available
-db_tables_count=`mysql --defaults-extra-file=/etc/mysql/db-credentials.cnf -h${DB_HOST} --skip-column-names -e "SELECT count(*) FROM information_schema.tables WHERE table_schema = '${DB_DATABASE}'"`
+global_property_table_present=`mysql --defaults-extra-file=/etc/mysql/db-credentials.cnf -h${DB_HOST} --skip-column-names -e "SELECT count(*) FROM information_schema.tables WHERE table_schema = '${DB_DATABASE}' AND table_name = 'global_property'"`
 
-echo "⚙️  Generate random encryption seeds..."
-# generate encryption keys
-encryption_key=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
-encryption_vector=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
+if [[ ${global_property_table_present} -gt 0 ]]; then
+    echo "⚠️ Database appears to be already initialized"
 
-echo "🔩 Set the default 'openmrs-runtime.properties' file"
-if [ ${db_tables_count} > 1 ]; then
+    encryption_key=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
+    encryption_vector=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
+
+    echo "Set the corresponding 'openmrs-runtime.properties' file"
     cat > ${openmrs_runtime_props_path} << EOF
 encryption.vector=${encryption_vector}
+encryption.key=${encryption_key}
 connection.url=jdbc\:mysql\://${DB_HOST}\:3306/${DB_DATABASE}?autoReconnect\=true&sessionVariables\=default_storage_engine\=InnoDB&useUnicode\=true&characterEncoding\=UTF-8
 module.allow_web_admin=true
-connection.username=${DB_USERNAME}
 auto_update_database==${DB_AUTO_UPDATE}
-encryption.key=${encryption_key}
+connection.username=${DB_USERNAME}
 connection.driver_class=com.mysql.jdbc.Driver
 connection.password=${DB_PASSWORD}
 EOF
