@@ -48,16 +48,14 @@ cat > /etc/mysql/db-credentials.cnf << EOF
 user=${DB_USERNAME}
 password=${DB_PASSWORD}
 EOF
-# checking if the database is already available
-global_property_table_present=`mysql --defaults-extra-file=/etc/mysql/db-credentials.cnf -h${DB_HOST} --skip-column-names -e "SELECT count(*) FROM information_schema.tables WHERE table_schema = '${DB_DATABASE}' AND table_name = 'global_property'"`
 
-if [[ ${global_property_table_present} -gt 0 ]]; then
-    echo "⚠️ Database appears to be already initialized"
+if [ ! -e ${openmrs_runtime_props_path} ]; then
+    echo "ℹ️  ${openmrs_runtime_props_path} file is missing."
 
     encryption_key=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
     encryption_vector=`openssl rand -base64 22 | sed 's/=/\\\=/g'`
 
-    echo "Set the corresponding 'openmrs-runtime.properties' file"
+    echo "Creating it."
     cat > ${openmrs_runtime_props_path} << EOF
 encryption.vector=${encryption_vector}
 encryption.key=${encryption_key}
