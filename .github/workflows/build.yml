@@ -55,6 +55,7 @@ jobs:
           ./.github/resources/scripts/push_tags.sh
 
       - name: Destroy Terraform infrastructure
+        if: ${{ always() }}
         run: |
           export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
           export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
