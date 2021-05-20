@@ -81,6 +81,9 @@ do
     rm ${file}
 done
 
+echo "📑 Create OpenMRS database"
+mysql --defaults-extra-file=/etc/mysql/db-credentials.cnf -h${DB_HOST} -e "CREATE DATABASE IF NOT EXISTS ${DB_DATABASE}"
+
 echo "🔬 Inspect 'opemnrs-runtime.properties':"
 cat  $openmrs_runtime_props_path
 
