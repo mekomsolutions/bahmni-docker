@@ -31,8 +31,8 @@ jobs:
           chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
           echo "AWS_AMI_PRIVATE_KEY_FILE=$AWS_AMI_PRIVATE_KEY_FILE" >> $GITHUB_ENV
 
-      - name: Wait for 30s
-        run: sleep 30s
+      - name: Wait for 60s
+        run: sleep 60s
 
       - name: Copy files
         run: |
