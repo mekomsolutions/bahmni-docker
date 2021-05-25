@@ -1,7 +1,7 @@
-FROM tomcat:7-jre8-alpine
+FROM tomcat:7-jdk8-adoptopenjdk-hotspot
 ARG OPENMRS_WAR_URL=https://openmrs.jfrog.io/artifactory/public/org/openmrs/web/openmrs-webapp/2.1.3/openmrs-webapp-2.1.3.war
 
-RUN apk add mysql-client gettext coreutils curl wget openssl
+RUN apt update && apt install -y mysql-client gettext coreutils curl wget openssl
 
 RUN wget -O /usr/local/tomcat/webapps/openmrs.war ${OPENMRS_WAR_URL}
 COPY setenv.sh /usr/local/tomcat/bin/setenv.sh
