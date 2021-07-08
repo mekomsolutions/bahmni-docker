@@ -1,5 +1,5 @@
 FROM tomcat:7-jre8-alpine
-ARG BAHMNI_REPORTS_URL=https://nexus.mekomsolutions.net/repository/maven-releases/org/bahmni/reports/0.92.1/reports-0.92.1.war
+ARG BAHMNI_REPORTS_URL=https://nexus.mekomsolutions.net/repository/maven-releases/org/bahmni/reports/0.94-1.0.0/reports-0.94-1.0.0.war
 RUN apk add mysql-client gettext coreutils curl wget unzip bash
 RUN mkdir -p /var/www/bahmni_config/ /root/.bahmni-reports/ && \
     wget -O /opt/mysql-connector-java-5.1.26.jar https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.26/mysql-connector-java-5.1.26.jar && \
