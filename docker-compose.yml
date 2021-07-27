@@ -39,6 +39,8 @@ services:
         - "-f"
         - "http://localhost:8900/home/index.html"
       timeout: 20s
+    ports:
+      - 8900:8900
     networks:
       bahmni:
         aliases:
@@ -65,7 +67,8 @@ services:
           - implementer-interface
 
   bahmni-home:
-    image: httpd:2.4
+    build:
+      context: httpd/
     expose:
       - "8904"
     healthcheck:
