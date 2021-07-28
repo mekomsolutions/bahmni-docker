@@ -39,8 +39,6 @@ services:
         - "-f"
         - "http://localhost:8900/home/index.html"
       timeout: 20s
-    ports:
-      - 8900:8900
     networks:
       bahmni:
         aliases:
