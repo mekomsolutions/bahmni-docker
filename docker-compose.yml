@@ -145,6 +145,7 @@ services:
       DB_DATABASE: openmrs
       DB_USERNAME: ${OPENMRS_DB_USER}
       DB_PASSWORD: ${OPENMRS_DB_PASSWORD}
+      TZ: ${TIMEZONE}
     healthcheck:
       test:
         - CMD
