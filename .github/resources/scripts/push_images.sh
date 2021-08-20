@@ -28,8 +28,8 @@ ssh -t -o StrictHostKeyChecking=no -i $AWS_AMI_PRIVATE_KEY_FILE -p 22 ubuntu@$ip
   echo "⚙️ Pushing images for the following list of services:" $services
   for service in \${services//,/ }
   do
-      echo "⚙️ Pushing '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
-      sudo docker push $DOCKER_USERNAME/\${service}:${REVISION}_$arch
+      echo "⚙️ Pushing '$DOCKER_USERNAME/\${service}:bahmni_${REVISION}_$arch'..."
+      sudo docker push $DOCKER_USERNAME/\${service}:bahmni_${REVISION}_$arch
   done
 EOF
 

@@ -24,8 +24,8 @@ services=$services
 echo "⚙️ Will build the following list of services:" $services
 for service in \${services//,/ }
 do
-  echo "⚙️ Build '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:${REVISION}_$arch'..."
-  sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:${REVISION}_${arch}
+  echo "⚙️ Build '\${service}' image and tag it as '$DOCKER_USERNAME/\${service}:bahmni_${REVISION}_$arch'..."
+  sudo docker build \${service}/ -t $DOCKER_USERNAME/\${service}:$bahmni_${REVISION}_${arch}
 done
 EOF
 done

@@ -14,7 +14,7 @@ archs=arm64,amd64
 args=" "
 for arch in ${archs//,/ }
 do
-  args="${args} --amend $DOCKER_USERNAME/\${service}:${REVISION}_${arch}"
+  args="${args} --amend $DOCKER_USERNAME/\${service}:bahmni_${REVISION}_${arch}"
 done
 echo "Args: $args"
 
@@ -34,14 +34,14 @@ services=$services
 echo "⚙️ Will push the manifests for the following services:" $services
 for service in \${services//,/ }
 do
-    echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:${REVISION}'..."
-    sudo docker manifest create $DOCKER_USERNAME/\${service}:${REVISION} ${args}
+    echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:bahmni_${REVISION}'..."
+    sudo docker manifest create $DOCKER_USERNAME/\${service}:bahmni_${REVISION} ${args}
     echo "⚙️ Pushing manifest..."
-    sudo docker manifest push $DOCKER_USERNAME/\${service}:${REVISION}
+    sudo docker manifest push $DOCKER_USERNAME/\${service}:bahmni_${REVISION}
 
-    echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:latest'..."
-    sudo docker manifest create $DOCKER_USERNAME/\${service}:latest ${args}
+    echo "⚙️ Create manifest '$DOCKER_USERNAME/\${service}:bahmni_latest'..."
+    sudo docker manifest create $DOCKER_USERNAME/\${service}:bahmni_latest ${args}
     echo "⚙️ Pushing manifest..."
-    sudo docker manifest push $DOCKER_USERNAME/\${service}:latest
+    sudo docker manifest push $DOCKER_USERNAME/\${service}:bahmni_latest
 done
 EOF
