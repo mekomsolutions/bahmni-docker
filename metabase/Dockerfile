@@ -1,4 +1,4 @@
-FROM tomcat:8-jre11-slim
+FROM tomcat:8-jdk11-adoptopenjdk-hotspot
 
 ARG MB_VERSION=v1.36.11
 RUN mkdir -p /usr/share/man/man1 && mkdir -p /usr/share/man/man7
