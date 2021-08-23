@@ -2,10 +2,7 @@ services:
 
   # Apache HTTPD: Entry point for the application.
   proxy:
-    build:
-      context: proxy/
-      args:
-        TIMEZONE: "${TIMEZONE}"
+    image: mekomsolutions/proxy:bahmni_latest
     command: "httpd-foreground ${PROXY_TLS}"
     healthcheck:
       test:
@@ -28,10 +25,7 @@ services:
   # Bahmni Apps: The main front-end component
   # aka 'Bahmni EMR'
   bahmniapps:
-    build:
-      context: bahmniapps/
-      args:
-        TIMEZONE: "${TIMEZONE}"
+    image: mekomsolutions/bahmniapps:bahmni_latest
     healthcheck:
       test:
         - CMD
@@ -48,10 +42,7 @@ services:
 
   # Implementer Interface: Front-end application to bring Bahmni Forms 2.0
   implementer-interface:
-    build:
-      context: implementer-interface/
-      args:
-        TIMEZONE: "${TIMEZONE}"
+    image: mekomsolutions/implementer-interface:bahmni_latest
     healthcheck:
       test:
         - CMD
@@ -65,8 +56,7 @@ services:
           - implementer-interface
 
   bahmni-home:
-    build:
-      context: httpd/
+    image: mekomsolutions/bahmni-home:bahmni_latest
     expose:
       - "8904"
     healthcheck:
@@ -88,10 +78,7 @@ services:
 
   # Appointments
   appointments:
-    build:
-      context: appointments/
-      args:
-        TIMEZONE: "${TIMEZONE}"
+    image: mekomsolutions/appointments:bahmni_latest
     healthcheck:
       test:
         - CMD
@@ -126,7 +113,7 @@ services:
 
   # OpenMRS:
   openmrs:
-    build: openmrs/
+    image: mekomsolutions/openmrs:bahmni_latest
     depends_on:
       - mysql
     environment:
@@ -170,6 +157,7 @@ services:
 
   # MySQL
   mysql:
+    image: "mariadb:10.3"
     command: "mysqld --character-set-server=utf8 --collation-server=utf8_general_ci"
     environment:
       MYSQL_DATABASE: openmrs
@@ -178,7 +166,6 @@ services:
       MYSQL_ROOT_PASSWORD: "${MYSQL_ROOT_PASSWORD}"
     healthcheck:
       test: "exit 0"
-    image: "mariadb:10.3"
     networks:
       bahmni:
         aliases:
@@ -189,8 +176,7 @@ services:
 
   # Bahmni Reports: Standalone Java app to provide Reporting capabilities
   bahmni-reports:
-    build:
-      context: bahmni-reports/
+    image: mekomsolutions/bahmni-reports:bahmni_latest
     environment:
       # OpenMRS DB connection details
       OPENMRS_DB_HOSTNAME: mysql
@@ -236,10 +222,7 @@ services:
 
   # Bahmni Mart: Standalone JAVA app to schedule ETL tasks
   bahmni-mart:
-    build:
-      context: bahmni-mart/
-      args:
-        TIMEZONE: "${TIMEZONE}"
+    image: mekomsolutions/bahmni-mart:bahmni_latest
     environment:
       # OpenMRS DB connection details
       OPENMRS_DB_HOST: mysql
@@ -273,8 +256,7 @@ services:
 
   # Metabase: Reporting paltform
   metabase:
-    build:
-      context: metabase/
+    image: mekomsolutions/metabase:bahmni_latest
     environment:
       MB_DB_TYPE: postgres
       MB_DB_PORT: 5432
@@ -330,8 +312,7 @@ services:
   odoo:
     depends_on:
       - postgresql
-    build:
-      context: odoo/
+    image: mekomsolutions/odoo:bahmni_latest
     environment:
       HOST: postgresql
       PORT: 5432
@@ -360,8 +341,7 @@ services:
     depends_on:
       - postgresql
       - odoo
-    build:
-      context: odoo-connect/
+    image: mekomsolutions/odoo-connect:bahmni_latest
     environment:
       # Odoo
       ODOO_DB_SERVER: postgresql
@@ -388,7 +368,7 @@ services:
           aliases:
             - odoo-connect
   openelis:
-    build: openelis/
+    image: mekomsolutions/openelis:bahmni_latest
     depends_on:
       - postgresql
     environment:
