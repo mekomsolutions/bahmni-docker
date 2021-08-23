@@ -56,7 +56,7 @@ services:
           - implementer-interface
 
   bahmni-home:
-    image: mekomsolutions/bahmni-home:bahmni_latest
+    image: mekomsolutions/httpd:bahmni_latest
     expose:
       - "8904"
     healthcheck:
