@@ -17,6 +17,9 @@ COPY files/logback-spring.xml /opt/bahmni-mart/properties/logback-spring.xml
 COPY files/application.properties /tmp/application.properties
 RUN chmod 644 /opt/bahmni-mart/properties/logback-spring.xml
 
+# Add liquibase migration files
+COPY files/liquibase.xml /opt/bahmni-mart/liquibase/liquibase.xml
+
 RUN chmod +x /etc/scripts/*
 
 # Add Odoo flattening 'app'

@@ -15,8 +15,8 @@ Each image can be built individually by doing:
 Eg, Bahmni Appointments:
 ```
 cd appointments/
-docker build . mekomsolutions:appointments:bahmni_latest
-docker push mekomsolutions:appointments:bahmni_latest
+docker build . mekomsolutions/appointments:bahmni_latest
+docker push mekomsolutions/appointments:bahmni_latest
 ```
 
 ## GitHub CI
