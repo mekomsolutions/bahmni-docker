@@ -22,4 +22,8 @@ CREDS="--url=jdbc:postgresql://${ODOO_DB_SERVER}:5432/${ODOO_DB} --username=${OD
 CLASSPATH="${CATALINA_HOME}/webapps/bahmni-erp-connect.war"
 CHANGE_LOG_FILE="/opt/migrations/db_migrations.xml"
 
-java ${CHANGE_LOG_TABLE} -jar ${LIQUIBASE_JAR} --driver=${DRIVER} --classpath=${CLASSPATH} --changeLogFile=${CHANGE_LOG_FILE} ${CREDS} update
+if ! java ${CHANGE_LOG_TABLE} -jar ${LIQUIBASE_JAR} --driver=${DRIVER} --classpath=${CLASSPATH} --changeLogFile=${CHANGE_LOG_FILE} ${CREDS} update; then
+    echo "Clear liquibase lock"
+    PGPASSWORD=$ODOO_DB_PASSWORD psql -h $ODOO_DB_SERVER -U $ODOO_DB_USERNAME $ODOO_DB -c 'UPDATE liquibasechangeloglock SET locked=FALSE;'
+    java ${CHANGE_LOG_TABLE} -jar ${LIQUIBASE_JAR} --driver=${DRIVER} --classpath=${CLASSPATH} --changeLogFile=${CHANGE_LOG_FILE} ${CREDS} update
+fi
