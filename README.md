@@ -8,6 +8,11 @@ Resources to build to Docker images needed to run Bahmni
   <img src="./readme/vertical-logo-monochromatic.png" alt="Docker Logo" height="150">
   </p>
 
+## Run Bahmni
+
+This project only builds the Docker images.
+To run the project with Docker Compose, see [Bahmni Docker Compose](https://github.com/mekomsolutions/bahmni-docker-compose).
+
 ## Build and deploy images
 
 Each image can be built individually by doing:
