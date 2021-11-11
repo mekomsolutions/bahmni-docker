@@ -3,6 +3,7 @@ FROM python:2.7
 ARG ODOO_VERSION=10.0
 # ODOO_RELEASE Should be a nightly build snapshot date of ODOO_VERSION
 ARG ODOO_RELEASE=20200101
+ARG ODOO_BAHMNI_ADDONS_GITREF=4a583fd
 
 RUN apt update --fix-missing
 RUN apt -y install libsasl2-dev python-dev libldap2-dev libssl-dev \
@@ -28,7 +29,7 @@ RUN mkdir -p /mnt/extra-addons \
         && chown -R odoo /mnt/extra-addons
 RUN git clone https://github.com/Bahmni/odoo-modules.git /opt/bahmni-addons
 RUN cd /opt/bahmni-addons/ \
-        && git checkout 4c09da9
+        && git checkout ${ODOO_BAHMNI_ADDONS_GITREF}
 
 # Expose Odoo services
 EXPOSE 8069 8071
