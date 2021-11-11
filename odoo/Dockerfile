@@ -5,7 +5,7 @@ ARG ODOO_VERSION=10.0
 ARG ODOO_RELEASE=20200101
 ARG ODOO_BAHMNI_ADDONS_GITREF=4a583fd
 
-RUN apt update --fix-missing
+RUN apt update --fix-missing && apt upgrade -y
 RUN apt -y install libsasl2-dev python-dev libldap2-dev libssl-dev \
     npm nodejs ca-certificates node-less git gettext-base wkhtmltopdf
 RUN npm install -g less@3.10.3 less-plugin-clean-css
