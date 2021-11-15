@@ -1,0 +1,55 @@
+<databaseChangeLog logicalFilePath="/opt/migrations/disable_product_sync.xml"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet context="HSC-50" author="Mekomsolutions" id="HSC-50_1">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(1) FROM quartz_cron_scheduler WHERE 
+                name = 'openerpSaleableFeedJobTrigger'
+                AND enabled = False
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="quartz_cron_scheduler" schemaName="public">
+            <column name="name" value="openerpSaleableFeedJobTrigger"/>
+            <column name="cron_statement" value="0/30 * * * * ?"/>
+            <column name="start_delay" value="1000"/>
+            <column name="enabled" value="False"/>
+        </insert>
+    </changeSet>
+
+    <changeSet context="HSC-50" author="Mekomsolutions" id="HSC-50_2">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(1) FROM quartz_cron_scheduler WHERE 
+                name = 'openerpDrugFeedQuartzJobTrigger'
+                AND enabled = False
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="quartz_cron_scheduler" schemaName="public">
+            <column name="name" value="openerpDrugFeedQuartzJobTrigger"/>
+            <column name="cron_statement" value="0/30 * * * * ?"/>
+            <column name="start_delay" value="1000"/>
+            <column name="enabled" value="False"/>
+        </insert>
+    </changeSet>
+
+    <changeSet context="HSC-50" author="Mekomsolutions" id="HSC-50_3">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(1) FROM quartz_cron_scheduler WHERE 
+                name = 'openerpLabFeedJobTrigger'
+                AND enabled = False
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="quartz_cron_scheduler" schemaName="public">
+            <column name="name" value="openerpLabFeedJobTrigger"/>
+            <column name="cron_statement" value="0/30 * * * * ?"/>
+            <column name="start_delay" value="1000"/>
+            <column name="enabled" value="False"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
