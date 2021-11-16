@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
 
-    <changeSet context="HSC-50" author="Mekomsolutions" id="HSC-50_1">
+    <changeSet context="HSC-50" author="mekomsolutions" id="HSC-50_1">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(1) FROM quartz_cron_scheduler WHERE 
@@ -20,7 +20,7 @@
         </insert>
     </changeSet>
 
-    <changeSet context="HSC-50" author="Mekomsolutions" id="HSC-50_2">
+    <changeSet context="HSC-50" author="mekomsolutions" id="HSC-50_2">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(1) FROM quartz_cron_scheduler WHERE 
@@ -36,7 +36,7 @@
         </insert>
     </changeSet>
 
-    <changeSet context="HSC-50" author="Mekomsolutions" id="HSC-50_3">
+    <changeSet context="HSC-50" author="mekomsolutions" id="HSC-50_3">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
                 SELECT COUNT(1) FROM quartz_cron_scheduler WHERE 
