@@ -1,11 +1,6 @@
 RewriteEngine on
 RewriteCond %{REQUEST_URI} ^/$
 RewriteRule (.*) /bahmni/home [R=301,L]
-
-#Odoo
-  ProxyPass        /      http://odoo:8069/
-  ProxyPassReverse /      http://odoo:8069/
-
 # OpenELIS
 ProxyPass /openelis http://openelis:8080/openelis
 ProxyPassReverse /openelis http://openelis:8080/openelis
