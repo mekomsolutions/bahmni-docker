@@ -7,7 +7,7 @@ RUN apk add curl iproute2 iputils less nano tree unzip ca-certificates tzdata rs
 ARG TIMEZONE
 RUN ln -s /usr/share/zoneinfo/$TIMEZONE /etc/localtime
 
-ARG APPOINTMENTS_URL=https://github.com/Bahmni/openmrs-module-appointments-frontend/releases/download/0.0.2/openmrs-module-appointments-frontend.zip
+ARG APPOINTMENTS_URL=https://github.com/Bahmni/openmrs-module-appointments-frontend/releases/download/0.0.5/openmrs-module-appointments-frontend.zip
 
 RUN mkdir -p /var/www/appointments/ \
  && curl -L --output /var/www/appointments/appointments.zip ${APPOINTMENTS_URL} \
