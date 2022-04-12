@@ -18,4 +18,4 @@ do
 done
 
 echo "Services to be built: " $services
-echo "SERVICES=$services" >> $GITHUB_ENV
+echo "::set-output name=services::$services"

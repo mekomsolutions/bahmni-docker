@@ -3,60 +3,54 @@ name: CI
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
-
-  workflow_dispatch:
 
 jobs:
-  build_and_deploy:
+  get_services:
     runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.get_services.outputs.services }}
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Start Terraform infrastructure
-        run: |
-          export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
-          export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
-          ./.github/resources/scripts/start_terraform.sh
-
-      - name: Parse services
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      - 
+        name: Parse services
+        id: get_services
         run: ./.github/resources/scripts/parse_services.sh
-
-      - name: Set new AWS instances private key
-        run: |
-          echo "⚙️ Set AWS AMI private key."
-          AWS_AMI_PRIVATE_KEY_FILE=$(mktemp)
-          echo "${{ secrets.AWS_AMI_PRIVATE_KEY }}" > $AWS_AMI_PRIVATE_KEY_FILE
-          chmod 600 $AWS_AMI_PRIVATE_KEY_FILE
-          echo "AWS_AMI_PRIVATE_KEY_FILE=$AWS_AMI_PRIVATE_KEY_FILE" >> $GITHUB_ENV
-
-      - name: Wait for 60s
-        run: sleep 60s
-
-      - name: Copy files
-        run: |
-          ./.github/resources/scripts/copy_files.sh
-
-      - name: Build images on remote instances
-        run: |
-          ./.github/resources/scripts/build_images.sh
-
-      - name: Push images on Docker Hub
-        if: github.ref == 'refs/heads/master'
-        run: |
-          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-          ./.github/resources/scripts/push_images.sh
-
-      - name: Push tags on Docker Hub
-        if: github.ref == 'refs/heads/master'
-        run: |
-          export DOCKER_PASSWORD=${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
-          ./.github/resources/scripts/push_tags.sh
-
-      - name: Destroy Terraform infrastructure
-        if: ${{ always() }}
-        run: |
-          export TF_VAR_aws_api_key='${{ secrets.AWS_API_KEY_1 }}'
-          export TF_VAR_aws_api_secret='${{ secrets.AWS_API_SECRET_1 }}'
-          ./.github/resources/scripts/destroy_terraform.sh
+  build:
+    needs: [get_services]
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 3
+      matrix:
+        value: ["${{needs.get_services.outputs.services}}"]
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: mekomsolutions
+          password: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
+      - 
+        name: Get commit id
+        id: vars
+        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+      -
+        name: Build and push
+        uses: docker/build-push-action@v2
+        env: 
+          SERVICE: ${{ matrix.value }}
+        with:
+          context: ./${{ env.SERVICE }}
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: mekomsolutions/${{ env.SERVICE }}:latest,mekomsolutions/${{ env.SERVICE }}:${{ steps.vars.outputs.sha_short }}
