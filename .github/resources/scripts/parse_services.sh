@@ -17,5 +17,8 @@ do
   esac
 done
 
-echo "Services to be built: " $services
-echo "::set-output name=services::$services"
+services_list=$(echo "$services" | xargs | sed -n 1'p' | tr ',' '\n')
+services_json="`jq -c -n --arg inarr "${services_list}" '{ services: $inarr | split("\n") }'`"
+
+echo "Services to be built: " $services_list
+echo "::set-output name=services::$services_json"
