@@ -52,4 +52,4 @@ jobs:
           context: ./${{ env.SERVICE }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: mekomsolutions/${{ env.SERVICE }}:latest,mekomsolutions/${{ env.SERVICE }}:${{ steps.vars.outputs.sha_short }}
+          tags: mekomsolutions/${{ env.SERVICE }}:bahmni_latest,mekomsolutions/${{ env.SERVICE }}:${{ steps.vars.outputs.sha_short }}
