@@ -7,8 +7,11 @@ ARG ODOO_BAHMNI_ADDONS_GITREF=4a583fd
 
 RUN apt update --fix-missing && apt upgrade -y
 RUN apt -y install libsasl2-dev python-dev libldap2-dev libssl-dev \
-    npm nodejs ca-certificates node-less git gettext-base wkhtmltopdf
+    npm nodejs ca-certificates node-less git gettext-base xfonts-75dpi xfonts-base
 RUN npm install -g less@3.10.3 less-plugin-clean-css
+RUN  arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && \
+    wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.buster_${arch}.deb && \
+    dpkg -i wkhtmltox_0.12.6-1.buster_${arch}.deb &&  cp /usr/local/bin/wkhtmltopdf /usr/bin && cp /usr/local/bin/wkhtmltoimage /usr/bin
 
 RUN addgroup odoo && adduser odoo --shel /bin/sh --disabled-password --ingroup odoo
 RUN echo "odoo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
