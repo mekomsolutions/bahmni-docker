@@ -24,8 +24,8 @@ ProxyPass /implementer-interface http://implementer-interface:8902/implementer-i
 ProxyPassReverse /implementer-interface http://implementer-interface:8902/implementer-interface
 
 # Appointments
-ProxyPass /appointments http://appointments:8903/appointments
-ProxyPassReverse /appointments http://appointments:8903/appointments
+ProxyPass /appointments http://appointments/appointments
+ProxyPassReverse /appointments http://appointments/appointments
 
 # Bahmni Home
 ProxyPass /document_images http://bahmni-home:8904/document_images
