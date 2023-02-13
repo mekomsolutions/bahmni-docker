@@ -41,8 +41,7 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_REGISTRY_PASSWORD }}
       - 
         name: Get commit id
-        id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       -
         name: Build and push
         uses: docker/build-push-action@v2
@@ -52,4 +51,4 @@ jobs:
           context: ./${{ env.SERVICE }}
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: mekomsolutions/${{ env.SERVICE }}:bahmni_latest,mekomsolutions/${{ env.SERVICE }}:${{ steps.vars.outputs.sha_short }}
+          tags: mekomsolutions/${{ env.SERVICE }}:bahmni_latest,mekomsolutions/${{ env.SERVICE }}:${{ env.SHA_SHORT }}
