@@ -1,4 +1,4 @@
-FROM tomcat:7-jre8
+FROM tomcat:8-jre8-temurin-focal
 ARG BAHMNI_ERP_CONNECT_WAR_URL=https://nexus.mekomsolutions.net/repository/maven-releases/org/bahmni/openerp/openerp-atomfeed-service/0.94-1.0.1/openerp-atomfeed-service-0.94-1.0.1.war
 RUN apt update \
 && apt install -y postgresql-client wait-for-it curl iproute2 iputils-ping less nano tree unzip ca-certificates
