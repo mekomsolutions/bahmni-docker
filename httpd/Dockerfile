@@ -1,4 +1,4 @@
-FROM httpd:2.4
+FROM httpd:2.4-bullseye
 
 RUN usermod -a -G root daemon
 
