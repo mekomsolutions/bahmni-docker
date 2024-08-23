@@ -55,6 +55,11 @@ Redirect permanent  /home  /bahmni/home/
 # Bahmni Reports
 ProxyPass /bahmnireports http://bahmni-reports:8080/bahmni-reports
 ProxyPassReverse /bahmnireports http://bahmni-reports:8080/bahmni-reports
+
+# Set a 10-minute proxy timeout to accommodate long-running reports
+# https://mekomsolutions.atlassian.net/browse/TLC-154
+ProxyTimeout 600
+
 # Rewrite the OpenMRS Session Cookie as reporting_session Cookie for Bahmni Reports
 RewriteCond %{REQUEST_URI} ^/openmrs*
 RewriteCond %{HTTP_COOKIE} ^.*JSESSIONID=([^;]+)
